@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
-import { SidebarProvider } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { PlatformHeader } from "@/components/layout/platform-header";
+import { TopNavbar } from "@/components/layout/top-navbar";
 import { getUserWithProfile } from "@/server/queries/profiles";
 import {
   getNotificationsForUser,
@@ -46,21 +44,25 @@ export default async function PlatformLayout({
       ? profile.subscriptionTier
       : undefined;
 
-  // Fetch notifications
   const notifications = await getNotificationsForUser(user.id);
   const unreadCount = await getUnreadNotificationCount(user.id);
 
   return (
-    <SidebarProvider>
-      <AppSidebar role={role} />
-      <div className="flex flex-1 flex-col">
-        <PlatformHeader
-          subscriptionTier={subscriptionTier}
-          notifications={notifications}
-          unreadCount={unreadCount}
-        />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+    <div className="relative min-h-screen">
+      {/* Background gradient blobs */}
+      <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+        <div className="absolute -top-40 right-0 size-[600px] rounded-full bg-violet/[0.03] blur-[100px]" />
+        <div className="absolute top-1/2 -left-40 size-[500px] rounded-full bg-indigo/[0.03] blur-[100px]" />
+        <div className="absolute -bottom-40 right-1/3 size-[400px] rounded-full bg-violet/[0.02] blur-[80px]" />
       </div>
-    </SidebarProvider>
+
+      <TopNavbar
+        role={role}
+        subscriptionTier={subscriptionTier}
+        notifications={notifications}
+        unreadCount={unreadCount}
+      />
+      <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
+    </div>
   );
 }
