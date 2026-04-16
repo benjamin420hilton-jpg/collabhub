@@ -10,3 +10,5 @@ export * from "./contracts";
 export * from "./milestones";
 export * from "./payments";
 export * from "./subscriptions";
+export * from "./messages";
+export * from "./notifications";

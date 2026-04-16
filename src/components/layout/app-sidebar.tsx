@@ -9,6 +9,7 @@ import {
   Search,
   Settings,
   CreditCard,
+  MessageSquare,
 } from "lucide-react";
 import {
   Sidebar,
@@ -28,6 +29,7 @@ const brandNav = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Campaigns", href: "/campaigns", icon: Megaphone },
   { title: "Contracts", href: "/contracts", icon: FileText },
+  { title: "Messages", href: "/messages", icon: MessageSquare },
   { title: "Directory", href: "/directory", icon: Search },
   { title: "Settings", href: "/settings", icon: Settings },
   { title: "Billing", href: "/settings/billing", icon: CreditCard },
@@ -37,6 +39,7 @@ const influencerNav = [
   { title: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { title: "Find Campaigns", href: "/campaigns", icon: Megaphone },
   { title: "Contracts", href: "/contracts", icon: FileText },
+  { title: "Messages", href: "/messages", icon: MessageSquare },
   { title: "Settings", href: "/settings", icon: Settings },
 ];
 
