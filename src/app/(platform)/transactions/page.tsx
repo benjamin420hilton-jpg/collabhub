@@ -1,10 +1,16 @@
 import { redirect } from "next/navigation";
 import { getUserWithProfile } from "@/server/queries/profiles";
-import { getPaymentsForBrand } from "@/server/queries/payments";
+import {
+  getPaymentsForBrand,
+  getSpendingByMonth,
+} from "@/server/queries/payments";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { DollarSign, ShieldCheck, Clock, ArrowUpRight } from "lucide-react";
+import {
+  DollarSign, ShieldCheck, Clock, ArrowUpRight, TrendingUp,
+} from "lucide-react";
 import { centsToDollars } from "@/lib/constants";
+import { MoneyOverTimeChart } from "@/components/payments/money-over-time-chart";
 import type { BrandProfile } from "@/types";
 
 const statusColors: Record<string, string> = {
@@ -31,7 +37,11 @@ export default async function TransactionsPage() {
   }
 
   const profile = data.profile as BrandProfile;
-  const paymentResults = await getPaymentsForBrand(profile.id);
+  const [paymentResults, spendingByMonth] = await Promise.all([
+    getPaymentsForBrand(profile.id),
+    getSpendingByMonth(profile.id),
+  ]);
+  const hasSpendingData = spendingByMonth.some((m) => m.total > 0);
 
   const totalSpent = paymentResults
     .filter(
@@ -104,6 +114,24 @@ export default async function TransactionsPage() {
           </Card>
         ))}
       </div>
+
+      {hasSpendingData && (
+        <Card className="animate-fade-in-up delay-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="size-5 text-coral" />
+              Spending Over Time
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <MoneyOverTimeChart
+              data={spendingByMonth}
+              label="Spend"
+              accent="coral"
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {paymentResults.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-300">

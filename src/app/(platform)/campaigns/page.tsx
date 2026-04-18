@@ -6,14 +6,39 @@ import { getPublicCampaigns, getBrandCampaigns } from "@/server/queries/campaign
 import { CampaignCard } from "@/components/campaigns/campaign-card";
 import type { BrandProfile } from "@/types";
 
-export default async function CampaignsPage() {
+const statusFilters: Record<string, string[]> = {
+  active: ["published", "in_progress"],
+  published: ["published"],
+  draft: ["draft"],
+  completed: ["completed"],
+  archived: ["archived"],
+};
+
+const filterLabels: Record<string, string> = {
+  active: "Active",
+  published: "Published",
+  draft: "Draft",
+  completed: "Completed",
+  archived: "Archived",
+};
+
+export default async function CampaignsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status } = await searchParams;
   const data = await getUserWithProfile();
   const isBrand = data?.role === "brand";
 
-  // Brands see their own campaigns, influencers see the public job board
-  const campaignResults = isBrand && data.profile
+  const allBrandCampaigns = isBrand && data.profile
     ? await getBrandCampaigns((data.profile as BrandProfile).id)
     : null;
+
+  const campaignResults =
+    allBrandCampaigns && status && statusFilters[status]
+      ? allBrandCampaigns.filter((c) => statusFilters[status].includes(c.status))
+      : allBrandCampaigns;
 
   const publicCampaigns = !isBrand ? await getPublicCampaigns() : null;
 
@@ -22,13 +47,25 @@ export default async function CampaignsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">
-            {isBrand ? "Your Campaigns" : "Campaign Board"}
+            {isBrand
+              ? status && filterLabels[status]
+                ? `${filterLabels[status]} Campaigns`
+                : "Your Campaigns"
+              : "Campaign Board"}
           </h1>
           <p className="mt-1 text-muted-foreground">
             {isBrand
               ? "Manage your campaign briefs."
               : "Browse available campaigns and submit proposals."}
           </p>
+          {isBrand && status && filterLabels[status] && (
+            <Link
+              href="/campaigns"
+              className="mt-2 inline-block text-sm text-coral hover:underline"
+            >
+              Show all campaigns
+            </Link>
+          )}
         </div>
         {isBrand && (
           <Link href="/campaigns/new">

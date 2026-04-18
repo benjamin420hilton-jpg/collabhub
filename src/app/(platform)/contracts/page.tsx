@@ -25,26 +25,59 @@ const statusColors: Record<string, string> = {
   canceled: "border-gray-300/50 bg-gray-50 text-gray-700",
 };
 
-export default async function ContractsPage() {
+const statusFilters: Record<string, string[]> = {
+  active: ["pending_escrow", "escrow_funded", "active"],
+  completed: ["completed"],
+  disputed: ["disputed"],
+  canceled: ["canceled"],
+};
+
+const filterLabels: Record<string, string> = {
+  active: "Active",
+  completed: "Completed",
+  disputed: "Disputed",
+  canceled: "Canceled",
+};
+
+export default async function ContractsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status } = await searchParams;
   const data = await getUserWithProfile();
   if (!data || !data.profile) redirect("/dashboard");
 
-  const contractResults =
+  const allResults =
     data.role === "brand"
       ? await getContractsForBrand((data.profile as BrandProfile).id)
       : await getContractsForInfluencer(
           (data.profile as InfluencerProfile).id,
         );
 
+  const contractResults = status && statusFilters[status]
+    ? allResults.filter((r) => statusFilters[status].includes(r.contract.status))
+    : allResults;
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="animate-fade-in-up">
-        <h1 className="text-3xl font-bold">Contracts</h1>
+        <h1 className="text-3xl font-bold">
+          {status && filterLabels[status] ? `${filterLabels[status]} Contracts` : "Contracts"}
+        </h1>
         <p className="mt-1 text-muted-foreground">
           {data.role === "brand"
             ? "Manage your active contracts and milestones."
             : "Track your contracts and deliverables."}
         </p>
+        {status && filterLabels[status] && (
+          <Link
+            href="/contracts"
+            className="mt-2 inline-block text-sm text-coral hover:underline"
+          >
+            Show all contracts
+          </Link>
+        )}
       </div>
 
       {contractResults.length === 0 ? (

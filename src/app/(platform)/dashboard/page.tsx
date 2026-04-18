@@ -6,7 +6,11 @@ import {
 } from "@/server/queries/dashboard";
 import { BrandDashboard } from "@/components/profiles/brand-dashboard";
 import { InfluencerDashboard } from "@/components/profiles/influencer-dashboard";
-import type { BrandProfile, InfluencerProfile } from "@/types";
+import type { BrandProfile, InfluencerProfile, SocialAccount } from "@/types";
+
+type InfluencerProfileWithSocials = InfluencerProfile & {
+  socialAccounts: SocialAccount[];
+};
 
 export default async function DashboardPage() {
   const data = await getUserWithProfile();
@@ -21,15 +25,19 @@ export default async function DashboardPage() {
     const stats = await getBrandDashboardStats(
       (profile as BrandProfile).id,
     );
-    return <BrandDashboard user={user} profile={profile} stats={stats} />;
+    return <BrandDashboard user={user} profile={profile as BrandProfile} stats={stats} />;
   }
 
   if (role === "influencer" && profile) {
-    const stats = await getInfluencerDashboardStats(
-      (profile as InfluencerProfile).id,
-    );
+    const influencerProfile = profile as InfluencerProfileWithSocials;
+    const stats = await getInfluencerDashboardStats(influencerProfile.id);
     return (
-      <InfluencerDashboard user={user} profile={profile} stats={stats} />
+      <InfluencerDashboard
+        user={user}
+        profile={influencerProfile}
+        socialAccounts={influencerProfile.socialAccounts ?? []}
+        stats={stats}
+      />
     );
   }
 

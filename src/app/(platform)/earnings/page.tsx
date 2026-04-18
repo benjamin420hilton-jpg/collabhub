@@ -1,10 +1,14 @@
 import { redirect } from "next/navigation";
 import { getUserWithProfile } from "@/server/queries/profiles";
-import { getPaymentsForInfluencer } from "@/server/queries/payments";
+import {
+  getPaymentsForInfluencer,
+  getEarningsByMonth,
+} from "@/server/queries/payments";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DollarSign, TrendingUp, Clock, ArrowDownRight } from "lucide-react";
 import { centsToDollars } from "@/lib/constants";
+import { MoneyOverTimeChart } from "@/components/payments/money-over-time-chart";
 import type { InfluencerProfile } from "@/types";
 
 const statusColors: Record<string, string> = {
@@ -28,7 +32,11 @@ export default async function EarningsPage() {
   }
 
   const profile = data.profile as InfluencerProfile;
-  const paymentResults = await getPaymentsForInfluencer(profile.id);
+  const [paymentResults, earningsByMonth] = await Promise.all([
+    getPaymentsForInfluencer(profile.id),
+    getEarningsByMonth(profile.id),
+  ]);
+  const hasEarningsData = earningsByMonth.some((m) => m.total > 0);
 
   const totalEarned = paymentResults
     .filter(
@@ -102,6 +110,24 @@ export default async function EarningsPage() {
           </Card>
         ))}
       </div>
+
+      {hasEarningsData && (
+        <Card className="animate-fade-in-up delay-200">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <TrendingUp className="size-5 text-teal" />
+              Earnings Over Time
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <MoneyOverTimeChart
+              data={earningsByMonth}
+              label="Earnings"
+              accent="teal"
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {paymentResults.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-300">

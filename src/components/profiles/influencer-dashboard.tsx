@@ -7,17 +7,20 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatCard } from "@/components/ui/stat-card";
+import { SocialAccountsCard } from "@/components/profiles/social-accounts-card";
 import {
   Megaphone, FileText, AlertCircle, DollarSign,
   TrendingUp, Clock, CheckCircle, Send, ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
 import { centsToDollars } from "@/lib/constants";
-import type { User, InfluencerProfile } from "@/types";
+import type { User, InfluencerProfile, SocialAccount } from "@/types";
 
 interface InfluencerDashboardProps {
   user: User;
   profile: InfluencerProfile;
+  socialAccounts: SocialAccount[];
   stats: {
     activeContracts: number;
     pendingProposals: number;
@@ -43,8 +46,8 @@ const statusColors: Record<string, string> = {
 };
 
 export function InfluencerDashboard({
-  user,
   profile,
+  socialAccounts,
   stats,
 }: InfluencerDashboardProps) {
   const acceptRate =
@@ -105,111 +108,52 @@ export function InfluencerDashboard({
 
       {/* Stats grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="card-hover animate-fade-in-up delay-100">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-teal-light p-2.5">
-                <FileText className="size-5 text-teal" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.activeContracts}</p>
-              <p className="text-sm text-muted-foreground">Active Contracts</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-coral-light p-2.5">
-                <Send className="size-5 text-coral" />
-              </div>
-              <span className="text-xs text-muted-foreground">{stats.totalProposals} total</span>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.pendingProposals}</p>
-              <p className="text-sm text-muted-foreground">Pending Proposals</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-300">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-teal-light p-2.5">
-                <TrendingUp className="size-5 text-teal" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{acceptRate}%</p>
-              <p className="text-sm text-muted-foreground">Accept Rate</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-400">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-coral-light p-2.5">
-                <DollarSign className="size-5 text-coral" />
-              </div>
-              <Badge className="border-green-200 bg-green-50 text-green-700">
-                {stats.completedContracts} done
-              </Badge>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">
-                ${centsToDollars(stats.totalEarnings).toLocaleString()}
-              </p>
-              <p className="text-sm text-muted-foreground">Total Earnings</p>
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          label="Active Contracts"
+          value={stats.activeContracts}
+          icon={FileText}
+          iconColor="text-teal"
+          iconBg="bg-teal-light"
+          href="/contracts?status=active"
+          className="animate-fade-in-up delay-100"
+        />
+        <StatCard
+          label="Pending Proposals"
+          value={stats.pendingProposals}
+          icon={Send}
+          iconColor="text-coral"
+          iconBg="bg-coral-light"
+          metadata={`${stats.totalProposals} total`}
+          href="/proposals"
+          className="animate-fade-in-up delay-200"
+        />
+        <StatCard
+          label="Accept Rate"
+          value={`${acceptRate}%`}
+          icon={TrendingUp}
+          iconColor="text-teal"
+          iconBg="bg-teal-light"
+          href="/proposals#accept-rate"
+          className="animate-fade-in-up delay-300"
+        />
+        <StatCard
+          label="Total Earnings"
+          value={`$${centsToDollars(stats.totalEarnings).toLocaleString()}`}
+          icon={DollarSign}
+          iconColor="text-coral"
+          iconBg="bg-coral-light"
+          badge={{
+            text: `${stats.completedContracts} done`,
+            className: "border-green-200 bg-green-50 text-green-700",
+          }}
+          href="/earnings"
+          className="animate-fade-in-up delay-400"
+        />
       </div>
 
-      {/* Profile visibility + followers */}
+      {/* Connected socials + direct-offer settings */}
       <div className="grid gap-4 sm:grid-cols-2 animate-fade-in-up delay-300">
-        <Card className="card-hover">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Profile Status</p>
-                <p className="mt-1 text-2xl font-bold">
-                  {profile.totalFollowers?.toLocaleString() ?? "0"} followers
-                </p>
-              </div>
-              <Badge
-                className={
-                  profile.isPublic
-                    ? "bg-gradient-ocean border-0 text-white"
-                    : "border-teal/20 bg-teal-light text-teal-dark"
-                }
-              >
-                {profile.isPublic ? "Public" : "Hidden"}
-              </Badge>
-            </div>
-            {/* Progress bar showing follower milestone */}
-            <div className="mt-4">
-              <div className="flex justify-between text-xs text-muted-foreground">
-                <span>Follower Milestone</span>
-                <span>
-                  {(profile.totalFollowers ?? 0) >= 10000
-                    ? "10K+"
-                    : `${((profile.totalFollowers ?? 0) / 100).toFixed(0)}% to 10K`}
-                </span>
-              </div>
-              <div className="mt-1 h-2 overflow-hidden rounded-full bg-teal-light">
-                <div
-                  className="h-full rounded-full bg-gradient-ocean transition-all duration-500"
-                  style={{
-                    width: `${Math.min(((profile.totalFollowers ?? 0) / 10000) * 100, 100)}%`,
-                  }}
-                />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
+        <SocialAccountsCard accounts={socialAccounts} />
 
         <Card className="card-hover">
           <CardContent className="pt-6">

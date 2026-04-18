@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StatCard } from "@/components/ui/stat-card";
 import {
   Megaphone, FileText, Search, ArrowRight, Sparkles,
   Users, TrendingUp, Clock, CheckCircle, Plus,
@@ -86,68 +87,54 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
       {/* Stats grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="card-hover animate-fade-in-up delay-100">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-coral-light p-2.5">
-                <Megaphone className="size-5 text-coral" />
-              </div>
-              <span className="text-xs text-muted-foreground">{stats.totalCampaigns} total</span>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.activeCampaigns}</p>
-              <p className="text-sm text-muted-foreground">Active Campaigns</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-200">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-teal-light p-2.5">
-                <Users className="size-5 text-teal" />
-              </div>
-              <Badge className={stats.pendingProposals > 0 ? "border-amber-200 bg-amber-50 text-amber-700" : "border-border/60"}>
-                {stats.pendingProposals} new
-              </Badge>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.pendingProposals}</p>
-              <p className="text-sm text-muted-foreground">Pending Proposals</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-300">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-coral-light p-2.5">
-                <FileText className="size-5 text-coral" />
-              </div>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.activeContracts}</p>
-              <p className="text-sm text-muted-foreground">Active Contracts</p>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="card-hover animate-fade-in-up delay-400">
-          <CardContent className="pt-6">
-            <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-teal-light p-2.5">
-                <CheckCircle className="size-5 text-teal" />
-              </div>
-              <Badge className="border-coral/20 bg-coral-light text-coral-dark">
-                {profile.subscriptionTier === "pro" ? "0%" : "10%"} fee
-              </Badge>
-            </div>
-            <div className="mt-3">
-              <p className="text-3xl font-bold">{stats.completedContracts}</p>
-              <p className="text-sm text-muted-foreground">Completed</p>
-            </div>
-          </CardContent>
-        </Card>
+        <StatCard
+          label="Active Campaigns"
+          value={stats.activeCampaigns}
+          icon={Megaphone}
+          iconColor="text-coral"
+          iconBg="bg-coral-light"
+          metadata={`${stats.totalCampaigns} total`}
+          href="/campaigns?status=active"
+          className="animate-fade-in-up delay-100"
+        />
+        <StatCard
+          label="Pending Proposals"
+          value={stats.pendingProposals}
+          icon={Users}
+          iconColor="text-teal"
+          iconBg="bg-teal-light"
+          badge={{
+            text: `${stats.pendingProposals} new`,
+            className:
+              stats.pendingProposals > 0
+                ? "border-amber-200 bg-amber-50 text-amber-700"
+                : "border-border/60",
+          }}
+          href="/proposals"
+          className="animate-fade-in-up delay-200"
+        />
+        <StatCard
+          label="Active Contracts"
+          value={stats.activeContracts}
+          icon={FileText}
+          iconColor="text-coral"
+          iconBg="bg-coral-light"
+          href="/contracts?status=active"
+          className="animate-fade-in-up delay-300"
+        />
+        <StatCard
+          label="Completed"
+          value={stats.completedContracts}
+          icon={CheckCircle}
+          iconColor="text-teal"
+          iconBg="bg-teal-light"
+          badge={{
+            text: `${profile.subscriptionTier === "pro" ? "0%" : "10%"} fee`,
+            className: "border-coral/20 bg-coral-light text-coral-dark",
+          }}
+          href="/contracts?status=completed"
+          className="animate-fade-in-up delay-400"
+        />
       </div>
 
       {/* Bottom row */}
