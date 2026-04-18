@@ -481,3 +481,86 @@ export async function confirmDelivery(contractId: string) {
   revalidatePath(`/contracts/${contractId}`);
   return { success: true };
 }
+
+/**
+ * Raises a dispute on an active or escrow-funded contract.
+ */
+export async function disputeContract(contractId: string, reason: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.clerkUserId, userId))
+    .limit(1);
+
+  if (!user) throw new Error("User not found");
+
+  const [contract] = await db
+    .select()
+    .from(contracts)
+    .where(eq(contracts.id, contractId))
+    .limit(1);
+
+  if (!contract) return { error: "Contract not found" };
+
+  // Verify the user is a party to this contract
+  let isBrand = false;
+  let isInfluencer = false;
+
+  if (user.role === "brand") {
+    const [profile] = await db
+      .select()
+      .from(brandProfiles)
+      .where(eq(brandProfiles.userId, user.id))
+      .limit(1);
+    if (profile?.id === contract.brandProfileId) isBrand = true;
+  } else if (user.role === "influencer") {
+    const [profile] = await db
+      .select()
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.userId, user.id))
+      .limit(1);
+    if (profile?.id === contract.influencerProfileId) isInfluencer = true;
+  }
+
+  if (!isBrand && !isInfluencer) return { error: "Unauthorized" };
+
+  if (contract.status !== "active" && contract.status !== "escrow_funded") {
+    return { error: "Contract cannot be disputed in its current state" };
+  }
+
+  await db
+    .update(contracts)
+    .set({
+      status: "disputed",
+      cancellationReason: reason,
+    })
+    .where(eq(contracts.id, contractId));
+
+  // Notify the other party
+  const otherProfileId = isBrand
+    ? contract.influencerProfileId
+    : contract.brandProfileId;
+  const otherTable = isBrand ? influencerProfiles : brandProfiles;
+
+  const [otherProfile] = await db
+    .select({ userId: otherTable.userId })
+    .from(otherTable)
+    .where(eq(otherTable.id, otherProfileId))
+    .limit(1);
+
+  if (otherProfile) {
+    await db.insert(notifications).values({
+      userId: otherProfile.userId,
+      type: "contract_disputed",
+      title: "Contract disputed",
+      message: `A dispute has been raised. Reason: "${reason.slice(0, 100)}"`,
+      link: `/contracts/${contractId}`,
+    });
+  }
+
+  revalidatePath(`/contracts/${contractId}`);
+  return { success: true };
+}

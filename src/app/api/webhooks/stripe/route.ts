@@ -54,6 +54,75 @@ export async function POST(req: Request) {
             session.subscription as string,
           );
         }
+        // Handle escrow payment checkout
+        if (
+          session.mode === "payment" &&
+          session.metadata?.type === "escrow_hold" &&
+          session.metadata?.contractId
+        ) {
+          const piId =
+            typeof session.payment_intent === "string"
+              ? session.payment_intent
+              : session.payment_intent?.id;
+
+          if (piId) {
+            // Store payment intent ID on the contract
+            await db
+              .update(contracts)
+              .set({
+                stripePaymentIntentId: piId,
+                stripeTransferGroup: session.metadata.contractId,
+                status: "active",
+              })
+              .where(eq(contracts.id, session.metadata.contractId));
+
+            // Update payment record
+            const contractPayments = await db
+              .select()
+              .from(payments)
+              .where(eq(payments.contractId, session.metadata.contractId))
+              .limit(1);
+
+            if (contractPayments.length > 0) {
+              await db
+                .update(payments)
+                .set({
+                  status: "succeeded",
+                  stripePaymentIntentId: piId,
+                  processedAt: new Date(),
+                })
+                .where(eq(payments.id, contractPayments[0].id));
+            }
+
+            // Notify influencer
+            const [contract] = await db
+              .select()
+              .from(contracts)
+              .where(eq(contracts.id, session.metadata.contractId))
+              .limit(1);
+
+            if (contract) {
+              const [influencer] = await db
+                .select({ userId: influencerProfiles.userId })
+                .from(influencerProfiles)
+                .where(
+                  eq(influencerProfiles.id, contract.influencerProfileId),
+                )
+                .limit(1);
+
+              if (influencer) {
+                await db.insert(notifications).values({
+                  userId: influencer.userId,
+                  type: "escrow_funded",
+                  title: "Contract funded",
+                  message:
+                    "The brand has funded the escrow. You can start working on your deliverables.",
+                  link: `/contracts/${contract.id}`,
+                });
+              }
+            }
+          }
+        }
         break;
       }
 

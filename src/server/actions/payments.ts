@@ -11,6 +11,7 @@ import {
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { getStripe } from "@/lib/stripe";
 
 async function getCurrentBrandProfile() {
@@ -185,4 +186,106 @@ export async function refundEscrow(contractId: string) {
 
   revalidatePath(`/contracts/${contract.id}`);
   return { success: true };
+}
+
+/**
+ * Creates a Stripe Checkout session for escrow funding.
+ * Redirects the brand to Stripe Checkout to pay.
+ */
+export async function createEscrowCheckout(contractId: string) {
+  const stripe = getStripe();
+  const { user, profile } = await getCurrentBrandProfile();
+
+  const [contract] = await db
+    .select()
+    .from(contracts)
+    .where(eq(contracts.id, contractId))
+    .limit(1);
+
+  if (!contract) return { error: "Contract not found" };
+  if (contract.brandProfileId !== profile.id) return { error: "Unauthorized" };
+  if (contract.status !== "pending_escrow")
+    return { error: "Contract is not awaiting escrow funding" };
+  if (contract.totalAmount <= 0)
+    return { error: "No payment required for this contract" };
+
+  // Verify influencer has completed Stripe Connect onboarding
+  const [influencer] = await db
+    .select()
+    .from(influencerProfiles)
+    .where(eq(influencerProfiles.id, contract.influencerProfileId))
+    .limit(1);
+
+  if (!influencer?.stripeConnectOnboarded) {
+    return {
+      error: "The influencer has not completed payment setup yet.",
+    };
+  }
+
+  // Create or retrieve Stripe customer
+  let customerId = profile.stripeCustomerId;
+
+  if (!customerId) {
+    const customer = await stripe.customers.create({
+      email: user.email,
+      metadata: {
+        brandProfileId: profile.id,
+        userId: user.id,
+      },
+    });
+    customerId = customer.id;
+
+    await db
+      .update(brandProfiles)
+      .set({ stripeCustomerId: customerId })
+      .where(eq(brandProfiles.id, profile.id));
+  }
+
+  const session = await stripe.checkout.sessions.create({
+    customer: customerId,
+    mode: "payment",
+    line_items: [
+      {
+        price_data: {
+          currency: "aud",
+          unit_amount: contract.totalAmount,
+          product_data: {
+            name: "Contract Escrow",
+            description: "Payment Protection Escrow — funds held securely until milestones are approved",
+          },
+        },
+        quantity: 1,
+      },
+    ],
+    payment_intent_data: {
+      transfer_group: contract.id,
+      metadata: {
+        contractId: contract.id,
+        brandProfileId: profile.id,
+        influencerProfileId: contract.influencerProfileId,
+        type: "escrow_hold",
+      },
+    },
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/contracts/${contract.id}?funded=true`,
+    cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/contracts/${contract.id}?canceled=true`,
+    metadata: {
+      contractId: contract.id,
+      type: "escrow_hold",
+    },
+  });
+
+  // Store payment intent reference (will be populated by webhook)
+  await db.insert(payments).values({
+    contractId: contract.id,
+    type: "escrow_hold",
+    status: "pending",
+    amount: contract.totalAmount,
+    platformFeeAmount: contract.platformFeeAmount,
+    currency: "aud",
+    description: "Escrow hold for contract",
+  });
+
+  if (session.url) {
+    redirect(session.url);
+  }
 }

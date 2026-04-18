@@ -7,11 +7,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { DollarSign, Calendar, Users } from "lucide-react";
+import { DollarSign, Calendar, Users, CheckCircle } from "lucide-react";
 import { getContractById } from "@/server/queries/contracts";
 import { getUserWithProfile } from "@/server/queries/profiles";
 import { centsToDollars } from "@/lib/constants";
 import { MilestoneTracker } from "@/components/contracts/milestone-tracker";
+import { EscrowFunder } from "@/components/contracts/escrow-funder";
+import { DeliveryTracker } from "@/components/contracts/delivery-tracker";
+import { DisputeActions } from "@/components/contracts/dispute-actions";
+import { db } from "@/db";
+import { influencerProfiles } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import type { BrandProfile, InfluencerProfile } from "@/types";
 
 const statusColors: Record<string, string> = {
@@ -51,6 +57,17 @@ export default async function ContractDetailPage({
     (data.profile as InfluencerProfile).id === contract.influencerProfileId;
 
   if (!isBrand && !isInfluencer) notFound();
+
+  // Check if influencer has completed Stripe Connect for escrow funder
+  let influencerOnboarded = false;
+  if (isBrand && contract.status === "pending_escrow") {
+    const [inf] = await db
+      .select({ onboarded: influencerProfiles.stripeConnectOnboarded })
+      .from(influencerProfiles)
+      .where(eq(influencerProfiles.id, contract.influencerProfileId))
+      .limit(1);
+    influencerOnboarded = inf?.onboarded ?? false;
+  }
 
   const completedMilestones = milestones.filter(
     (m) => m.status === "approved" || m.status === "paid",
@@ -150,12 +167,54 @@ export default async function ContractDetailPage({
         </div>
       </div>
 
+      {/* Escrow Funder — shown to brands when contract is pending escrow */}
+      {isBrand && contract.status === "pending_escrow" && (
+        <div className="animate-fade-in-up delay-200">
+          <EscrowFunder
+            contractId={contract.id}
+            totalAmount={contract.totalAmount}
+            influencerOnboarded={influencerOnboarded}
+          />
+        </div>
+      )}
+
+      {/* Funded success banner */}
+      {contract.status === "active" && (
+        <div className="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 p-3 animate-fade-in-up delay-200">
+          <CheckCircle className="size-4 text-green-600" />
+          <span className="text-sm font-medium text-green-800">
+            Escrow funded — contract is active
+          </span>
+        </div>
+      )}
+
+      {/* Delivery Tracker — for product exchange contracts */}
+      <div className="animate-fade-in-up delay-300">
+        <DeliveryTracker
+          contractId={contract.id}
+          deliveryStatus={contract.deliveryStatus}
+          trackingNumber={contract.shippingTrackingNumber}
+          productDescription={contract.productDescription}
+          isBrand={isBrand}
+          deliveryConfirmedAt={contract.deliveryConfirmedAt}
+        />
+      </div>
+
       {/* Milestone Tracker */}
       <div className="animate-fade-in-up delay-300">
         <MilestoneTracker
           milestones={milestones}
           isBrand={isBrand}
           contractId={contract.id}
+        />
+      </div>
+
+      {/* Dispute Actions */}
+      <div className="animate-fade-in-up delay-400">
+        <DisputeActions
+          contractId={contract.id}
+          status={contract.status}
+          isBrand={isBrand}
         />
       </div>
     </div>

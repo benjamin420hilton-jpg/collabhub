@@ -15,6 +15,7 @@ import { centsToDollars } from "@/lib/constants";
 import { PublishCampaignButton } from "@/components/campaigns/publish-campaign-button";
 import { ApplyCampaignForm } from "@/components/campaigns/apply-campaign-form";
 import { ProposalList } from "@/components/campaigns/proposal-list";
+import { CampaignActions } from "@/components/campaigns/campaign-actions";
 import type { BrandProfile, InfluencerProfile } from "@/types";
 
 export default async function CampaignDetailPage({
@@ -80,10 +81,21 @@ export default async function CampaignDetailPage({
             {brandCity && brandState && ` · ${brandCity}, ${brandState}`}
           </p>
         </div>
-        {isBrandOwner && campaign.status === "draft" && (
-          <PublishCampaignButton campaignId={campaign.id} />
-        )}
+        <div className="flex items-center gap-2">
+          {isBrandOwner && campaign.status === "draft" && (
+            <PublishCampaignButton campaignId={campaign.id} />
+          )}
+        </div>
       </div>
+
+      {/* Campaign management actions */}
+      {data && (
+        <CampaignActions
+          campaignId={campaign.id}
+          status={campaign.status}
+          isBrandOwner={!!isBrandOwner}
+        />
+      )}
 
       {/* Key Info */}
       <div className="flex flex-wrap gap-4">
@@ -93,6 +105,16 @@ export default async function CampaignDetailPage({
         {campaign.type === "gifting" && (
           <Badge variant="outline" className="text-sm">
             <Gift className="mr-1 size-3" /> Product Gifting
+          </Badge>
+        )}
+        {campaign.type === "product_exchange" && (
+          <Badge variant="outline" className="text-sm">
+            <Gift className="mr-1 size-3" /> Product Exchange
+          </Badge>
+        )}
+        {campaign.type === "hybrid" && (
+          <Badge variant="outline" className="text-sm">
+            <Gift className="mr-1 size-3" /> Hybrid (Cash + Product)
           </Badge>
         )}
         {campaign.targetNiche && (
