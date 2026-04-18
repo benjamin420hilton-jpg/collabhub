@@ -10,6 +10,8 @@ import {
   campaigns,
   contracts,
   milestones,
+  payments,
+  notifications,
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -22,7 +24,13 @@ import {
   type SubmitMilestoneInput,
   type ReviewMilestoneInput,
 } from "@/lib/validators/contract";
-import { dollarsToCents, PLATFORM_FEE_RATES, calculatePlatformFee } from "@/lib/constants";
+import {
+  dollarsToCents,
+  centsToDollars,
+  PLATFORM_FEE_RATES,
+  calculatePlatformFee,
+} from "@/lib/constants";
+import { getStripe } from "@/lib/stripe";
 
 async function getCurrentBrandProfile() {
   const { userId } = await auth();
@@ -119,7 +127,10 @@ export async function createContract(input: CreateContractInput) {
   const feeAmount = calculatePlatformFee(totalAmount, feeRate);
   const influencerPayout = totalAmount - feeAmount;
 
-  const isGifting = campaign.type === "gifting";
+  const isNonCash =
+    campaign.type === "gifting" || campaign.type === "product_exchange";
+  const isProductExchange =
+    campaign.type === "product_exchange" || campaign.type === "hybrid";
 
   // Create contract
   const [contract] = await db
@@ -128,11 +139,16 @@ export async function createContract(input: CreateContractInput) {
       proposalId: proposal.id,
       brandProfileId: brandProfile.id,
       influencerProfileId: proposal.influencerProfileId,
-      status: isGifting ? "active" : "pending_escrow",
-      totalAmount: isGifting ? 0 : totalAmount,
-      platformFeeRate: isGifting ? 0 : feeRate,
-      platformFeeAmount: isGifting ? 0 : feeAmount,
-      influencerPayout: isGifting ? 0 : influencerPayout,
+      status: isNonCash ? "active" : "pending_escrow",
+      totalAmount: isNonCash ? 0 : totalAmount,
+      platformFeeRate: isNonCash ? 0 : feeRate,
+      platformFeeAmount: isNonCash ? 0 : feeAmount,
+      influencerPayout: isNonCash ? 0 : influencerPayout,
+      // Product exchange fields
+      deliveryStatus: isProductExchange ? "pending" : null,
+      productDescription: isProductExchange
+        ? (campaign.giftDescription ?? null)
+        : null,
     })
     .returning();
 
@@ -143,7 +159,7 @@ export async function createContract(input: CreateContractInput) {
       sortOrder: i + 1,
       title: m.title,
       description: m.description ?? null,
-      amount: isGifting ? 0 : dollarsToCents(m.amount),
+      amount: isNonCash ? 0 : dollarsToCents(m.amount),
       dueDate: m.dueDate ?? null,
     })),
   );
@@ -184,8 +200,23 @@ export async function submitMilestone(input: SubmitMilestoneInput) {
   if (!contract || contract.influencerProfileId !== influencerProfile.id)
     return { error: "Unauthorized" };
 
-  if (milestone.status !== "pending" && milestone.status !== "in_progress" && milestone.status !== "revision_requested")
+  if (
+    milestone.status !== "pending" &&
+    milestone.status !== "in_progress" &&
+    milestone.status !== "revision_requested"
+  )
     return { error: "Milestone cannot be submitted in its current state" };
+
+  // Block submission if product delivery hasn't been confirmed
+  if (
+    contract.deliveryStatus !== null &&
+    contract.deliveryStatus !== "delivered"
+  ) {
+    return {
+      error:
+        "Product delivery must be confirmed before you can submit content.",
+    };
+  }
 
   await db
     .update(milestones)
@@ -229,25 +260,104 @@ export async function reviewMilestone(input: ReviewMilestoneInput) {
     return { error: "Unauthorized" };
 
   if (parsed.data.action === "approve") {
-    await db
-      .update(milestones)
-      .set({
-        status: "approved",
-        approvedAt: new Date(),
-      })
-      .where(eq(milestones.id, milestone.id));
+    // If milestone has a cash amount, create a Stripe transfer to the influencer
+    if (milestone.amount > 0 && contract.stripeTransferGroup) {
+      const stripe = getStripe();
 
-    // Check if all milestones are approved → complete the contract
+      // Calculate influencer's share for this milestone
+      const milestoneFee = calculatePlatformFee(
+        milestone.amount,
+        contract.platformFeeRate,
+      );
+      const milestoneInfluencerAmount = milestone.amount - milestoneFee;
+
+      // Get influencer's connected account
+      const [influencer] = await db
+        .select()
+        .from(influencerProfiles)
+        .where(eq(influencerProfiles.id, contract.influencerProfileId))
+        .limit(1);
+
+      if (!influencer?.stripeConnectAccountId) {
+        return {
+          error: "Influencer has not completed payment setup",
+        };
+      }
+
+      // Create transfer to influencer's connected account
+      const transfer = await stripe.transfers.create({
+        amount: milestoneInfluencerAmount,
+        currency: "aud",
+        destination: influencer.stripeConnectAccountId,
+        transfer_group: contract.stripeTransferGroup,
+        metadata: {
+          milestoneId: milestone.id,
+          contractId: contract.id,
+        },
+      });
+
+      // Update milestone with transfer ID
+      await db
+        .update(milestones)
+        .set({
+          status: "paid",
+          approvedAt: new Date(),
+          paidAt: new Date(),
+          stripeTransferId: transfer.id,
+        })
+        .where(eq(milestones.id, milestone.id));
+
+      // Create payment record for the milestone release
+      await db.insert(payments).values({
+        contractId: contract.id,
+        milestoneId: milestone.id,
+        type: "milestone_release",
+        status: "processing",
+        amount: milestoneInfluencerAmount,
+        platformFeeAmount: milestoneFee,
+        currency: "aud",
+        stripeTransferId: transfer.id,
+        description: `Payout for milestone: ${milestone.title}`,
+      });
+
+      // Create platform fee audit record
+      if (milestoneFee > 0) {
+        await db.insert(payments).values({
+          contractId: contract.id,
+          milestoneId: milestone.id,
+          type: "platform_fee",
+          status: "succeeded",
+          amount: milestoneFee,
+          currency: "aud",
+          description: `5% Payment Protection Fee on "${milestone.title}"`,
+          processedAt: new Date(),
+        });
+      }
+    } else {
+      // Non-cash milestone (gifting/product exchange) — just approve
+      await db
+        .update(milestones)
+        .set({
+          status: "approved",
+          approvedAt: new Date(),
+        })
+        .where(eq(milestones.id, milestone.id));
+    }
+
+    // Check if all milestones are approved/paid → complete the contract
     const allMilestones = await db
       .select()
       .from(milestones)
       .where(eq(milestones.contractId, contract.id));
 
-    const allApproved = allMilestones.every(
-      (m) => m.id === milestone.id || m.status === "approved" || m.status === "paid",
+    const allDone = allMilestones.every(
+      (m) =>
+        m.id === milestone.id ||
+        m.status === "approved" ||
+        m.status === "paid",
     );
 
-    if (allApproved) {
+    if (allDone) {
       await db
         .update(contracts)
         .set({ status: "completed", completedAt: new Date() })
@@ -264,5 +374,110 @@ export async function reviewMilestone(input: ReviewMilestoneInput) {
   }
 
   revalidatePath(`/contracts/${contract.id}`);
+  return { success: true };
+}
+
+// --- Product Exchange / Shipping actions ---
+
+/**
+ * Brand provides a shipping tracking number after sending the product.
+ */
+export async function updateShippingTracking(
+  contractId: string,
+  trackingNumber: string,
+  estimatedDeliveryDate?: Date,
+) {
+  const brandProfile = await getCurrentBrandProfile();
+
+  const [contract] = await db
+    .select()
+    .from(contracts)
+    .where(eq(contracts.id, contractId))
+    .limit(1);
+
+  if (!contract) return { error: "Contract not found" };
+  if (contract.brandProfileId !== brandProfile.id)
+    return { error: "Unauthorized" };
+  if (contract.deliveryStatus === null)
+    return { error: "This contract does not involve product delivery" };
+
+  await db
+    .update(contracts)
+    .set({
+      shippingTrackingNumber: trackingNumber,
+      deliveryStatus: "shipped",
+      estimatedDeliveryDate: estimatedDeliveryDate ?? null,
+    })
+    .where(eq(contracts.id, contractId));
+
+  // Notify the influencer
+  const [influencer] = await db
+    .select({ userId: influencerProfiles.userId })
+    .from(influencerProfiles)
+    .where(eq(influencerProfiles.id, contract.influencerProfileId))
+    .limit(1);
+
+  if (influencer) {
+    await db.insert(notifications).values({
+      userId: influencer.userId,
+      type: "product_shipped",
+      title: "Your product has shipped",
+      message: `Tracking number: ${trackingNumber}`,
+      link: `/contracts/${contractId}`,
+    });
+  }
+
+  revalidatePath(`/contracts/${contractId}`);
+  return { success: true };
+}
+
+/**
+ * Influencer confirms receipt of the product.
+ * This unblocks milestone submissions.
+ */
+export async function confirmDelivery(contractId: string) {
+  const influencerProfile = await getCurrentInfluencerProfile();
+
+  const [contract] = await db
+    .select()
+    .from(contracts)
+    .where(eq(contracts.id, contractId))
+    .limit(1);
+
+  if (!contract) return { error: "Contract not found" };
+  if (contract.influencerProfileId !== influencerProfile.id)
+    return { error: "Unauthorized" };
+  if (contract.deliveryStatus === null)
+    return { error: "This contract does not involve product delivery" };
+  if (contract.deliveryStatus === "delivered")
+    return { error: "Delivery already confirmed" };
+
+  await db
+    .update(contracts)
+    .set({
+      deliveryStatus: "delivered",
+      deliveryConfirmedAt: new Date(),
+    })
+    .where(eq(contracts.id, contractId));
+
+  // Notify the brand
+  const [brand] = await db
+    .select({ userId: brandProfiles.userId })
+    .from(brandProfiles)
+    .where(eq(brandProfiles.id, contract.brandProfileId))
+    .limit(1);
+
+  if (brand) {
+    await db.insert(notifications).values({
+      userId: brand.userId,
+      type: "product_delivered",
+      title: "Product received",
+      message:
+        "The influencer has confirmed receipt of your product. Content creation period begins now.",
+      link: `/contracts/${contractId}`,
+    });
+  }
+
+  revalidatePath(`/contracts/${contractId}`);
   return { success: true };
 }

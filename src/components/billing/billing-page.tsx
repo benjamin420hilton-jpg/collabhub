@@ -35,15 +35,15 @@ const FREE_FEATURES = [
   "Post public campaigns",
   "Receive influencer proposals",
   "Milestone-based contracts",
-  "10% platform fee on transactions",
+  "5% Payment Protection Fee on cash deals",
 ];
 
 const PRO_FEATURES = [
   "Everything in Free",
   "Influencer Discovery Directory",
   "Send direct offers to creators",
-  "0% platform transaction fees",
-  "Product gifting campaigns",
+  "Product gifting & exchange campaigns",
+  "5% Payment Protection Fee on cash deals",
   "Priority support",
 ];
 
@@ -79,10 +79,10 @@ export function BillingPage({
 
       {/* Success/Cancel banners */}
       {showSuccess && (
-        <Card className="overflow-hidden border-violet/30 bg-gradient-to-br from-violet-light via-white to-violet-light animate-scale-in">
+        <Card className="overflow-hidden border-coral/30 bg-gradient-to-br from-coral-light via-white to-coral-light animate-scale-in">
           <CardContent className="pt-8 pb-8">
             <div className="text-center space-y-4">
-              <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-violet shadow-lg shadow-violet/30 animate-fade-in-up">
+              <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-primary shadow-lg shadow-coral/30 animate-fade-in-up">
                 <Crown className="size-8 text-white" />
               </div>
               <div className="animate-fade-in-up delay-100">
@@ -92,20 +92,20 @@ export function BillingPage({
                 </p>
               </div>
               <div className="mx-auto max-w-sm grid gap-2 text-left animate-fade-in-up delay-200">
-                <div className="flex items-center gap-3 rounded-lg border border-violet/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-violet shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-coral shrink-0" />
                   <span className="text-sm font-medium">Influencer Discovery Directory is now unlocked</span>
                 </div>
-                <div className="flex items-center gap-3 rounded-lg border border-violet/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-violet shrink-0" />
-                  <span className="text-sm font-medium">Transaction fees dropped to 0%</span>
+                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-coral shrink-0" />
+                  <span className="text-sm font-medium">Influencer Discovery Directory unlocked</span>
                 </div>
-                <div className="flex items-center gap-3 rounded-lg border border-violet/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-violet shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-coral shrink-0" />
                   <span className="text-sm font-medium">Direct offers to influencers enabled</span>
                 </div>
-                <div className="flex items-center gap-3 rounded-lg border border-violet/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-violet shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-coral shrink-0" />
                   <span className="text-sm font-medium">Product gifting campaigns unlocked</span>
                 </div>
               </div>
@@ -127,14 +127,14 @@ export function BillingPage({
 
       {/* Current plan */}
       {isPro && subscription && (
-        <Card className="border-violet/20 bg-gradient-to-r from-violet-light to-white animate-fade-in-up delay-100">
+        <Card className="border-coral/20 bg-gradient-to-r from-coral-light to-white animate-fade-in-up delay-100">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Crown className="size-5 text-violet" />
+                <Crown className="size-5 text-coral" />
                 <CardTitle>Pro Plan</CardTitle>
               </div>
-              <Badge className="bg-gradient-violet border-0 text-white">
+              <Badge className="bg-gradient-primary border-0 text-white">
                 Active
               </Badge>
             </div>
@@ -165,7 +165,7 @@ export function BillingPage({
               variant="outline"
               onClick={handleManage}
               disabled={isPending}
-              className="border-violet/20 hover:bg-violet-light"
+              className="border-coral/20 hover:bg-coral-light"
             >
               <ExternalLink className="mr-2 size-4" />
               {isPending ? "Loading..." : "Manage Subscription"}
@@ -178,13 +178,13 @@ export function BillingPage({
       <div className="grid gap-6 sm:grid-cols-2 animate-fade-in-up delay-200">
         {/* Free */}
         <Card
-          className={`${!isPro ? "border-violet/20 ring-2 ring-violet/10" : "border-border/60"}`}
+          className={`${!isPro ? "border-coral/20 ring-2 ring-coral/10" : "border-border/60"}`}
         >
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               Free
               {!isPro && (
-                <Badge className="border-violet/20 bg-violet-light text-violet-dark">
+                <Badge className="border-coral/20 bg-coral-light text-coral-dark">
                   Current
                 </Badge>
               )}
@@ -208,15 +208,15 @@ export function BillingPage({
 
         {/* Pro */}
         <Card
-          className={`${isPro ? "border-violet/20 ring-2 ring-violet/10" : "border-border/60"}`}
+          className={`${isPro ? "border-coral/20 ring-2 ring-coral/10" : "border-border/60"}`}
         >
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Crown className="size-5 text-violet" /> Pro
+                <Crown className="size-5 text-coral" /> Pro
               </span>
               {isPro && (
-                <Badge className="bg-gradient-violet border-0 text-white">
+                <Badge className="bg-gradient-primary border-0 text-white">
                   Current
                 </Badge>
               )}
@@ -230,7 +230,7 @@ export function BillingPage({
             <ul className="space-y-3">
               {PRO_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
-                  <Check className="mt-0.5 size-4 shrink-0 text-violet" />
+                  <Check className="mt-0.5 size-4 shrink-0 text-coral" />
                   {feature}
                 </li>
               ))}
@@ -239,7 +239,7 @@ export function BillingPage({
           {!isPro && (
             <CardFooter>
               <Button
-                className="w-full bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/30 hover:-translate-y-0.5"
+                className="w-full bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
                 onClick={handleUpgrade}
                 disabled={isPending}
               >

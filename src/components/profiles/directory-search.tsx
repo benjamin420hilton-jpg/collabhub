@@ -109,7 +109,7 @@ export function DirectorySearch({ filters }: DirectorySearchProps) {
         </div>
         <Button
           type="submit"
-          className="bg-gradient-violet text-white"
+          className="bg-gradient-primary text-white"
           disabled={isPending}
         >
           Search

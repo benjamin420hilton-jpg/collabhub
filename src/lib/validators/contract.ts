@@ -26,7 +26,20 @@ export const reviewMilestoneSchema = z.object({
   revisionNotes: z.string().optional(),
 });
 
+export const updateShippingSchema = z.object({
+  contractId: z.string().uuid(),
+  trackingNumber: z.string().min(1, "Tracking number is required"),
+  estimatedDeliveryDate: z.coerce.date().optional(),
+});
+
+export const flagCampaignSchema = z.object({
+  campaignId: z.string().uuid(),
+  reason: z.string().min(5, "Please provide a reason").max(500),
+});
+
 export type MilestoneInput = z.infer<typeof milestoneInputSchema>;
 export type CreateContractInput = z.infer<typeof createContractSchema>;
 export type SubmitMilestoneInput = z.infer<typeof submitMilestoneSchema>;
 export type ReviewMilestoneInput = z.infer<typeof reviewMilestoneSchema>;
+export type UpdateShippingInput = z.infer<typeof updateShippingSchema>;
+export type FlagCampaignInput = z.infer<typeof flagCampaignSchema>;

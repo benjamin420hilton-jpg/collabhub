@@ -46,7 +46,7 @@ export default async function InfluencerProfilePage({
     <div className="mx-auto max-w-3xl space-y-6 animate-fade-in">
       {/* Header */}
       <div className="flex items-start gap-6 animate-fade-in-up">
-        <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-violet text-3xl font-bold text-white">
+        <div className="flex size-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-primary text-3xl font-bold text-white">
           {profile.displayName.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
@@ -65,7 +65,7 @@ export default async function InfluencerProfilePage({
               </span>
             )}
             {profile.primaryNiche && (
-              <Badge className="border-violet/20 bg-violet-light text-violet-dark">
+              <Badge className="border-coral/20 bg-coral-light text-coral-dark">
                 {profile.primaryNiche.replace("_", " ")}
               </Badge>
             )}
@@ -89,8 +89,8 @@ export default async function InfluencerProfilePage({
       <div className="grid gap-4 sm:grid-cols-3 animate-fade-in-up delay-200">
         <Card className="card-hover">
           <CardContent className="flex items-center gap-3 pt-6">
-            <div className="rounded-lg bg-violet-light p-2">
-              <Users className="size-4 text-violet" />
+            <div className="rounded-lg bg-coral-light p-2">
+              <Users className="size-4 text-coral" />
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Total Followers</p>
@@ -104,8 +104,8 @@ export default async function InfluencerProfilePage({
         {profile.totalEngagementRate && (
           <Card className="card-hover">
             <CardContent className="flex items-center gap-3 pt-6">
-              <div className="rounded-lg bg-violet-light p-2">
-                <Globe className="size-4 text-violet" />
+              <div className="rounded-lg bg-coral-light p-2">
+                <Globe className="size-4 text-coral" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Engagement Rate</p>
@@ -120,8 +120,8 @@ export default async function InfluencerProfilePage({
         {profile.minimumRate && (
           <Card className="card-hover">
             <CardContent className="flex items-center gap-3 pt-6">
-              <div className="rounded-lg bg-violet-light p-2">
-                <DollarSign className="size-4 text-violet" />
+              <div className="rounded-lg bg-coral-light p-2">
+                <DollarSign className="size-4 text-coral" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Minimum Rate</p>
@@ -190,7 +190,7 @@ export default async function InfluencerProfilePage({
 
       {/* Direct Offer CTA */}
       {profile.acceptsDirectOffers && (
-        <Card className="border-violet/20 bg-gradient-to-r from-violet-light to-white animate-fade-in-up delay-400">
+        <Card className="border-coral/20 bg-gradient-to-r from-coral-light to-white animate-fade-in-up delay-400">
           <CardContent className="flex items-center justify-between pt-6">
             <div>
               <p className="font-semibold">Send a Direct Offer</p>
@@ -198,7 +198,7 @@ export default async function InfluencerProfilePage({
                 Reach out to {profile.displayName} with a campaign proposal.
               </p>
             </div>
-            <Button className="bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/30 hover:-translate-y-0.5">
+            <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
               Send Offer
             </Button>
           </CardContent>

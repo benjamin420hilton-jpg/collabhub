@@ -100,7 +100,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
             variant="outline"
             size="sm"
             onClick={() => setShowForm(true)}
-            className="border-violet/20 hover:bg-violet-light"
+            className="border-coral/20 hover:bg-coral-light"
           >
             <Plus className="mr-1 size-4" /> Add
           </Button>
@@ -116,7 +116,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
               className="flex items-center justify-between rounded-lg border border-border/60 p-3"
             >
               <div className="flex items-center gap-3">
-                <Badge className="border-violet/20 bg-violet-light text-violet-dark">
+                <Badge className="border-coral/20 bg-coral-light text-coral-dark">
                   {platformInfo?.label ?? account.platform}
                 </Badge>
                 <span className="font-medium">{account.handle}</span>
@@ -132,7 +132,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
                     href={account.profileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-violet hover:text-violet-dark"
+                    className="text-coral hover:text-coral-dark"
                   >
                     <ExternalLink className="size-4" />
                   </a>
@@ -158,7 +158,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
 
         {/* Add form */}
         {showForm && (
-          <form onSubmit={handleAdd} className="space-y-3 rounded-lg border border-violet/20 bg-violet-light/30 p-4">
+          <form onSubmit={handleAdd} className="space-y-3 rounded-lg border border-coral/20 bg-coral-light/30 p-4">
             {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="space-y-2">
@@ -194,7 +194,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
               <Button
                 type="submit"
                 size="sm"
-                className="bg-gradient-violet text-white"
+                className="bg-gradient-primary text-white"
                 disabled={isPending || !platform}
               >
                 {isPending ? "Adding..." : "Add Account"}

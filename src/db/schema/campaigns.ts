@@ -56,6 +56,9 @@ export const campaigns = pgTable(
       .defaultNow()
       .$onUpdate(() => new Date()),
     publishedAt: timestamp("published_at", { withTimezone: true }),
+    expiresAt: timestamp("expires_at", { withTimezone: true }),
+    isFlagged: boolean("is_flagged").notNull().default(false),
+    flaggedReason: text("flagged_reason"),
   },
   (table) => [
     index("campaigns_brand_profile_id_idx").on(table.brandProfileId),
@@ -64,6 +67,7 @@ export const campaigns = pgTable(
     index("campaigns_target_platform_idx").on(table.targetPlatform),
     index("campaigns_target_niche_idx").on(table.targetNiche),
     index("campaigns_is_public_status_idx").on(table.isPublic, table.status),
+    index("campaigns_expires_at_idx").on(table.expiresAt),
     check(
       "budget_range_check",
       sql`${table.budgetMin} IS NULL OR ${table.budgetMax} IS NULL OR ${table.budgetMin} <= ${table.budgetMax}`,

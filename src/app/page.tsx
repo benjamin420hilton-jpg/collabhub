@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import {
   ArrowRight, Megaphone, Shield, Users, Zap, Star, Globe,
   CheckCircle, TrendingUp, DollarSign, Search, FileText,
+  Camera, Heart, Award,
 } from "lucide-react";
 
 export default async function HomePage() {
@@ -17,17 +18,17 @@ export default async function HomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-border/40 bg-white/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-gray-200/60 bg-white/70 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <span className="text-xl font-bold text-gradient-violet">CollabHub</span>
+          <span className="text-2xl font-extrabold tracking-tight text-gradient-primary">CollabHub</span>
           <div className="flex items-center gap-3">
             <Link href="/sign-in">
-              <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                 Sign In
               </Button>
             </Link>
             <Link href="/sign-up">
-              <Button className="bg-gradient-violet text-white shadow-lg shadow-violet/20 transition-all hover:shadow-xl hover:shadow-violet/25 hover:-translate-y-0.5">
+              <Button className="bg-gradient-primary text-white shadow-lg shadow-coral/20 transition-all hover:shadow-xl hover:shadow-coral/25 hover:-translate-y-0.5">
                 Get Started Free
               </Button>
             </Link>
@@ -36,32 +37,23 @@ export default async function HomePage() {
       </header>
 
       <main className="flex flex-1 flex-col">
-        {/* Hero */}
+        {/* Hero — light mesh gradient */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          {/* Decorative elements */}
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute -top-40 right-0 size-[500px] rounded-full bg-violet/[0.04] blur-3xl" />
-            <div className="absolute -bottom-40 -left-20 size-[600px] rounded-full bg-indigo/[0.04] blur-3xl" />
-            <div className="absolute top-32 right-20 size-3 rounded-full bg-violet/20 animate-float" />
-            <div className="absolute top-48 left-[15%] size-2 rounded-full bg-indigo/25 animate-float delay-300" />
-            <div className="absolute bottom-32 right-[35%] size-2.5 rounded-full bg-lavender/30 animate-float delay-500" />
-          </div>
-
           <div className="relative mx-auto max-w-6xl px-6 py-28 sm:py-36">
             <div className="mx-auto max-w-3xl text-center">
               <div className="animate-fade-in-down">
-                <span className="inline-flex items-center gap-2 rounded-full border border-violet/15 bg-white/80 px-4 py-1.5 text-sm font-medium text-violet-dark shadow-sm backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
                   <Zap className="size-3.5" />
                   Australia&apos;s Influencer Marketing Platform
                 </span>
               </div>
 
-              <h1 className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-7xl animate-fade-in-up">
+              <h1 className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-gray-900 sm:text-7xl animate-fade-in-up">
                 Where Brands Meet{" "}
-                <span className="text-gradient-violet">Creators</span>
+                <span className="text-gradient-animated">Creators</span>
               </h1>
 
-              <p className="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-muted-foreground animate-fade-in-up delay-100">
+              <p className="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-gray-500 animate-fade-in-up delay-100">
                 The all-in-one platform to discover influencers, manage campaigns,
                 and handle payments with built-in escrow protection.
               </p>
@@ -70,7 +62,7 @@ export default async function HomePage() {
                 <Link href="/sign-up">
                   <Button
                     size="lg"
-                    className="bg-gradient-violet px-8 text-white shadow-lg shadow-violet/20 transition-all hover:shadow-xl hover:shadow-violet/25 hover:-translate-y-0.5 text-base h-12"
+                    className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
                   >
                     Start Free <ArrowRight className="ml-2 size-4" />
                   </Button>
@@ -79,7 +71,7 @@ export default async function HomePage() {
                   <Button
                     size="lg"
                     variant="outline"
-                    className="border-violet/15 px-8 transition-all hover:border-violet/30 hover:bg-violet-light/50 text-base h-12"
+                    className="border-gray-300 text-gray-700 px-8 transition-all hover:border-coral/40 hover:bg-coral/5 text-base h-12"
                   >
                     I Have an Account
                   </Button>
@@ -87,26 +79,26 @@ export default async function HomePage() {
               </div>
 
               {/* Trust indicators */}
-              <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-muted-foreground animate-fade-in-up delay-300">
+              <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-500 animate-fade-in-up delay-300">
                 <span className="flex items-center gap-2">
-                  <Shield className="size-4 text-violet" /> Secure escrow payments
+                  <Shield className="size-4 text-coral" /> Secure escrow payments
                 </span>
                 <span className="flex items-center gap-2">
-                  <Star className="size-4 text-violet" /> Free for influencers
+                  <Star className="size-4 text-teal" /> Free for influencers
                 </span>
                 <span className="flex items-center gap-2">
-                  <Globe className="size-4 text-violet" /> Built for Australia
+                  <Globe className="size-4 text-coral" /> Built for Australia
                 </span>
               </div>
             </div>
           </div>
         </section>
 
-        {/* How it works */}
-        <section className="border-t bg-white py-24">
+        {/* How it works — warm sand background */}
+        <section className="border-t border-border bg-gradient-sand py-24">
           <div className="mx-auto max-w-6xl px-6">
             <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-violet">
+              <p className="text-sm font-semibold uppercase tracking-widest text-coral">
                 How It Works
               </p>
               <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
@@ -121,40 +113,44 @@ export default async function HomePage() {
                   icon: Megaphone,
                   title: "Post a Campaign",
                   desc: "Brands create a brief with budget, deliverables, and target audience.",
+                  color: "bg-coral-light text-coral",
                 },
                 {
                   step: "02",
                   icon: Search,
                   title: "Match with Creators",
                   desc: "Influencers apply from the job board, or brands send direct offers via the directory.",
+                  color: "bg-teal-light text-teal",
                 },
                 {
                   step: "03",
                   icon: FileText,
                   title: "Manage Milestones",
                   desc: "Track deliverables with milestone-based contracts. Review, approve, or request revisions.",
+                  color: "bg-coral-light text-coral",
                 },
                 {
                   step: "04",
                   icon: DollarSign,
                   title: "Secure Payment",
                   desc: "Funds held in escrow and released automatically when milestones are approved.",
+                  color: "bg-teal-light text-teal",
                 },
               ].map((item, i) => (
                 <div
                   key={item.step}
-                  className="relative animate-fade-in-up"
+                  className="relative flex flex-col animate-fade-in-up"
                   style={{ animationDelay: `${(i + 1) * 100}ms` }}
                 >
                   <div className="mb-4 flex items-center gap-3">
-                    <span className="text-3xl font-extrabold text-violet/10">
+                    <span className="text-3xl font-extrabold text-navy/10">
                       {item.step}
                     </span>
-                    <div className="h-px flex-1 bg-gradient-to-r from-violet/20 to-transparent" />
+                    <div className="h-px flex-1 bg-gradient-to-r from-border to-transparent" />
                   </div>
-                  <div className="rounded-2xl border border-border/40 bg-white p-6 shadow-sm transition-all hover:shadow-md hover:shadow-violet/5 hover:-translate-y-1">
-                    <div className="inline-flex rounded-xl bg-violet-light p-2.5">
-                      <item.icon className="size-5 text-violet" />
+                  <div className="flex-1 rounded-2xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-md hover:shadow-navy/5 hover:-translate-y-1">
+                    <div className={`inline-flex rounded-xl p-2.5 ${item.color.split(" ")[0]}`}>
+                      <item.icon className={`size-5 ${item.color.split(" ")[1]}`} />
                     </div>
                     <h3 className="mt-4 text-base font-semibold">{item.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -167,14 +163,14 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* For brands / For influencers */}
-        <section className="border-t bg-gradient-warm py-24">
+        {/* For brands / For influencers — white background */}
+        <section className="border-t border-border bg-white py-24">
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Brands */}
-              <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm animate-fade-in-up">
-                <div className="inline-flex rounded-xl bg-violet-light p-3">
-                  <Megaphone className="size-6 text-violet" />
+              <div className="rounded-3xl border border-border bg-gradient-to-br from-white to-coral-light/50 p-8 shadow-sm animate-fade-in-up">
+                <div className="inline-flex rounded-xl bg-coral-light p-3">
+                  <Megaphone className="size-6 text-coral" />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold">For Brands</h3>
                 <p className="mt-2 text-muted-foreground">
@@ -186,26 +182,26 @@ export default async function HomePage() {
                     "Browse the Influencer Discovery Directory",
                     "Send direct offers to creators",
                     "Milestone-based contracts with escrow",
-                    "0% transaction fees on the Pro plan",
-                    "Product gifting campaigns",
+                    "Low 5% Payment Protection Fee",
+                    "Product gifting & exchange campaigns",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm">
-                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-violet" />
+                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-coral" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/sign-up" className="mt-8 inline-block">
-                  <Button className="bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/25 hover:-translate-y-0.5">
+                  <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
                     Start as a Brand <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
               </div>
 
               {/* Influencers */}
-              <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm animate-fade-in-up delay-200">
-                <div className="inline-flex rounded-xl bg-violet-light p-3">
-                  <Users className="size-6 text-violet" />
+              <div className="rounded-3xl border border-border bg-gradient-to-br from-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
+                <div className="inline-flex rounded-xl bg-teal-light p-3">
+                  <Camera className="size-6 text-teal" />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold">For Influencers</h3>
                 <p className="mt-2 text-muted-foreground">
@@ -218,16 +214,16 @@ export default async function HomePage() {
                     "Link all your social accounts",
                     "Track contracts and milestones",
                     "Get paid securely via Stripe",
-                    "100% free — no commissions, ever",
+                    "100% free \u2014 no commissions, ever",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm">
-                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-violet" />
+                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-teal" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/sign-up" className="mt-8 inline-block">
-                  <Button variant="outline" className="border-violet/20 transition-all hover:border-violet/30 hover:bg-violet-light/50">
+                  <Button variant="outline" className="border-teal/30 text-teal-dark transition-all hover:border-teal/50 hover:bg-teal-light/50">
                     Join as an Influencer <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
@@ -236,44 +232,113 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Stats / Social proof */}
-        <section className="border-t bg-white py-20">
+        {/* Stats / Social proof — dark navy */}
+        <section className="bg-gradient-dark py-20">
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid grid-cols-2 gap-8 lg:grid-cols-4">
               {[
-                { value: "0%", label: "Fees for influencers", sub: "Always free" },
-                { value: "$49", label: "Pro plan per month", sub: "AUD / month" },
-                { value: "10+", label: "Platforms supported", sub: "IG, TikTok, YT..." },
-                { value: "100%", label: "Escrow protected", sub: "Stripe secured" },
+                { value: "0%", label: "Fees for influencers", sub: "Always free", color: "text-gradient-primary" },
+                { value: "$49", label: "Pro plan per month", sub: "AUD / month", color: "text-gradient-ocean" },
+                { value: "10+", label: "Platforms supported", sub: "IG, TikTok, YT...", color: "text-gradient-primary" },
+                { value: "100%", label: "Escrow protected", sub: "Stripe secured", color: "text-gradient-ocean" },
               ].map((stat, i) => (
                 <div
                   key={stat.label}
                   className="text-center animate-fade-in-up"
                   style={{ animationDelay: `${(i + 1) * 100}ms` }}
                 >
-                  <p className="text-4xl font-extrabold text-gradient-violet">{stat.value}</p>
-                  <p className="mt-1 font-medium text-foreground">{stat.label}</p>
-                  <p className="text-sm text-muted-foreground">{stat.sub}</p>
+                  <p className={`text-4xl font-extrabold ${stat.color}`}>{stat.value}</p>
+                  <p className="mt-1 font-medium text-white">{stat.label}</p>
+                  <p className="text-sm text-slate-400">{stat.sub}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA */}
-        <section className="border-t bg-gradient-hero py-24">
+        {/* Why CollabHub — sand background */}
+        <section className="border-t border-border bg-gradient-sand py-24">
+          <div className="mx-auto max-w-6xl px-6">
+            <div className="text-center">
+              <p className="text-sm font-semibold uppercase tracking-widest text-teal">
+                Why CollabHub
+              </p>
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+                Built for creators who mean business
+              </h2>
+            </div>
+
+            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  icon: Shield,
+                  title: "Escrow Protection",
+                  desc: "Funds are held securely and only released when both sides are happy with the deliverables.",
+                  accent: "bg-teal-light text-teal",
+                },
+                {
+                  icon: Award,
+                  title: "Verified Profiles",
+                  desc: "Brands verify their business. Influencers link their socials. Everyone knows who they're working with.",
+                  accent: "bg-coral-light text-coral",
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Real Metrics",
+                  desc: "No fake follower counts. Connected social accounts show real, verified audience data.",
+                  accent: "bg-teal-light text-teal",
+                },
+                {
+                  icon: FileText,
+                  title: "Smart Contracts",
+                  desc: "Milestone-based agreements with clear deliverables, deadlines, and automatic payment triggers.",
+                  accent: "bg-coral-light text-coral",
+                },
+                {
+                  icon: Heart,
+                  title: "Community First",
+                  desc: "Ratings, reviews, and reputation scores help the best creators and brands rise to the top.",
+                  accent: "bg-teal-light text-teal",
+                },
+                {
+                  icon: Globe,
+                  title: "Made for Australia",
+                  desc: "AUD payments, Australian business support, and a community built for the local market.",
+                  accent: "bg-coral-light text-coral",
+                },
+              ].map((item, i) => (
+                <div
+                  key={item.title}
+                  className="rounded-2xl border border-border bg-white p-6 shadow-sm transition-all hover:shadow-md hover:-translate-y-1 animate-fade-in-up"
+                  style={{ animationDelay: `${(i + 1) * 80}ms` }}
+                >
+                  <div className={`inline-flex rounded-xl p-2.5 ${item.accent.split(" ")[0]}`}>
+                    <item.icon className={`size-5 ${item.accent.split(" ")[1]}`} />
+                  </div>
+                  <h3 className="mt-4 text-base font-semibold">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA — vivid gradient */}
+        <section className="bg-gradient-cta py-24">
           <div className="mx-auto max-w-2xl px-6 text-center">
-            <h2 className="text-3xl font-bold sm:text-4xl">
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
               Ready to grow your brand?
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-4 text-lg text-white/80">
               Join CollabHub today. Free to start, no credit card required.
             </p>
             <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="bg-gradient-violet px-10 text-white shadow-lg shadow-violet/20 transition-all hover:shadow-xl hover:shadow-violet/25 hover:-translate-y-0.5 text-base h-12"
+                  className="bg-white px-10 text-coral-dark font-semibold shadow-lg shadow-black/10 transition-all hover:shadow-xl hover:-translate-y-0.5 text-base h-12"
                 >
                   Get Started Free <ArrowRight className="ml-2 size-4" />
                 </Button>
@@ -282,17 +347,17 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="border-t bg-white py-10">
+        {/* Footer — dark */}
+        <footer className="border-t border-white/10 bg-navy py-10">
           <div className="mx-auto max-w-6xl px-6">
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <span className="text-lg font-bold text-gradient-violet">CollabHub</span>
-              <div className="flex gap-6 text-sm text-muted-foreground">
-                <span>Campaigns</span>
-                <span>Directory</span>
-                <span>Pricing</span>
+              <span className="text-2xl font-extrabold tracking-tight text-gradient-primary">CollabHub</span>
+              <div className="flex gap-6 text-sm text-slate-400">
+                <span className="hover:text-white transition-colors cursor-pointer">Campaigns</span>
+                <span className="hover:text-white transition-colors cursor-pointer">Directory</span>
+                <span className="hover:text-white transition-colors cursor-pointer">Pricing</span>
               </div>
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-slate-500">
                 &copy; {new Date().getFullYear()} CollabHub. Built in Australia.
               </span>
             </div>

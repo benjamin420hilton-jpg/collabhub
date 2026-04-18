@@ -85,7 +85,7 @@ export function ChatWindow({
             <ArrowLeft className="size-4" />
           </Button>
         </Link>
-        <div className="flex size-10 items-center justify-center rounded-full bg-gradient-violet text-sm font-bold text-white">
+        <div className="flex size-10 items-center justify-center rounded-full bg-gradient-ocean text-sm font-bold text-white">
           {otherUser.name.charAt(0).toUpperCase()}
         </div>
         <div>
@@ -112,7 +112,7 @@ export function ChatWindow({
               <div
                 className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${
                   isMe
-                    ? "bg-gradient-violet text-white rounded-br-md"
+                    ? "bg-gradient-primary text-white rounded-br-md"
                     : "bg-muted rounded-bl-md"
                 }`}
               >
@@ -145,7 +145,7 @@ export function ChatWindow({
         <Button
           type="submit"
           disabled={isPending || !newMessage.trim()}
-          className="bg-gradient-violet text-white shadow-sm"
+          className="bg-gradient-primary text-white shadow-sm"
         >
           <Send className="size-4" />
         </Button>

@@ -18,6 +18,8 @@ export const subscriptionStatusEnum = pgEnum("subscription_status", [
 export const campaignTypeEnum = pgEnum("campaign_type", [
   "paid",
   "gifting",
+  "product_exchange",
+  "hybrid",
 ]);
 
 export const campaignStatusEnum = pgEnum("campaign_status", [
@@ -26,6 +28,9 @@ export const campaignStatusEnum = pgEnum("campaign_status", [
   "in_progress",
   "completed",
   "canceled",
+  "paused",
+  "archived",
+  "pending_review",
 ]);
 
 export const socialPlatformEnum = pgEnum("social_platform", [
@@ -110,6 +115,14 @@ export const paymentTypeEnum = pgEnum("payment_type", [
   "platform_fee",
   "refund",
   "subscription",
+]);
+
+export const deliveryStatusEnum = pgEnum("delivery_status", [
+  "pending",
+  "shipped",
+  "in_transit",
+  "delivered",
+  "returned",
 ]);
 
 export const deliverableTypeEnum = pgEnum("deliverable_type", [

@@ -7,7 +7,7 @@ import {
   index,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { contractStatusEnum } from "./enums";
+import { contractStatusEnum, deliveryStatusEnum } from "./enums";
 import { proposals } from "./proposals";
 import { milestones } from "./milestones";
 import { payments } from "./payments";
@@ -35,6 +35,15 @@ export const contracts = pgTable(
     completedAt: timestamp("completed_at", { withTimezone: true }),
     canceledAt: timestamp("canceled_at", { withTimezone: true }),
     cancellationReason: text("cancellation_reason"),
+    shippingTrackingNumber: text("shipping_tracking_number"),
+    deliveryStatus: deliveryStatusEnum("delivery_status"),
+    productDescription: text("product_description"),
+    estimatedDeliveryDate: timestamp("estimated_delivery_date", {
+      withTimezone: true,
+    }),
+    deliveryConfirmedAt: timestamp("delivery_confirmed_at", {
+      withTimezone: true,
+    }),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
       .defaultNow(),

@@ -7,8 +7,8 @@
  * as integers in the smallest currency unit (cents for AUD).
  */
 export const PLATFORM_FEE_RATES = {
-  free: 1000, // 10%
-  pro: 0, // 0%
+  free: 500, // 5% Payment Protection Fee
+  pro: 500, // 5% Payment Protection Fee
 } as const;
 
 export const DEFAULT_CURRENCY = "aud" as const;
@@ -18,7 +18,7 @@ export const SUBSCRIPTION_TIERS = {
     name: "Free",
     features: [
       "Post public campaigns",
-      "Pay-as-you-go with 10% platform fee",
+      "5% Payment Protection Fee on cash deals",
     ],
   },
   pro: {
@@ -26,8 +26,8 @@ export const SUBSCRIPTION_TIERS = {
     features: [
       "Access Influencer Discovery Directory",
       "Send direct offers to influencers",
-      "0% platform transaction fees",
       "Create product gifting campaigns",
+      "5% Payment Protection Fee on cash deals",
     ],
   },
 } as const;

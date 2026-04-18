@@ -2,7 +2,13 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { users, brandProfiles, campaigns, campaignDeliverables } from "@/db/schema";
+import {
+  users,
+  brandProfiles,
+  campaigns,
+  campaignDeliverables,
+  notifications,
+} from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -45,9 +51,14 @@ export async function createCampaign(input: CreateCampaignInput) {
 
   const data = parsed.data;
 
-  // Gifting campaigns require Pro tier
-  if (data.type === "gifting" && profile.subscriptionTier !== "pro") {
-    return { error: "Product gifting campaigns require a Pro subscription" };
+  // Gifting and product exchange campaigns require Pro tier
+  if (
+    (data.type === "gifting" || data.type === "product_exchange") &&
+    profile.subscriptionTier !== "pro"
+  ) {
+    return {
+      error: "Product gifting and exchange campaigns require a Pro subscription",
+    };
   }
 
   const [campaign] = await db
@@ -70,6 +81,7 @@ export async function createCampaign(input: CreateCampaignInput) {
       giftDescription: data.giftDescription ?? null,
       giftValue: data.giftValue != null ? dollarsToCents(data.giftValue) : null,
       maxApplications: data.maxApplications ?? null,
+      expiresAt: data.expiresAt ?? null,
     })
     .returning();
 
@@ -103,12 +115,116 @@ export async function publishCampaign(campaignId: string) {
   if (campaign.brandProfileId !== profile.id) return { error: "Unauthorized" };
   if (campaign.status !== "draft") return { error: "Campaign is not a draft" };
 
+  // Unverified brands go through review
+  if (!profile.verified) {
+    await db
+      .update(campaigns)
+      .set({
+        status: "pending_review",
+        isPublic: false,
+      })
+      .where(eq(campaigns.id, campaignId));
+
+    revalidatePath("/campaigns");
+    revalidatePath(`/campaigns/${campaignId}`);
+    return {
+      success: true,
+      message:
+        "Your campaign has been submitted for review. It will go live once approved.",
+    };
+  }
+
   await db
     .update(campaigns)
     .set({
       status: "published",
       isPublic: true,
       publishedAt: new Date(),
+    })
+    .where(eq(campaigns.id, campaignId));
+
+  revalidatePath("/campaigns");
+  revalidatePath(`/campaigns/${campaignId}`);
+  return { success: true };
+}
+
+/**
+ * Pause a published campaign — removes it from public listings.
+ */
+export async function pauseCampaign(campaignId: string) {
+  const profile = await getBrandProfileForCurrentUser();
+
+  const [campaign] = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, campaignId))
+    .limit(1);
+
+  if (!campaign) return { error: "Campaign not found" };
+  if (campaign.brandProfileId !== profile.id) return { error: "Unauthorized" };
+  if (campaign.status !== "published")
+    return { error: "Only published campaigns can be paused" };
+
+  await db
+    .update(campaigns)
+    .set({ status: "paused", isPublic: false })
+    .where(eq(campaigns.id, campaignId));
+
+  revalidatePath("/campaigns");
+  revalidatePath(`/campaigns/${campaignId}`);
+  return { success: true };
+}
+
+/**
+ * Resume a paused campaign — republishes to public listings.
+ */
+export async function resumeCampaign(campaignId: string) {
+  const profile = await getBrandProfileForCurrentUser();
+
+  const [campaign] = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, campaignId))
+    .limit(1);
+
+  if (!campaign) return { error: "Campaign not found" };
+  if (campaign.brandProfileId !== profile.id) return { error: "Unauthorized" };
+  if (campaign.status !== "paused")
+    return { error: "Only paused campaigns can be resumed" };
+
+  await db
+    .update(campaigns)
+    .set({ status: "published", isPublic: true })
+    .where(eq(campaigns.id, campaignId));
+
+  revalidatePath("/campaigns");
+  revalidatePath(`/campaigns/${campaignId}`);
+  return { success: true };
+}
+
+/**
+ * Flag a campaign as offensive or fake. Any authenticated user can flag.
+ * Flagged campaigns are hidden from public listings.
+ */
+export async function flagCampaign(campaignId: string, reason: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const [campaign] = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, campaignId))
+    .limit(1);
+
+  if (!campaign) return { error: "Campaign not found" };
+  if (campaign.isFlagged) return { error: "Campaign is already flagged" };
+
+  await db
+    .update(campaigns)
+    .set({
+      isFlagged: true,
+      flaggedReason: reason,
+      isPublic: false,
     })
     .where(eq(campaigns.id, campaignId));
 

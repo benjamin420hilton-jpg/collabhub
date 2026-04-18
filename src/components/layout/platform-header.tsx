@@ -32,7 +32,7 @@ export function PlatformHeader({
         <div />
         <div className="flex items-center gap-2">
           {subscriptionTier === "pro" && (
-            <Badge className="bg-gradient-violet border-0 text-white shadow-sm">
+            <Badge className="bg-gradient-primary border-0 text-white shadow-sm">
               Pro
             </Badge>
           )}

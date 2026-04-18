@@ -23,8 +23,8 @@ export default async function MessagesPage() {
 
       {convos.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-100">
-          <div className="rounded-2xl bg-violet-light p-4">
-            <MessageSquare className="size-8 text-violet" />
+          <div className="rounded-2xl bg-coral-light p-4">
+            <MessageSquare className="size-8 text-coral" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No messages yet</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -37,7 +37,7 @@ export default async function MessagesPage() {
             <Link key={conversation.id} href={`/messages/${conversation.id}`}>
               <Card className="card-hover border-border/60 mb-2">
                 <CardContent className="flex items-center gap-4 py-4">
-                  <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-violet text-sm font-bold text-white">
+                  <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-gradient-primary text-sm font-bold text-white">
                     {otherUser?.firstName?.charAt(0)?.toUpperCase() ?? "?"}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -56,7 +56,7 @@ export default async function MessagesPage() {
                         {lastMessage?.content ?? "No messages yet"}
                       </p>
                       {unreadCount > 0 && (
-                        <Badge className="bg-gradient-violet border-0 text-white text-xs ml-2">
+                        <Badge className="bg-gradient-primary border-0 text-white text-xs ml-2">
                           {unreadCount}
                         </Badge>
                       )}

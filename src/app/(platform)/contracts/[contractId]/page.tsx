@@ -17,7 +17,7 @@ import type { BrandProfile, InfluencerProfile } from "@/types";
 const statusColors: Record<string, string> = {
   pending_escrow: "border-amber-300/50 bg-amber-50 text-amber-700",
   escrow_funded: "border-blue-300/50 bg-blue-50 text-blue-700",
-  active: "border-violet/20 bg-violet-light text-violet-dark",
+  active: "border-coral/20 bg-coral-light text-coral-dark",
   completed: "border-green-300/50 bg-green-50 text-green-700",
   disputed: "border-red-300/50 bg-red-50 text-red-700",
   canceled: "border-gray-300/50 bg-gray-50 text-gray-700",
@@ -83,8 +83,8 @@ export default async function ContractDetailPage({
         <div className="grid gap-4 sm:grid-cols-3 animate-fade-in-up delay-100">
           <Card className="card-hover">
             <CardContent className="flex items-center gap-3 pt-6">
-              <div className="rounded-lg bg-violet-light p-2">
-                <DollarSign className="size-4 text-violet" />
+              <div className="rounded-lg bg-coral-light p-2">
+                <DollarSign className="size-4 text-coral" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Total Value</p>
@@ -97,8 +97,8 @@ export default async function ContractDetailPage({
 
           <Card className="card-hover">
             <CardContent className="flex items-center gap-3 pt-6">
-              <div className="rounded-lg bg-violet-light p-2">
-                <DollarSign className="size-4 text-violet" />
+              <div className="rounded-lg bg-coral-light p-2">
+                <DollarSign className="size-4 text-coral" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">
@@ -115,8 +115,8 @@ export default async function ContractDetailPage({
 
           <Card className="card-hover">
             <CardContent className="flex items-center gap-3 pt-6">
-              <div className="rounded-lg bg-violet-light p-2">
-                <Calendar className="size-4 text-violet" />
+              <div className="rounded-lg bg-coral-light p-2">
+                <Calendar className="size-4 text-coral" />
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Progress</p>
@@ -140,9 +140,9 @@ export default async function ContractDetailPage({
             %
           </span>
         </div>
-        <div className="mt-2 h-2 overflow-hidden rounded-full bg-violet-light">
+        <div className="mt-2 h-2 overflow-hidden rounded-full bg-coral-light">
           <div
-            className="h-full rounded-full bg-gradient-violet transition-all duration-500"
+            className="h-full rounded-full bg-gradient-primary transition-all duration-500"
             style={{
               width: `${milestones.length > 0 ? (completedMilestones / milestones.length) * 100 : 0}%`,
             }}

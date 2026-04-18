@@ -19,7 +19,7 @@ import type { BrandProfile, InfluencerProfile } from "@/types";
 const statusColors: Record<string, string> = {
   pending_escrow: "border-amber-300/50 bg-amber-50 text-amber-700",
   escrow_funded: "border-blue-300/50 bg-blue-50 text-blue-700",
-  active: "border-violet/20 bg-violet-light text-violet-dark",
+  active: "border-coral/20 bg-coral-light text-coral-dark",
   completed: "border-green-300/50 bg-green-50 text-green-700",
   disputed: "border-red-300/50 bg-red-50 text-red-700",
   canceled: "border-gray-300/50 bg-gray-50 text-gray-700",
@@ -49,8 +49,8 @@ export default async function ContractsPage() {
 
       {contractResults.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-100">
-          <div className="rounded-2xl bg-violet-light p-4">
-            <FileText className="size-8 text-violet" />
+          <div className="rounded-2xl bg-coral-light p-4">
+            <FileText className="size-8 text-coral" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No contracts yet</h3>
           <p className="mt-1 text-sm text-muted-foreground">

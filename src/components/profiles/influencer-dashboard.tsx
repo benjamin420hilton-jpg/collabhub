@@ -57,7 +57,7 @@ export function InfluencerDashboard({
       {/* Welcome header */}
       <div className="flex items-start justify-between animate-fade-in-up">
         <div className="flex items-center gap-4">
-          <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-violet text-2xl font-bold text-white">
+          <div className="flex size-14 items-center justify-center rounded-2xl bg-gradient-ocean text-2xl font-bold text-white">
             {profile.displayName.charAt(0).toUpperCase()}
           </div>
           <div>
@@ -75,7 +75,7 @@ export function InfluencerDashboard({
           </div>
         </div>
         <Link href="/campaigns">
-          <Button className="bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/30 hover:-translate-y-0.5">
+          <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
             <Megaphone className="mr-2 size-4" /> Find Campaigns
           </Button>
         </Link>
@@ -108,8 +108,8 @@ export function InfluencerDashboard({
         <Card className="card-hover animate-fade-in-up delay-100">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <FileText className="size-5 text-violet" />
+              <div className="rounded-xl bg-teal-light p-2.5">
+                <FileText className="size-5 text-teal" />
               </div>
             </div>
             <div className="mt-3">
@@ -122,8 +122,8 @@ export function InfluencerDashboard({
         <Card className="card-hover animate-fade-in-up delay-200">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <Send className="size-5 text-violet" />
+              <div className="rounded-xl bg-coral-light p-2.5">
+                <Send className="size-5 text-coral" />
               </div>
               <span className="text-xs text-muted-foreground">{stats.totalProposals} total</span>
             </div>
@@ -137,8 +137,8 @@ export function InfluencerDashboard({
         <Card className="card-hover animate-fade-in-up delay-300">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <TrendingUp className="size-5 text-violet" />
+              <div className="rounded-xl bg-teal-light p-2.5">
+                <TrendingUp className="size-5 text-teal" />
               </div>
             </div>
             <div className="mt-3">
@@ -151,8 +151,8 @@ export function InfluencerDashboard({
         <Card className="card-hover animate-fade-in-up delay-400">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <DollarSign className="size-5 text-violet" />
+              <div className="rounded-xl bg-coral-light p-2.5">
+                <DollarSign className="size-5 text-coral" />
               </div>
               <Badge className="border-green-200 bg-green-50 text-green-700">
                 {stats.completedContracts} done
@@ -182,8 +182,8 @@ export function InfluencerDashboard({
               <Badge
                 className={
                   profile.isPublic
-                    ? "bg-gradient-violet border-0 text-white"
-                    : "border-violet/20 bg-violet-light text-violet-dark"
+                    ? "bg-gradient-ocean border-0 text-white"
+                    : "border-teal/20 bg-teal-light text-teal-dark"
                 }
               >
                 {profile.isPublic ? "Public" : "Hidden"}
@@ -199,9 +199,9 @@ export function InfluencerDashboard({
                     : `${((profile.totalFollowers ?? 0) / 100).toFixed(0)}% to 10K`}
                 </span>
               </div>
-              <div className="mt-1 h-2 overflow-hidden rounded-full bg-violet-light">
+              <div className="mt-1 h-2 overflow-hidden rounded-full bg-teal-light">
                 <div
-                  className="h-full rounded-full bg-gradient-violet transition-all duration-500"
+                  className="h-full rounded-full bg-gradient-ocean transition-all duration-500"
                   style={{
                     width: `${Math.min(((profile.totalFollowers ?? 0) / 10000) * 100, 100)}%`,
                   }}
@@ -244,7 +244,7 @@ export function InfluencerDashboard({
         <Card className="animate-fade-in-up delay-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Clock className="size-5 text-violet" />
+              <Clock className="size-5 text-coral" />
               Recent Activity
             </CardTitle>
           </CardHeader>
@@ -255,7 +255,7 @@ export function InfluencerDashboard({
                   No activity yet. Browse campaigns and submit your first proposal.
                 </p>
                 <Link href="/campaigns" className="mt-3 inline-block">
-                  <Button variant="outline" size="sm" className="border-violet/20 hover:bg-violet-light">
+                  <Button variant="outline" size="sm" className="border-coral/20 hover:bg-coral-light">
                     Browse Campaigns
                   </Button>
                 </Link>
@@ -287,15 +287,15 @@ export function InfluencerDashboard({
         <Card className="animate-fade-in-up delay-500">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="size-5 text-violet" />
+              <TrendingUp className="size-5 text-teal" />
               Quick Actions
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Link href="/campaigns" className="block">
-              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                <div className="rounded-lg bg-violet-light p-2">
-                  <Megaphone className="size-4 text-violet" />
+              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-coral/30 hover:bg-coral-light/30">
+                <div className="rounded-lg bg-coral-light p-2">
+                  <Megaphone className="size-4 text-coral" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Find Campaigns</p>
@@ -308,9 +308,9 @@ export function InfluencerDashboard({
             </Link>
 
             <Link href="/contracts" className="block">
-              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                <div className="rounded-lg bg-violet-light p-2">
-                  <FileText className="size-4 text-violet" />
+              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-teal/30 hover:bg-teal-light/30">
+                <div className="rounded-lg bg-teal-light p-2">
+                  <FileText className="size-4 text-teal" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Your Contracts</p>
@@ -323,9 +323,9 @@ export function InfluencerDashboard({
             </Link>
 
             <Link href="/settings" className="block">
-              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                <div className="rounded-lg bg-violet-light p-2">
-                  <CheckCircle className="size-4 text-violet" />
+              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-coral/30 hover:bg-coral-light/30">
+                <div className="rounded-lg bg-coral-light p-2">
+                  <CheckCircle className="size-4 text-coral" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Edit Profile & Socials</p>

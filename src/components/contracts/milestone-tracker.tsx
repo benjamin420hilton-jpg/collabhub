@@ -203,12 +203,12 @@ function MilestoneItem({
           {milestone.submissionUrl && (
             <div className="mt-3 rounded-lg border border-border/60 bg-muted/30 p-3">
               <div className="flex items-center gap-2 text-sm">
-                <ExternalLink className="size-3.5 text-violet" />
+                <ExternalLink className="size-3.5 text-coral" />
                 <a
                   href={milestone.submissionUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-medium text-violet hover:underline"
+                  className="font-medium text-coral hover:underline"
                 >
                   View Submission
                 </a>
@@ -243,7 +243,7 @@ function MilestoneItem({
                   <Button
                     size="sm"
                     variant="outline"
-                    className="border-violet/20 hover:bg-violet-light"
+                    className="border-coral/20 hover:bg-coral-light"
                     onClick={() => setShowSubmitForm(true)}
                   >
                     <Upload className="mr-1 size-4" /> Submit Deliverable
@@ -271,7 +271,7 @@ function MilestoneItem({
                       <Button
                         type="submit"
                         size="sm"
-                        className="bg-gradient-violet text-white"
+                        className="bg-gradient-primary text-white"
                         disabled={isPending}
                       >
                         {isPending ? "Submitting..." : "Submit"}
@@ -297,7 +297,7 @@ function MilestoneItem({
                 <div className="flex gap-2">
                   <Button
                     size="sm"
-                    className="bg-gradient-violet text-white"
+                    className="bg-gradient-primary text-white"
                     disabled={isPending}
                     onClick={() => handleReview("approve")}
                   >

@@ -56,7 +56,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
           </p>
         </div>
         <Link href="/campaigns/new">
-          <Button className="bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/30 hover:-translate-y-0.5">
+          <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
             <Plus className="mr-2 size-4" /> New Campaign
           </Button>
         </Link>
@@ -64,10 +64,10 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
       {/* Upgrade banner */}
       {profile.subscriptionTier === "free" && (
-        <Card className="overflow-hidden border-violet/20 bg-gradient-to-r from-violet-light to-white animate-fade-in-up delay-100">
+        <Card className="overflow-hidden border-coral/20 bg-gradient-to-r from-coral-light to-white animate-fade-in-up delay-100">
           <CardHeader>
             <div className="flex items-center gap-2">
-              <Sparkles className="size-5 text-violet" />
+              <Sparkles className="size-5 text-coral" />
               <CardTitle className="text-lg">Upgrade to Pro</CardTitle>
             </div>
             <CardDescription>
@@ -76,7 +76,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
           </CardHeader>
           <CardContent>
             <Link href="/settings/billing">
-              <Button className="bg-gradient-violet text-white shadow-md shadow-violet/20 transition-all hover:shadow-lg hover:shadow-violet/30 hover:-translate-y-0.5">
+              <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
                 Upgrade Now <ArrowRight className="ml-2 size-4" />
               </Button>
             </Link>
@@ -89,8 +89,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="card-hover animate-fade-in-up delay-100">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <Megaphone className="size-5 text-violet" />
+              <div className="rounded-xl bg-coral-light p-2.5">
+                <Megaphone className="size-5 text-coral" />
               </div>
               <span className="text-xs text-muted-foreground">{stats.totalCampaigns} total</span>
             </div>
@@ -104,8 +104,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="card-hover animate-fade-in-up delay-200">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <Users className="size-5 text-violet" />
+              <div className="rounded-xl bg-teal-light p-2.5">
+                <Users className="size-5 text-teal" />
               </div>
               <Badge className={stats.pendingProposals > 0 ? "border-amber-200 bg-amber-50 text-amber-700" : "border-border/60"}>
                 {stats.pendingProposals} new
@@ -121,8 +121,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="card-hover animate-fade-in-up delay-300">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <FileText className="size-5 text-violet" />
+              <div className="rounded-xl bg-coral-light p-2.5">
+                <FileText className="size-5 text-coral" />
               </div>
             </div>
             <div className="mt-3">
@@ -135,10 +135,10 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="card-hover animate-fade-in-up delay-400">
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
-              <div className="rounded-xl bg-violet-light p-2.5">
-                <CheckCircle className="size-5 text-violet" />
+              <div className="rounded-xl bg-teal-light p-2.5">
+                <CheckCircle className="size-5 text-teal" />
               </div>
-              <Badge className="border-violet/20 bg-violet-light text-violet-dark">
+              <Badge className="border-coral/20 bg-coral-light text-coral-dark">
                 {profile.subscriptionTier === "pro" ? "0%" : "10%"} fee
               </Badge>
             </div>
@@ -156,7 +156,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="animate-fade-in-up delay-300">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Clock className="size-5 text-violet" />
+              <Clock className="size-5 text-coral" />
               Recent Proposals
             </CardTitle>
           </CardHeader>
@@ -199,15 +199,15 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
         <Card className="animate-fade-in-up delay-400">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="size-5 text-violet" />
+              <TrendingUp className="size-5 text-teal" />
               Quick Actions
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <Link href="/campaigns/new" className="block">
-              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                <div className="rounded-lg bg-violet-light p-2">
-                  <Megaphone className="size-4 text-violet" />
+              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-coral/30 hover:bg-coral-light/30">
+                <div className="rounded-lg bg-coral-light p-2">
+                  <Megaphone className="size-4 text-coral" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">Create a Campaign</p>
@@ -220,9 +220,9 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             </Link>
 
             <Link href="/contracts" className="block">
-              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                <div className="rounded-lg bg-violet-light p-2">
-                  <FileText className="size-4 text-violet" />
+              <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-teal/30 hover:bg-teal-light/30">
+                <div className="rounded-lg bg-teal-light p-2">
+                  <FileText className="size-4 text-teal" />
                 </div>
                 <div>
                   <p className="text-sm font-medium">View Contracts</p>
@@ -236,9 +236,9 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
             {profile.subscriptionTier === "pro" && (
               <Link href="/directory" className="block">
-                <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-violet/30 hover:bg-violet-light/30">
-                  <div className="rounded-lg bg-violet-light p-2">
-                    <Search className="size-4 text-violet" />
+                <div className="flex items-center gap-3 rounded-lg border border-border/60 p-3 transition-all hover:border-coral/30 hover:bg-coral-light/30">
+                  <div className="rounded-lg bg-coral-light p-2">
+                    <Search className="size-4 text-coral" />
                   </div>
                   <div>
                     <p className="text-sm font-medium">Browse Directory</p>

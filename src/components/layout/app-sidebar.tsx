@@ -54,7 +54,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader className="border-b border-sidebar-border px-6 py-5">
-        <Link href="/dashboard" className="text-xl font-bold text-gradient-violet">
+        <Link href="/dashboard" className="text-xl font-bold text-gradient-primary">
           CollabHub
         </Link>
       </SidebarHeader>
@@ -83,7 +83,7 @@ export function AppSidebar({ role }: AppSidebarProps) {
       <SidebarFooter className="border-t border-sidebar-border p-4">
         <Badge
           variant="outline"
-          className="w-fit border-violet/20 bg-violet-light text-violet-dark text-xs"
+          className="w-fit border-coral/20 bg-coral-light text-coral-dark text-xs"
         >
           {role === "brand" ? "Brand Account" : "Influencer Account"}
         </Badge>
