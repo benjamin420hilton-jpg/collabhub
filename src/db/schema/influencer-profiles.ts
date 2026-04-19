@@ -8,6 +8,7 @@ import {
   index,
   jsonb,
 } from "drizzle-orm/pg-core";
+
 import { relations } from "drizzle-orm";
 import { nicheCategoryEnum, subscriptionTierEnum } from "./enums";
 import { users } from "./users";
@@ -40,6 +41,12 @@ export const influencerProfiles = pgTable(
     stripeConnectOnboarded: boolean("stripe_connect_onboarded")
       .notNull()
       .default(false),
+    stripeCustomerId: text("stripe_customer_id"),
+    stripeSubscriptionId: text("stripe_subscription_id"),
+    stripeCurrentPeriodEnd: timestamp("stripe_current_period_end", {
+      withTimezone: true,
+    }),
+    cancelAtPeriodEnd: boolean("cancel_at_period_end").notNull().default(false),
     subscriptionTier: subscriptionTierEnum("subscription_tier")
       .notNull()
       .default("free"),

@@ -3,11 +3,26 @@ import {
   campaigns,
   campaignDeliverables,
   brandProfiles,
-  users,
 } from "@/db/schema";
-import { eq, and, desc } from "drizzle-orm";
+import { eq, and, desc, lte, sql } from "drizzle-orm";
 
-export async function getPublicCampaigns() {
+/**
+ * Public campaign board. Pro creators see every published campaign the
+ * moment it goes live; free creators see campaigns that were published
+ * at least 24h ago. This 24h head start is one of the Pro perks.
+ */
+export async function getPublicCampaigns(viewerTier: "free" | "pro" = "free") {
+  const conditions = [
+    eq(campaigns.isPublic, true),
+    eq(campaigns.status, "published"),
+  ];
+
+  if (viewerTier === "free") {
+    conditions.push(
+      lte(campaigns.publishedAt, sql`NOW() - INTERVAL '24 hours'`),
+    );
+  }
+
   const results = await db
     .select({
       campaign: campaigns,
@@ -16,12 +31,7 @@ export async function getPublicCampaigns() {
     })
     .from(campaigns)
     .innerJoin(brandProfiles, eq(campaigns.brandProfileId, brandProfiles.id))
-    .where(
-      and(
-        eq(campaigns.isPublic, true),
-        eq(campaigns.status, "published"),
-      ),
-    )
+    .where(and(...conditions))
     .orderBy(desc(campaigns.publishedAt));
 
   return results;

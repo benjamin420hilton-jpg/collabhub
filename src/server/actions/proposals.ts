@@ -15,6 +15,10 @@ import {
   type CreateProposalInput,
 } from "@/lib/validators/proposal";
 import { dollarsToCents } from "@/lib/constants";
+import {
+  FREE_TIER_MONTHLY_PROPOSAL_LIMIT,
+  getMonthlyProposalCount,
+} from "@/server/queries/proposals";
 
 async function getInfluencerProfileForCurrentUser() {
   const { userId } = await auth();
@@ -72,6 +76,16 @@ export async function submitProposal(input: CreateProposalInput) {
     .limit(1);
 
   if (existing) return { error: "You have already applied to this campaign" };
+
+  // Free tier: cap at 5 proposals per calendar month. Pro is unlimited.
+  if (profile.subscriptionTier !== "pro") {
+    const used = await getMonthlyProposalCount(profile.id);
+    if (used >= FREE_TIER_MONTHLY_PROPOSAL_LIMIT) {
+      return {
+        error: `You've used all ${FREE_TIER_MONTHLY_PROPOSAL_LIMIT} of your free applications this month. Upgrade to Pro for unlimited applications.`,
+      };
+    }
+  }
 
   // Check max applications
   if (

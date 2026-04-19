@@ -35,6 +35,8 @@ interface InfluencerDashboardProps {
       createdAt: Date;
     }[];
   };
+  applicationsThisMonth: number;
+  applicationsLimit: number;
 }
 
 const statusColors: Record<string, string> = {
@@ -49,11 +51,18 @@ export function InfluencerDashboard({
   profile,
   socialAccounts,
   stats,
+  applicationsThisMonth,
+  applicationsLimit,
 }: InfluencerDashboardProps) {
   const acceptRate =
     stats.totalProposals > 0
       ? Math.round((stats.acceptedProposals / stats.totalProposals) * 100)
       : 0;
+  const isPro = profile.subscriptionTier === "pro";
+  const applicationsLeft = Math.max(
+    0,
+    applicationsLimit - applicationsThisMonth,
+  );
 
   return (
     <div className="space-y-8 animate-fade-in">
@@ -83,6 +92,45 @@ export function InfluencerDashboard({
           </Button>
         </Link>
       </div>
+
+      {/* Free-tier application counter */}
+      {!isPro && (
+        <Card className="overflow-hidden border-border/60 animate-fade-in-up delay-100">
+          <CardContent className="flex items-center gap-4 pt-6 pb-6">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
+              <Send className="size-5 text-coral" />
+            </div>
+            <div className="flex-1">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium">
+                  {applicationsLeft} of {applicationsLimit} applications left this month
+                </p>
+                <span className="text-xs text-muted-foreground">
+                  Resets on the 1st
+                </span>
+              </div>
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-coral-light">
+                <div
+                  className="h-full rounded-full bg-gradient-primary transition-all duration-500"
+                  style={{
+                    width: `${Math.min((applicationsThisMonth / applicationsLimit) * 100, 100)}%`,
+                  }}
+                />
+              </div>
+              {applicationsLeft === 0 && (
+                <p className="mt-2 text-xs text-coral">
+                  You&apos;re out of free applications — upgrade to Pro for unlimited.
+                </p>
+              )}
+            </div>
+            <Link href="/settings/billing">
+              <Button size="sm" className="bg-gradient-primary text-white shadow-sm">
+                Upgrade
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Stripe Connect banner */}
       {!profile.stripeConnectOnboarded && (

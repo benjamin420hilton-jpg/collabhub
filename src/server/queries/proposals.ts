@@ -1,6 +1,25 @@
 import { db } from "@/db";
 import { proposals, influencerProfiles, campaigns } from "@/db/schema";
-import { eq, and, desc, gte, sql } from "drizzle-orm";
+import { eq, and, desc, gte, sql, count } from "drizzle-orm";
+
+export const FREE_TIER_MONTHLY_PROPOSAL_LIMIT = 5;
+
+/**
+ * Count proposals the influencer has submitted since the first of the
+ * current month. Used to enforce the free-tier 5/month cap.
+ */
+export async function getMonthlyProposalCount(influencerProfileId: string) {
+  const [row] = await db
+    .select({ count: count() })
+    .from(proposals)
+    .where(
+      and(
+        eq(proposals.influencerProfileId, influencerProfileId),
+        gte(proposals.createdAt, sql`date_trunc('month', NOW())`),
+      ),
+    );
+  return row?.count ?? 0;
+}
 
 export async function getProposalsForCampaign(campaignId: string) {
   const results = await db

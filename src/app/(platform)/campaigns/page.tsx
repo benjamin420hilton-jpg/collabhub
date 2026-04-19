@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus, Megaphone } from "lucide-react";
+import { Plus, Megaphone, Sparkles } from "lucide-react";
 import { getUserWithProfile } from "@/server/queries/profiles";
 import { getPublicCampaigns, getBrandCampaigns } from "@/server/queries/campaigns";
 import { CampaignCard } from "@/components/campaigns/campaign-card";
-import type { BrandProfile } from "@/types";
+import type { BrandProfile, InfluencerProfile } from "@/types";
 
 const statusFilters: Record<string, string[]> = {
   active: ["published", "in_progress"],
@@ -40,7 +40,11 @@ export default async function CampaignsPage({
       ? allBrandCampaigns.filter((c) => statusFilters[status].includes(c.status))
       : allBrandCampaigns;
 
-  const publicCampaigns = !isBrand ? await getPublicCampaigns() : null;
+  const viewerTier =
+    data?.role === "influencer"
+      ? ((data.profile as InfluencerProfile).subscriptionTier ?? "free")
+      : "free";
+  const publicCampaigns = !isBrand ? await getPublicCampaigns(viewerTier) : null;
 
   return (
     <div className="space-y-6">
@@ -107,6 +111,22 @@ export default async function CampaignsPage({
       {/* Public job board for influencers */}
       {!isBrand && publicCampaigns && (
         <div className="space-y-4">
+          {viewerTier === "free" && (
+            <div className="flex items-start gap-3 rounded-xl border border-coral/20 bg-coral-light/40 p-4 text-sm">
+              <Sparkles className="size-4 shrink-0 text-coral mt-0.5" />
+              <div className="flex-1">
+                <p className="font-medium">Pro creators see new campaigns 24h early</p>
+                <p className="text-muted-foreground">
+                  Upgrade to Pro and get first pick on every new brief that lands.
+                </p>
+              </div>
+              <Link href="/settings/billing">
+                <Button size="sm" className="bg-gradient-primary text-white shadow-sm">
+                  Upgrade
+                </Button>
+              </Link>
+            </div>
+          )}
           {publicCampaigns.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
               <Megaphone className="size-10 text-muted-foreground" />

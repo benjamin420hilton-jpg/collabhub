@@ -47,6 +47,15 @@ export async function POST(req: Request) {
         const session = event.data.object as Stripe.Checkout.Session;
         if (
           session.mode === "subscription" &&
+          session.metadata?.subscriberType === "influencer" &&
+          session.metadata?.influencerProfileId
+        ) {
+          await handleInfluencerSubscriptionCreated(
+            session.metadata.influencerProfileId,
+            session.subscription as string,
+          );
+        } else if (
+          session.mode === "subscription" &&
           session.metadata?.brandProfileId
         ) {
           await handleSubscriptionCreated(
@@ -251,6 +260,18 @@ async function handleSubscriptionUpdated(sub: Stripe.Subscription) {
   const customerId =
     typeof sub.customer === "string" ? sub.customer : sub.customer.id;
 
+  // Try influencer first, fall back to brand.
+  const [influencer] = await db
+    .select()
+    .from(influencerProfiles)
+    .where(eq(influencerProfiles.stripeCustomerId, customerId))
+    .limit(1);
+
+  if (influencer) {
+    await handleInfluencerSubscriptionUpdated(influencer.id, sub);
+    return;
+  }
+
   const [profile] = await db
     .select()
     .from(brandProfiles)
@@ -285,6 +306,26 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription) {
   const customerId =
     typeof sub.customer === "string" ? sub.customer : sub.customer.id;
 
+  // Try influencer first.
+  const [influencer] = await db
+    .select()
+    .from(influencerProfiles)
+    .where(eq(influencerProfiles.stripeCustomerId, customerId))
+    .limit(1);
+
+  if (influencer) {
+    await db
+      .update(influencerProfiles)
+      .set({
+        subscriptionTier: "free",
+        stripeSubscriptionId: null,
+        stripeCurrentPeriodEnd: null,
+        cancelAtPeriodEnd: false,
+      })
+      .where(eq(influencerProfiles.id, influencer.id));
+    return;
+  }
+
   const [profile] = await db
     .select()
     .from(brandProfiles)
@@ -306,6 +347,46 @@ async function handleSubscriptionDeleted(sub: Stripe.Subscription) {
     .update(brandProfiles)
     .set({ subscriptionTier: "free" })
     .where(eq(brandProfiles.id, profile.id));
+}
+
+// --- Influencer subscription handlers ---
+
+async function handleInfluencerSubscriptionCreated(
+  influencerProfileId: string,
+  subscriptionId: string,
+) {
+  const stripe = getStripe();
+  const sub = await stripe.subscriptions.retrieve(subscriptionId);
+  const period = getSubscriptionPeriod(sub);
+
+  await db
+    .update(influencerProfiles)
+    .set({
+      subscriptionTier: "pro",
+      stripeSubscriptionId: sub.id,
+      stripeCurrentPeriodEnd: period.end,
+      cancelAtPeriodEnd: sub.cancel_at_period_end,
+    })
+    .where(eq(influencerProfiles.id, influencerProfileId));
+}
+
+async function handleInfluencerSubscriptionUpdated(
+  influencerProfileId: string,
+  sub: Stripe.Subscription,
+) {
+  const isActive = sub.status === "active" || sub.status === "trialing";
+  const tier = isActive ? "pro" : "free";
+  const period = getSubscriptionPeriod(sub);
+
+  await db
+    .update(influencerProfiles)
+    .set({
+      subscriptionTier: tier,
+      stripeSubscriptionId: sub.id,
+      stripeCurrentPeriodEnd: period.end,
+      cancelAtPeriodEnd: sub.cancel_at_period_end,
+    })
+    .where(eq(influencerProfiles.id, influencerProfileId));
 }
 
 // --- Payment / Escrow handlers ---
