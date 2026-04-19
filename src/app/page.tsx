@@ -8,7 +8,8 @@ import { ProBadge, FeaturedBadge } from "@/components/ui/pro-badge";
 import {
   ArrowRight, Megaphone, Shield, Zap, Star, Globe,
   CheckCircle, TrendingUp, DollarSign, Search, FileText,
-  Camera, Heart, Award, MapPin, Users,
+  Camera, Heart, Award, MapPin, Users, Crown, Rocket,
+  Infinity as InfinityIcon, Clock,
 } from "lucide-react";
 import { getFeaturedCreatorsForLanding } from "@/server/queries/directory";
 
@@ -93,9 +94,9 @@ export default async function HomePage() {
                 </h1>
 
                 <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg">
-                  The all-in-one platform to discover influencers, manage
-                  campaigns, and handle payments with built-in escrow
-                  protection.
+                  Land your first brand deal — or find the creator your
+                  campaign needs. Free to start, escrow-protected from brief
+                  to payout.
                 </p>
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200">
@@ -305,23 +306,25 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              {/* Influencers */}
+              {/* Creators */}
               <div className="rounded-3xl border border-border bg-gradient-to-br from-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
                 <div className="inline-flex rounded-xl bg-teal-light p-3">
                   <Camera className="size-6 text-teal" />
                 </div>
-                <h3 className="mt-5 text-2xl font-bold">For Influencers</h3>
+                <h3 className="mt-5 text-2xl font-bold">
+                  For Creators
+                </h3>
                 <p className="mt-2 text-muted-foreground">
-                  Get discovered, land deals, and get paid. Always free.
+                  Turn your feed into a full-time income. Your first brand
+                  deal starts here.
                 </p>
                 <ul className="mt-6 space-y-3">
                   {[
-                    "Browse and apply to brand campaigns",
-                    "Showcase your profile in the directory",
-                    "Link all your social accounts",
-                    "Track contracts and milestones",
-                    "Get paid securely via Stripe",
-                    "100% free \u2014 no commissions, ever",
+                    "Apply to real, paying brand campaigns",
+                    "Build a public media kit that does the selling for you",
+                    "Receive direct offers from Pro brands",
+                    "Escrow-protected payouts — no chasing invoices",
+                    "Works even if you're just starting out",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm">
                       <CheckCircle className="mt-0.5 size-4 shrink-0 text-teal" />
@@ -329,9 +332,22 @@ export default async function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/sign-up" className="mt-8 inline-block">
-                  <Button variant="outline" className="border-teal/30 text-teal-dark transition-all hover:border-teal/50 hover:bg-teal-light/50">
-                    Join as an Influencer <ArrowRight className="ml-2 size-4" />
+                <div className="mt-6 rounded-xl border border-coral/20 bg-white/70 p-4">
+                  <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-coral-dark">
+                    <Zap className="size-3" /> Fast-track with Pro
+                  </p>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Serious about landing deals? Pro creators see briefs{" "}
+                    <strong className="text-foreground">24 hours early</strong>,
+                    apply <strong className="text-foreground">unlimited</strong>{" "}
+                    times, and get a{" "}
+                    <strong className="text-foreground">PRO badge</strong> that
+                    brands trust.
+                  </p>
+                </div>
+                <Link href="/sign-up" className="mt-6 inline-block">
+                  <Button className="bg-gradient-ocean text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
+                    Start as a Creator <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
               </div>
@@ -453,6 +469,109 @@ export default async function HomePage() {
             </div>
           </section>
         )}
+
+        {/* Pro Creator — fast-track section */}
+        <section className="relative overflow-hidden border-t border-border bg-gradient-sand py-24">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-0 left-1/2 size-[32rem] -translate-x-1/2 rounded-full bg-gradient-primary opacity-[0.08] blur-3xl"
+          />
+
+          <div className="relative mx-auto max-w-6xl px-6">
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="inline-flex items-center gap-2 rounded-full border border-coral/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-coral-dark shadow-sm backdrop-blur-sm">
+                <Crown className="size-3.5" />
+                Pro Creator
+              </span>
+              <h2 className="mt-5 text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+                Stop waiting for luck.{" "}
+                <span className="text-gradient-animated">Fast-track</span> your
+                first deal.
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                You&apos;re building something. Pro Creator gets you in front
+                of briefs 24&nbsp;hours before everyone else and removes every
+                limit holding you back.
+              </p>
+            </div>
+
+            <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {[
+                {
+                  icon: Clock,
+                  title: "24h early access",
+                  desc: "See new campaigns 24 hours before free creators. Apply before the inbox is full.",
+                  color: "text-coral",
+                  bg: "bg-coral-light",
+                },
+                {
+                  icon: InfinityIcon,
+                  title: "Unlimited applications",
+                  desc: "Free tier caps at 5/month. Pro removes the cap — go hard, land deals faster.",
+                  color: "text-teal",
+                  bg: "bg-teal-light",
+                },
+                {
+                  icon: Crown,
+                  title: "PRO badge",
+                  desc: "Brands trust verified Pro creators first. Badge appears on your profile and every proposal.",
+                  color: "text-coral",
+                  bg: "bg-coral-light",
+                },
+                {
+                  icon: Rocket,
+                  title: "Priority placement",
+                  desc: "Top of the directory when brands search. More eyes, more offers, more bookings.",
+                  color: "text-teal",
+                  bg: "bg-teal-light",
+                },
+              ].map((feature, i) => (
+                <div
+                  key={feature.title}
+                  className="relative overflow-hidden rounded-2xl border border-border/50 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-coral/30 hover:shadow-lg hover:shadow-coral/10 animate-fade-in-up"
+                  style={{ animationDelay: `${(i + 1) * 100}ms` }}
+                >
+                  <div
+                    className={`inline-flex rounded-xl p-2.5 ${feature.bg}`}
+                  >
+                    <feature.icon className={`size-5 ${feature.color}`} />
+                  </div>
+                  <h3 className="mt-4 text-base font-semibold">
+                    {feature.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                    {feature.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Pricing + CTA */}
+            <div className="mt-14 flex flex-col items-center gap-4 rounded-3xl border border-coral/30 bg-gradient-to-br from-coral-light via-white to-teal-light/50 p-8 text-center shadow-lg shadow-coral/10 sm:p-10">
+              <div className="flex items-baseline justify-center gap-2">
+                <span className="text-5xl font-extrabold tracking-tight">
+                  $14.99
+                </span>
+                <span className="text-muted-foreground">AUD / month</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Less than one coffee a week. Cancel anytime.
+              </p>
+              <Link href="/sign-up">
+                <Button
+                  size="lg"
+                  className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
+                >
+                  Start your 7-day free trial
+                  <ArrowRight className="ml-2 size-4" />
+                </Button>
+              </Link>
+              <p className="text-xs text-muted-foreground">
+                No card charged during trial · Downgrade anytime
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Stats / Social proof — dark navy */}
         <section className="bg-gradient-dark py-20">
