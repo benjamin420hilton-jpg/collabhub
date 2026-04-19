@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { MapPin, Users, ExternalLink, Globe, DollarSign } from "lucide-react";
+import { ProBadge, FeaturedBadge } from "@/components/ui/pro-badge";
 import { getUserWithProfile } from "@/server/queries/profiles";
 import { getInfluencerDirectoryProfile } from "@/server/queries/directory";
 import type { BrandProfile } from "@/types";
@@ -50,7 +51,11 @@ export default async function InfluencerProfilePage({
           {profile.displayName.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1">
-          <h1 className="text-3xl font-bold">{profile.displayName}</h1>
+          <div className="flex flex-wrap items-center gap-2">
+            <h1 className="text-3xl font-bold">{profile.displayName}</h1>
+            {profile.isFeatured && <FeaturedBadge size="md" />}
+            {profile.subscriptionTier === "pro" && <ProBadge size="md" />}
+          </div>
           <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
             {profile.city && profile.state && (
               <span className="flex items-center gap-1">

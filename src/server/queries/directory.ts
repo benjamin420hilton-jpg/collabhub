@@ -46,7 +46,11 @@ export async function searchInfluencers(filters: DirectoryFilters) {
     .select()
     .from(influencerProfiles)
     .where(and(...conditions))
-    .orderBy(desc(influencerProfiles.totalFollowers))
+    .orderBy(
+      desc(influencerProfiles.isFeatured),
+      sql`CASE WHEN ${influencerProfiles.subscriptionTier} = 'pro' THEN 1 ELSE 0 END DESC`,
+      desc(influencerProfiles.totalFollowers),
+    )
     .limit(50);
 
   // Get social accounts for each influencer

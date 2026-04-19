@@ -9,7 +9,7 @@ import {
   jsonb,
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
-import { nicheCategoryEnum } from "./enums";
+import { nicheCategoryEnum, subscriptionTierEnum } from "./enums";
 import { users } from "./users";
 import { socialAccounts } from "./social-accounts";
 import { proposals } from "./proposals";
@@ -40,6 +40,10 @@ export const influencerProfiles = pgTable(
     stripeConnectOnboarded: boolean("stripe_connect_onboarded")
       .notNull()
       .default(false),
+    subscriptionTier: subscriptionTierEnum("subscription_tier")
+      .notNull()
+      .default("free"),
+    isFeatured: boolean("is_featured").notNull().default(false),
     isPublic: boolean("is_public").notNull().default(true),
     createdAt: timestamp("created_at", { withTimezone: true })
       .notNull()
@@ -58,6 +62,11 @@ export const influencerProfiles = pgTable(
     ),
     index("influencer_profiles_total_followers_idx").on(table.totalFollowers),
     index("influencer_profiles_is_public_idx").on(table.isPublic),
+    index("influencer_profiles_directory_rank_idx").on(
+      table.isFeatured,
+      table.subscriptionTier,
+      table.totalFollowers,
+    ),
   ],
 );
 

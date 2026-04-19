@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Users, Send, ExternalLink } from "lucide-react";
+import { ProBadge, FeaturedBadge } from "@/components/ui/pro-badge";
 import type { InfluencerProfile, SocialAccount } from "@/types";
 
 const platformConfig: Record<string, { label: string; color: string; bg: string }> = {
@@ -39,7 +40,11 @@ export function InfluencerCard({
               {profile.displayName.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h3 className="font-semibold">{profile.displayName}</h3>
+              <div className="flex flex-wrap items-center gap-1.5">
+                <h3 className="font-semibold">{profile.displayName}</h3>
+                {profile.isFeatured && <FeaturedBadge />}
+                {profile.subscriptionTier === "pro" && <ProBadge />}
+              </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 {profile.city && profile.state && (
                   <span className="flex items-center gap-1">

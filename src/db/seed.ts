@@ -176,6 +176,8 @@ async function seed() {
       totalEngagementRate: "4.8",
       minimumRate: dollarsToCents(800),
       onboarded: true,
+      tier: "pro" as const,
+      featured: true,
       socials: [
         { platform: "instagram" as const, handle: "avanguyen", followers: 98_000 },
         { platform: "tiktok" as const, handle: "avanguyen", followers: 44_000 },
@@ -196,6 +198,8 @@ async function seed() {
       totalEngagementRate: "6.2",
       minimumRate: dollarsToCents(450),
       onboarded: true,
+      tier: "pro" as const,
+      featured: false,
       socials: [
         { platform: "instagram" as const, handle: "jayokafor", followers: 38_000 },
         { platform: "tiktok" as const, handle: "jay.okafor", followers: 20_000 },
@@ -216,6 +220,8 @@ async function seed() {
       totalEngagementRate: "3.9",
       minimumRate: dollarsToCents(1200),
       onboarded: false,
+      tier: "free" as const,
+      featured: false,
       socials: [
         { platform: "instagram" as const, handle: "mirapatelfit", followers: 160_000 },
         { platform: "youtube" as const, handle: "mirapatel", followers: 50_000 },
@@ -236,6 +242,8 @@ async function seed() {
       totalEngagementRate: "5.4",
       minimumRate: dollarsToCents(350),
       onboarded: true,
+      tier: "free" as const,
+      featured: false,
       socials: [
         { platform: "youtube" as const, handle: "benharrow", followers: 28_000 },
         { platform: "twitter" as const, handle: "benharrow", followers: 4_500 },
@@ -276,6 +284,8 @@ async function seed() {
         totalEngagementRate: s.totalEngagementRate,
         minimumRate: s.minimumRate,
         stripeConnectOnboarded: s.onboarded,
+        subscriptionTier: s.tier,
+        isFeatured: s.featured,
         isPublic: true,
       })
       .returning();

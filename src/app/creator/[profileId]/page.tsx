@@ -11,6 +11,7 @@ import {
   MapPin, Users, Globe, DollarSign, ExternalLink, Mail, ArrowRight,
 } from "lucide-react";
 import Link from "next/link";
+import { ProBadge, FeaturedBadge } from "@/components/ui/pro-badge";
 import { getInfluencerDirectoryProfile } from "@/server/queries/directory";
 
 const platformConfig: Record<string, { name: string; color: string; bg: string }> = {
@@ -62,7 +63,11 @@ export default async function PublicMediaKitPage({
           <div className="mx-auto flex size-24 items-center justify-center rounded-3xl bg-gradient-primary text-4xl font-bold text-white shadow-lg shadow-coral/20">
             {profile.displayName.charAt(0).toUpperCase()}
           </div>
-          <h1 className="mt-6 text-4xl font-extrabold">{profile.displayName}</h1>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
+            <h1 className="text-4xl font-extrabold">{profile.displayName}</h1>
+            {profile.isFeatured && <FeaturedBadge size="md" />}
+            {profile.subscriptionTier === "pro" && <ProBadge size="md" />}
+          </div>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-3 text-muted-foreground">
             {profile.primaryNiche && (
               <Badge className="border-coral/20 bg-coral-light text-coral-dark text-sm">
