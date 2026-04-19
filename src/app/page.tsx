@@ -71,33 +71,29 @@ export default async function HomePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          <div className="relative mx-auto max-w-7xl px-6 pt-2 pb-6 sm:pt-3 sm:pb-8 lg:pt-4 lg:pb-12">
-            <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:items-stretch">
-              {/* Left — text, spread to fill column height on lg+ */}
-              <div className="flex max-w-2xl flex-col lg:h-full lg:justify-between">
-                {/* Top group */}
-                <div>
-                  <div className="animate-fade-in-down">
-                    <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
-                      <Zap className="size-3.5" />
-                      Australia&apos;s Influencer Marketing Platform
-                    </span>
-                  </div>
-
-                  <h1 className="mt-6 text-4xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-5xl lg:mt-10 lg:text-6xl xl:text-7xl animate-fade-in-up">
-                    Where Brands Meet{" "}
-                    <span className="text-gradient-animated">Creators</span>
-                  </h1>
-
-                  <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg lg:mt-8">
-                    The all-in-one platform to discover influencers, manage
-                    campaigns, and handle payments with built-in escrow
-                    protection.
-                  </p>
+          <div className="relative mx-auto max-w-7xl px-6 pt-6 pb-8 sm:pt-8 sm:pb-10 lg:pt-10 lg:pb-14">
+            <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
+              {/* Left — text, natural flow */}
+              <div className="max-w-2xl">
+                <div className="animate-fade-in-down">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
+                    <Zap className="size-3.5" />
+                    Australia&apos;s Influencer Marketing Platform
+                  </span>
                 </div>
 
-                {/* Middle group — CTAs */}
-                <div className="mt-8 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200 lg:mt-12">
+                <h1 className="mt-5 text-4xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl xl:text-[4.5rem] animate-fade-in-up">
+                  Where Brands Meet{" "}
+                  <span className="text-gradient-animated">Creators</span>
+                </h1>
+
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg">
+                  The all-in-one platform to discover influencers, manage
+                  campaigns, and handle payments with built-in escrow
+                  protection.
+                </p>
+
+                <div className="mt-6 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200">
                   <Link href="/sign-up">
                     <Button
                       size="lg"
@@ -117,8 +113,7 @@ export default async function HomePage() {
                   </Link>
                 </div>
 
-                {/* Bottom group — trust row pinned to bottom on lg+ */}
-                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300 lg:mt-12">
+                <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300">
                   <span className="flex items-center gap-2">
                     <Shield className="size-4 text-coral" /> Secure escrow payments
                   </span>
@@ -131,8 +126,8 @@ export default async function HomePage() {
                 </div>
               </div>
 
-              {/* Right — imagery collage */}
-              <div className="relative mx-auto w-full max-w-md animate-fade-in-up delay-200 lg:max-w-none">
+              {/* Right — imagery collage (compact, badge overlays a corner) */}
+              <div className="relative mx-auto w-full max-w-xs animate-fade-in-up delay-200 sm:max-w-sm lg:max-w-md">
                 {/* Soft gradient anchor behind the collage */}
                 <div
                   aria-hidden
@@ -140,7 +135,7 @@ export default async function HomePage() {
                 />
 
                 <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
-                  {/* Left column — offset down */}
+                  {/* Left column — slight offset down */}
                   <div className="space-y-3 pt-4 sm:space-y-4 sm:pt-6">
                     {HERO_IMAGES.slice(0, 2).map((img, i) => (
                       <div
@@ -153,7 +148,7 @@ export default async function HomePage() {
                           alt={img.alt}
                           fill
                           priority={i === 0}
-                          sizes="(min-width: 1024px) 22vw, 45vw"
+                          sizes="(min-width: 1024px) 20vw, 40vw"
                           className="object-cover"
                         />
                       </div>
@@ -172,7 +167,7 @@ export default async function HomePage() {
                           src={img.src}
                           alt={img.alt}
                           fill
-                          sizes="(min-width: 1024px) 22vw, 45vw"
+                          sizes="(min-width: 1024px) 20vw, 40vw"
                           className="object-cover"
                         />
                       </div>
@@ -180,8 +175,8 @@ export default async function HomePage() {
                   </div>
                 </div>
 
-                {/* Floating stat badge for extra product vibe */}
-                <div className="absolute -bottom-4 -left-4 hidden rounded-2xl border border-border/50 bg-white/95 p-4 shadow-xl shadow-navy/10 backdrop-blur lg:block animate-fade-in-up delay-500">
+                {/* Floating stat badge — overlaps bottom-left corner, stays inside hero */}
+                <div className="absolute bottom-3 left-3 hidden rounded-2xl border border-border/50 bg-white/95 p-3 shadow-xl shadow-navy/10 backdrop-blur sm:left-4 sm:bottom-4 sm:p-4 lg:block animate-fade-in-up delay-500">
                   <div className="flex items-center gap-3">
                     <div className="flex size-10 items-center justify-center rounded-xl bg-coral-light">
                       <TrendingUp className="size-5 text-coral" />
