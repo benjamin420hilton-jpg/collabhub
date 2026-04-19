@@ -1,12 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
 import { ArrowUpRight } from "lucide-react";
-import { Line, LineChart, ResponsiveContainer } from "recharts";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { StatCardSparkline } from "./stat-card-sparkline";
 
 interface StatCardProps {
   label: string;
@@ -60,20 +58,7 @@ export function StatCard({
           <p className="mt-0.5 text-sm text-muted-foreground">{label}</p>
         </div>
         {trend && trend.length > 1 && (
-          <div className={cn("-mx-2 mt-3 h-10", iconColor)}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trend.map((v, i) => ({ i, v }))}>
-                <Line
-                  type="monotone"
-                  dataKey="v"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  dot={false}
-                  isAnimationActive={false}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+          <StatCardSparkline data={trend} colorClass={iconColor} />
         )}
       </CardContent>
     </Card>
