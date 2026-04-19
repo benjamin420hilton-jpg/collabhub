@@ -11,32 +11,32 @@ import {
 
 const HERO_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80&auto=format&fit=crop",
-    alt: "Creator taking a photo outdoors",
-    aspect: "aspect-[3/4]",
-    width: 700,
-    height: 933,
+    src: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80&auto=format&fit=crop",
+    alt: "Fashion rack of curated clothing",
+    aspect: "aspect-[4/5]",
+    width: 600,
+    height: 750,
   },
   {
-    src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
+    src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=500&q=80&auto=format&fit=crop",
     alt: "Flat-lay of beauty and skincare products",
     aspect: "aspect-square",
-    width: 600,
-    height: 600,
+    width: 500,
+    height: 500,
   },
   {
-    src: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80&auto=format&fit=crop",
+    src: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=500&q=80&auto=format&fit=crop",
     alt: "Creator workspace with camera and accessories",
     aspect: "aspect-square",
-    width: 600,
-    height: 600,
+    width: 500,
+    height: 500,
   },
   {
-    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80&auto=format&fit=crop",
+    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600&q=80&auto=format&fit=crop",
     alt: "Travel lifestyle shot on a beach",
-    aspect: "aspect-[3/4]",
-    width: 700,
-    height: 933,
+    aspect: "aspect-[4/5]",
+    width: 600,
+    height: 750,
   },
 ];
 
@@ -71,8 +71,8 @@ export default async function HomePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          <div className="relative mx-auto max-w-7xl px-6 py-10 sm:py-14 lg:py-20">
-            <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
+          <div className="relative mx-auto max-w-7xl px-6 py-6 sm:py-8 lg:py-12">
+            <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
               {/* Left — text */}
               <div className="max-w-2xl">
                 <div className="animate-fade-in-down">
@@ -82,17 +82,17 @@ export default async function HomePage() {
                   </span>
                 </div>
 
-                <h1 className="mt-8 text-5xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-6xl lg:text-7xl xl:text-8xl animate-fade-in-up">
+                <h1 className="mt-5 text-4xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl xl:text-7xl animate-fade-in-up">
                   Where Brands Meet{" "}
                   <span className="text-gradient-animated">Creators</span>
                 </h1>
 
-                <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground animate-fade-in-up delay-100">
+                <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg">
                   The all-in-one platform to discover influencers, manage campaigns,
                   and handle payments with built-in escrow protection.
                 </p>
 
-                <div className="mt-10 flex flex-col gap-4 sm:flex-row animate-fade-in-up delay-200">
+                <div className="mt-7 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200">
                   <Link href="/sign-up">
                     <Button
                       size="lg"
@@ -113,7 +113,7 @@ export default async function HomePage() {
                 </div>
 
                 {/* Trust indicators */}
-                <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-muted-foreground animate-fade-in-up delay-300">
+                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300">
                   <span className="flex items-center gap-2">
                     <Shield className="size-4 text-coral" /> Secure escrow payments
                   </span>
@@ -127,16 +127,16 @@ export default async function HomePage() {
               </div>
 
               {/* Right — imagery collage */}
-              <div className="relative animate-fade-in-up delay-200">
+              <div className="relative mx-auto w-full max-w-md animate-fade-in-up delay-200 lg:max-w-none">
                 {/* Soft gradient anchor behind the collage */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute -inset-6 rounded-[3rem] bg-gradient-primary opacity-10 blur-3xl"
                 />
 
-                <div className="relative grid grid-cols-2 gap-4 sm:gap-5">
+                <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
                   {/* Left column — offset down */}
-                  <div className="space-y-4 pt-6 sm:space-y-5 sm:pt-8">
+                  <div className="space-y-3 pt-4 sm:space-y-4 sm:pt-6">
                     {HERO_IMAGES.slice(0, 2).map((img, i) => (
                       <div
                         key={img.src}
@@ -156,7 +156,7 @@ export default async function HomePage() {
                   </div>
 
                   {/* Right column — starts at top */}
-                  <div className="space-y-4 sm:space-y-5">
+                  <div className="space-y-3 sm:space-y-4">
                     {HERO_IMAGES.slice(2).map((img, i) => (
                       <div
                         key={img.src}
