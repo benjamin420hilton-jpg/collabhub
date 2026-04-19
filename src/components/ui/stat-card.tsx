@@ -4,7 +4,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { StatCardSparkline } from "./stat-card-sparkline";
 
 interface StatCardProps {
   label: string;
@@ -15,7 +14,6 @@ interface StatCardProps {
   badge?: { text: string; className?: string };
   metadata?: string;
   href?: string;
-  trend?: number[];
   className?: string;
 }
 
@@ -28,21 +26,31 @@ export function StatCard({
   badge,
   metadata,
   href,
-  trend,
   className,
 }: StatCardProps) {
   const card = (
     <Card
       className={cn(
-        "group relative h-full overflow-hidden border-border/50 shadow-sm",
+        "group relative h-full overflow-hidden border-border/50 bg-gradient-to-br from-white via-white to-muted/40 shadow-sm",
         href &&
-          "cursor-pointer transition-all hover:-translate-y-0.5 hover:border-coral/30 hover:shadow-md",
+          "cursor-pointer transition-all hover:-translate-y-0.5 hover:border-coral/40 hover:shadow-xl hover:shadow-coral/10",
         className,
       )}
     >
-      <CardContent className="px-6 pt-6 pb-5">
+      {/* Oversized faded background icon */}
+      <Icon
+        aria-hidden
+        className="pointer-events-none absolute -bottom-3 -right-3 size-28 text-foreground/[0.04]"
+      />
+
+      <CardContent className="relative px-6 pt-6 pb-6">
         <div className="flex items-center justify-between">
-          <div className={cn("rounded-xl p-2.5", iconBg)}>
+          <div
+            className={cn(
+              "rounded-xl p-2.5 transition-transform group-hover:scale-110",
+              iconBg,
+            )}
+          >
             <Icon className={cn("size-5", iconColor)} />
           </div>
           {badge ? (
@@ -53,13 +61,10 @@ export function StatCard({
             <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
           ) : null}
         </div>
-        <div className="mt-4">
-          <p className="text-3xl font-bold tracking-tight">{value}</p>
-          <p className="mt-0.5 text-sm text-muted-foreground">{label}</p>
+        <div className="mt-5">
+          <p className="text-4xl font-bold tracking-tight">{value}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{label}</p>
         </div>
-        {trend && trend.length > 1 && (
-          <StatCardSparkline data={trend} colorClass={iconColor} />
-        )}
       </CardContent>
     </Card>
   );
