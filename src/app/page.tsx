@@ -11,8 +11,8 @@ import {
 
 const HERO_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&q=80&auto=format&fit=crop",
-    alt: "Creator filming lifestyle content on a phone",
+    src: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=700&q=80&auto=format&fit=crop",
+    alt: "Creator taking a photo outdoors",
     aspect: "aspect-[3/4]",
     width: 700,
     height: 933,
@@ -25,8 +25,8 @@ const HERO_IMAGES = [
     height: 600,
   },
   {
-    src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80&auto=format&fit=crop",
-    alt: "Creator's laptop on a cafe table",
+    src: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80&auto=format&fit=crop",
+    alt: "Creator workspace with camera and accessories",
     aspect: "aspect-square",
     width: 600,
     height: 600,
@@ -71,8 +71,8 @@ export default async function HomePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:py-36">
-            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+          <div className="relative mx-auto max-w-7xl px-6 py-10 sm:py-14 lg:py-20">
+            <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
               {/* Left — text */}
               <div className="max-w-2xl">
                 <div className="animate-fade-in-down">
@@ -136,7 +136,7 @@ export default async function HomePage() {
 
                 <div className="relative grid grid-cols-2 gap-4 sm:gap-5">
                   {/* Left column — offset down */}
-                  <div className="space-y-4 pt-10 sm:space-y-5 sm:pt-14">
+                  <div className="space-y-4 pt-6 sm:space-y-5 sm:pt-8">
                     {HERO_IMAGES.slice(0, 2).map((img, i) => (
                       <div
                         key={img.src}
