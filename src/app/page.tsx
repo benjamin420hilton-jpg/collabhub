@@ -11,8 +11,8 @@ import {
 
 const HERO_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&q=80&auto=format&fit=crop",
-    alt: "Creator holding a camera in warm light",
+    src: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80&auto=format&fit=crop",
+    alt: "Curated boutique clothing rack",
     aspect: "aspect-[4/5]",
     width: 600,
     height: 750,
@@ -72,27 +72,32 @@ export default async function HomePage() {
         {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
           <div className="relative mx-auto max-w-7xl px-6 pt-2 pb-6 sm:pt-3 sm:pb-8 lg:pt-4 lg:pb-12">
-            <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
-              {/* Left — text */}
-              <div className="max-w-2xl">
-                <div className="animate-fade-in-down">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
-                    <Zap className="size-3.5" />
-                    Australia&apos;s Influencer Marketing Platform
-                  </span>
+            <div className="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:items-stretch">
+              {/* Left — text, spread to fill column height on lg+ */}
+              <div className="flex max-w-2xl flex-col lg:h-full lg:justify-between">
+                {/* Top group */}
+                <div>
+                  <div className="animate-fade-in-down">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
+                      <Zap className="size-3.5" />
+                      Australia&apos;s Influencer Marketing Platform
+                    </span>
+                  </div>
+
+                  <h1 className="mt-6 text-4xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-5xl lg:mt-10 lg:text-6xl xl:text-7xl animate-fade-in-up">
+                    Where Brands Meet{" "}
+                    <span className="text-gradient-animated">Creators</span>
+                  </h1>
+
+                  <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg lg:mt-8">
+                    The all-in-one platform to discover influencers, manage
+                    campaigns, and handle payments with built-in escrow
+                    protection.
+                  </p>
                 </div>
 
-                <h1 className="mt-5 text-4xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-5xl lg:text-6xl xl:text-7xl animate-fade-in-up">
-                  Where Brands Meet{" "}
-                  <span className="text-gradient-animated">Creators</span>
-                </h1>
-
-                <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground animate-fade-in-up delay-100 sm:text-lg">
-                  The all-in-one platform to discover influencers, manage campaigns,
-                  and handle payments with built-in escrow protection.
-                </p>
-
-                <div className="mt-7 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200">
+                {/* Middle group — CTAs */}
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row animate-fade-in-up delay-200 lg:mt-12">
                   <Link href="/sign-up">
                     <Button
                       size="lg"
@@ -112,8 +117,8 @@ export default async function HomePage() {
                   </Link>
                 </div>
 
-                {/* Trust indicators */}
-                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300">
+                {/* Bottom group — trust row pinned to bottom on lg+ */}
+                <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300 lg:mt-12">
                   <span className="flex items-center gap-2">
                     <Shield className="size-4 text-coral" /> Secure escrow payments
                   </span>
