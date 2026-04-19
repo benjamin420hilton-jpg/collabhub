@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import {
   createInfluencerCheckoutSession,
   createInfluencerPortalSession,
@@ -21,6 +21,7 @@ import {
   ExternalLink,
   CheckCircle,
   XCircle,
+  AlertTriangle,
 } from "lucide-react";
 import type { InfluencerProfile } from "@/types";
 
@@ -52,17 +53,22 @@ export function InfluencerBillingPage({
   showCanceled,
 }: InfluencerBillingPageProps) {
   const [isPending, startTransition] = useTransition();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const isPro = profile.subscriptionTier === "pro";
 
   function handleUpgrade() {
+    setErrorMessage(null);
     startTransition(async () => {
-      await createInfluencerCheckoutSession();
+      const result = await createInfluencerCheckoutSession();
+      if (result?.error) setErrorMessage(result.error);
     });
   }
 
   function handleManage() {
+    setErrorMessage(null);
     startTransition(async () => {
-      await createInfluencerPortalSession();
+      const result = await createInfluencerPortalSession();
+      if (result?.error) setErrorMessage(result.error);
     });
   }
 
@@ -114,6 +120,22 @@ export function InfluencerBillingPage({
             <p className="font-medium text-amber-800">
               Checkout canceled. No charges were made.
             </p>
+          </CardContent>
+        </Card>
+      )}
+
+      {errorMessage && (
+        <Card className="border-red-300/60 bg-red-50 animate-fade-in-down">
+          <CardContent className="flex items-start gap-3 pt-6">
+            <AlertTriangle className="size-5 text-red-600 mt-0.5 shrink-0" />
+            <div>
+              <p className="font-semibold text-red-800">
+                Couldn&apos;t start checkout
+              </p>
+              <p className="mt-1 text-sm text-red-700 break-words">
+                {errorMessage}
+              </p>
+            </div>
           </CardContent>
         </Card>
       )}
