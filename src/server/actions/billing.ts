@@ -27,12 +27,38 @@ function describeStripeError(err: unknown, context: string): string {
 }
 
 function requireEnv(name: string): string | ActionError {
-  const value = process.env[name];
-  if (!value) {
+  const raw = process.env[name];
+  if (!raw) {
     console.error(`[billing] Missing env var: ${name}`);
     return { error: `Server misconfiguration: ${name} is not set.` };
   }
+  const value = raw.trim();
+  if (!value) {
+    console.error(`[billing] Env var ${name} is empty after trim`);
+    return { error: `Server misconfiguration: ${name} is empty.` };
+  }
   return value;
+}
+
+function requireAppUrl(): string | ActionError {
+  const raw = requireEnv("NEXT_PUBLIC_APP_URL");
+  if (typeof raw !== "string") return raw;
+  const cleaned = raw.replace(/\/+$/, "");
+  try {
+    const parsed = new URL(cleaned);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      throw new Error(`unsupported protocol ${parsed.protocol}`);
+    }
+    return parsed.origin;
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : String(err);
+    console.error(
+      `[billing] NEXT_PUBLIC_APP_URL is not a valid URL: ${JSON.stringify(raw)} (${detail})`,
+    );
+    return {
+      error: `Server misconfiguration: NEXT_PUBLIC_APP_URL is not a valid URL (got ${JSON.stringify(raw)}). Must be like https://example.com with no trailing slash or whitespace.`,
+    };
+  }
 }
 
 async function getCurrentBrandProfile() {
@@ -60,7 +86,7 @@ async function getCurrentBrandProfile() {
 export async function createCheckoutSession(): Promise<ActionError> {
   const priceIdOrErr = requireEnv("STRIPE_PRO_MONTHLY_PRICE_ID");
   if (typeof priceIdOrErr !== "string") return priceIdOrErr;
-  const appUrlOrErr = requireEnv("NEXT_PUBLIC_APP_URL");
+  const appUrlOrErr = requireAppUrl();
   if (typeof appUrlOrErr !== "string") return appUrlOrErr;
   const secretOrErr = requireEnv("STRIPE_SECRET_KEY");
   if (typeof secretOrErr !== "string") return secretOrErr;
@@ -126,7 +152,7 @@ export async function createCheckoutSession(): Promise<ActionError> {
 }
 
 export async function createPortalSession(): Promise<ActionError> {
-  const appUrlOrErr = requireEnv("NEXT_PUBLIC_APP_URL");
+  const appUrlOrErr = requireAppUrl();
   if (typeof appUrlOrErr !== "string") return appUrlOrErr;
 
   const stripe = getStripe();
@@ -181,7 +207,7 @@ async function getCurrentInfluencerProfile() {
 export async function createInfluencerCheckoutSession(): Promise<ActionError> {
   const priceIdOrErr = requireEnv("STRIPE_INFLUENCER_PRO_PRICE_ID");
   if (typeof priceIdOrErr !== "string") return priceIdOrErr;
-  const appUrlOrErr = requireEnv("NEXT_PUBLIC_APP_URL");
+  const appUrlOrErr = requireAppUrl();
   if (typeof appUrlOrErr !== "string") return appUrlOrErr;
   const secretOrErr = requireEnv("STRIPE_SECRET_KEY");
   if (typeof secretOrErr !== "string") return secretOrErr;
@@ -253,7 +279,7 @@ export async function createInfluencerCheckoutSession(): Promise<ActionError> {
 }
 
 export async function createInfluencerPortalSession(): Promise<ActionError> {
-  const appUrlOrErr = requireEnv("NEXT_PUBLIC_APP_URL");
+  const appUrlOrErr = requireAppUrl();
   if (typeof appUrlOrErr !== "string") return appUrlOrErr;
 
   const stripe = getStripe();
