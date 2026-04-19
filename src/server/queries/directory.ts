@@ -84,6 +84,39 @@ export async function searchInfluencers(filters: DirectoryFilters) {
   }));
 }
 
+/**
+ * Returns a small set of featured/pro creators for the public landing page.
+ * No auth required. Prioritises featured → pro → follower count so the
+ * showcased creators are the most compelling.
+ */
+export async function getFeaturedCreatorsForLanding(limit = 6) {
+  const profiles = await db
+    .select()
+    .from(influencerProfiles)
+    .where(eq(influencerProfiles.isPublic, true))
+    .orderBy(
+      desc(influencerProfiles.isFeatured),
+      sql`CASE WHEN ${influencerProfiles.subscriptionTier} = 'pro' THEN 1 ELSE 0 END DESC`,
+      desc(influencerProfiles.totalFollowers),
+    )
+    .limit(limit);
+
+  if (profiles.length === 0) return [];
+
+  const ids = profiles.map((p) => p.id);
+  const socials = await db
+    .select()
+    .from(socialAccounts)
+    .where(sql`${socialAccounts.influencerProfileId} IN ${ids}`);
+
+  return profiles.map((profile) => ({
+    profile,
+    socialAccounts: socials.filter(
+      (s) => s.influencerProfileId === profile.id,
+    ),
+  }));
+}
+
 export async function getInfluencerDirectoryProfile(profileId: string) {
   const [profile] = await db
     .select()

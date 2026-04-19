@@ -3,11 +3,14 @@ import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ProBadge, FeaturedBadge } from "@/components/ui/pro-badge";
 import {
   ArrowRight, Megaphone, Shield, Zap, Star, Globe,
   CheckCircle, TrendingUp, DollarSign, Search, FileText,
-  Camera, Heart, Award,
+  Camera, Heart, Award, MapPin, Users,
 } from "lucide-react";
+import { getFeaturedCreatorsForLanding } from "@/server/queries/directory";
 
 const HERO_IMAGES = [
   {
@@ -46,6 +49,8 @@ export default async function HomePage() {
   if (userId) {
     redirect("/dashboard");
   }
+
+  const featuredCreators = await getFeaturedCreatorsForLanding(6);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -333,6 +338,121 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Meet creators — public preview of the directory */}
+        {featuredCreators.length > 0 && (
+          <section className="relative overflow-hidden border-t border-border bg-white py-24">
+            <div
+              aria-hidden
+              className="pointer-events-none absolute -top-32 right-0 size-96 rounded-full bg-gradient-primary opacity-[0.06] blur-3xl"
+            />
+            <div
+              aria-hidden
+              className="pointer-events-none absolute bottom-0 -left-20 size-80 rounded-full bg-gradient-ocean opacity-[0.05] blur-3xl"
+            />
+
+            <div className="relative mx-auto max-w-6xl px-6">
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-coral">
+                  Meet the creators
+                </p>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+                  Real Australian creators, ready to work with you
+                </h2>
+                <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                  Browse a sample of the influencers waiting for your brief.
+                  Free to sign up. Free to post a campaign. No card required.
+                </p>
+              </div>
+
+              <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {featuredCreators.map(({ profile, socialAccounts }, i) => (
+                  <Link
+                    key={profile.id}
+                    href={`/creator/${profile.id}`}
+                    className="group block animate-fade-in-up"
+                    style={{ animationDelay: `${(i + 1) * 70}ms` }}
+                  >
+                    <div className="relative h-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-white via-white to-muted/40 p-6 shadow-sm transition-all group-hover:-translate-y-1 group-hover:border-coral/40 group-hover:shadow-xl group-hover:shadow-coral/10">
+                      <div className="flex items-start gap-3">
+                        <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-ocean text-lg font-bold text-white shadow-md shadow-coral/20">
+                          {profile.displayName.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-1.5">
+                            <h3 className="truncate font-semibold">
+                              {profile.displayName}
+                            </h3>
+                            {profile.isFeatured && <FeaturedBadge />}
+                            {profile.subscriptionTier === "pro" && (
+                              <ProBadge />
+                            )}
+                          </div>
+                          {profile.city && profile.state && (
+                            <p className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
+                              <MapPin className="size-3" />
+                              {profile.city}, {profile.state}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      {profile.bio && (
+                        <p className="mt-4 line-clamp-2 text-sm text-muted-foreground">
+                          {profile.bio}
+                        </p>
+                      )}
+
+                      <div className="mt-4 flex flex-wrap items-center gap-2">
+                        {profile.primaryNiche && (
+                          <Badge className="border-teal/20 bg-teal-light text-teal-dark">
+                            {profile.primaryNiche.replace("_", " ")}
+                          </Badge>
+                        )}
+                        {profile.totalFollowers &&
+                          profile.totalFollowers > 0 && (
+                            <Badge
+                              variant="outline"
+                              className="border-border/60"
+                            >
+                              <Users className="mr-1 size-3" />
+                              {profile.totalFollowers >= 1000
+                                ? `${(profile.totalFollowers / 1000).toFixed(1)}K followers`
+                                : `${profile.totalFollowers} followers`}
+                            </Badge>
+                          )}
+                        {socialAccounts.length > 0 && (
+                          <Badge
+                            variant="outline"
+                            className="border-border/60 capitalize"
+                          >
+                            {socialAccounts.length} platform
+                            {socialAccounts.length !== 1 ? "s" : ""}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+
+              <div className="mt-12 flex flex-col items-center gap-3">
+                <Link href="/sign-up">
+                  <Button
+                    size="lg"
+                    className="bg-gradient-primary px-8 text-white shadow-md shadow-coral/25 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+                  >
+                    Sign up to browse all creators
+                    <ArrowRight className="ml-2 size-4" />
+                  </Button>
+                </Link>
+                <p className="text-xs text-muted-foreground">
+                  Post your first campaign free — no card needed.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Stats / Social proof — dark navy */}
         <section className="bg-gradient-dark py-20">
