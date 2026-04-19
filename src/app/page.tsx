@@ -1,12 +1,44 @@
 import Link from "next/link";
+import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
-  ArrowRight, Megaphone, Shield, Users, Zap, Star, Globe,
+  ArrowRight, Megaphone, Shield, Zap, Star, Globe,
   CheckCircle, TrendingUp, DollarSign, Search, FileText,
   Camera, Heart, Award,
 } from "lucide-react";
+
+const HERO_IMAGES = [
+  {
+    src: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=700&q=80&auto=format&fit=crop",
+    alt: "Creator filming lifestyle content on a phone",
+    aspect: "aspect-[3/4]",
+    width: 700,
+    height: 933,
+  },
+  {
+    src: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&q=80&auto=format&fit=crop",
+    alt: "Flat-lay of beauty and skincare products",
+    aspect: "aspect-square",
+    width: 600,
+    height: 600,
+  },
+  {
+    src: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80&auto=format&fit=crop",
+    alt: "Creator's laptop on a cafe table",
+    aspect: "aspect-square",
+    width: 600,
+    height: 600,
+  },
+  {
+    src: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=700&q=80&auto=format&fit=crop",
+    alt: "Travel lifestyle shot on a beach",
+    aspect: "aspect-[3/4]",
+    width: 700,
+    height: 933,
+  },
+];
 
 export default async function HomePage() {
   const { userId } = await auth();
@@ -37,58 +69,128 @@ export default async function HomePage() {
       </header>
 
       <main className="flex flex-1 flex-col">
-        {/* Hero — light mesh gradient */}
+        {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          <div className="relative mx-auto max-w-6xl px-6 py-28 sm:py-36">
-            <div className="mx-auto max-w-3xl text-center">
-              <div className="animate-fade-in-down">
-                <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
-                  <Zap className="size-3.5" />
-                  Australia&apos;s Influencer Marketing Platform
-                </span>
+          <div className="relative mx-auto max-w-7xl px-6 py-20 sm:py-28 lg:py-36">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
+              {/* Left — text */}
+              <div className="max-w-2xl">
+                <div className="animate-fade-in-down">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
+                    <Zap className="size-3.5" />
+                    Australia&apos;s Influencer Marketing Platform
+                  </span>
+                </div>
+
+                <h1 className="mt-8 text-5xl font-extrabold leading-[0.95] tracking-tight text-gray-900 sm:text-6xl lg:text-7xl xl:text-8xl animate-fade-in-up">
+                  Where Brands Meet{" "}
+                  <span className="text-gradient-animated">Creators</span>
+                </h1>
+
+                <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground animate-fade-in-up delay-100">
+                  The all-in-one platform to discover influencers, manage campaigns,
+                  and handle payments with built-in escrow protection.
+                </p>
+
+                <div className="mt-10 flex flex-col gap-4 sm:flex-row animate-fade-in-up delay-200">
+                  <Link href="/sign-up">
+                    <Button
+                      size="lg"
+                      className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
+                    >
+                      Start Free <ArrowRight className="ml-2 size-4" />
+                    </Button>
+                  </Link>
+                  <Link href="/sign-in">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="border-gray-300 text-gray-700 px-8 transition-all hover:border-coral/40 hover:bg-coral/5 text-base h-12"
+                    >
+                      I Have an Account
+                    </Button>
+                  </Link>
+                </div>
+
+                {/* Trust indicators */}
+                <div className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm text-muted-foreground animate-fade-in-up delay-300">
+                  <span className="flex items-center gap-2">
+                    <Shield className="size-4 text-coral" /> Secure escrow payments
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Star className="size-4 text-teal" /> Free for influencers
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <Globe className="size-4 text-coral" /> Built for Australia
+                  </span>
+                </div>
               </div>
 
-              <h1 className="mt-8 text-5xl font-extrabold leading-[1.1] tracking-tight text-gray-900 sm:text-7xl animate-fade-in-up">
-                Where Brands Meet{" "}
-                <span className="text-gradient-animated">Creators</span>
-              </h1>
+              {/* Right — imagery collage */}
+              <div className="relative animate-fade-in-up delay-200">
+                {/* Soft gradient anchor behind the collage */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute -inset-6 rounded-[3rem] bg-gradient-primary opacity-10 blur-3xl"
+                />
 
-              <p className="mx-auto mt-7 max-w-xl text-lg leading-relaxed text-gray-500 animate-fade-in-up delay-100">
-                The all-in-one platform to discover influencers, manage campaigns,
-                and handle payments with built-in escrow protection.
-              </p>
+                <div className="relative grid grid-cols-2 gap-4 sm:gap-5">
+                  {/* Left column — offset down */}
+                  <div className="space-y-4 pt-10 sm:space-y-5 sm:pt-14">
+                    {HERO_IMAGES.slice(0, 2).map((img, i) => (
+                      <div
+                        key={img.src}
+                        className={`relative ${img.aspect} overflow-hidden rounded-2xl border border-border/40 bg-muted shadow-xl shadow-navy/10 animate-float`}
+                        style={{ animationDelay: `${i * 200}ms` }}
+                      >
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          priority={i === 0}
+                          sizes="(min-width: 1024px) 22vw, 45vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
 
-              <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-up delay-200">
-                <Link href="/sign-up">
-                  <Button
-                    size="lg"
-                    className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
-                  >
-                    Start Free <ArrowRight className="ml-2 size-4" />
-                  </Button>
-                </Link>
-                <Link href="/sign-in">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="border-gray-300 text-gray-700 px-8 transition-all hover:border-coral/40 hover:bg-coral/5 text-base h-12"
-                  >
-                    I Have an Account
-                  </Button>
-                </Link>
-              </div>
+                  {/* Right column — starts at top */}
+                  <div className="space-y-4 sm:space-y-5">
+                    {HERO_IMAGES.slice(2).map((img, i) => (
+                      <div
+                        key={img.src}
+                        className={`relative ${img.aspect} overflow-hidden rounded-2xl border border-border/40 bg-muted shadow-xl shadow-navy/10 animate-float`}
+                        style={{ animationDelay: `${(i + 2) * 200}ms` }}
+                      >
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          sizes="(min-width: 1024px) 22vw, 45vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-              {/* Trust indicators */}
-              <div className="mt-14 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-gray-500 animate-fade-in-up delay-300">
-                <span className="flex items-center gap-2">
-                  <Shield className="size-4 text-coral" /> Secure escrow payments
-                </span>
-                <span className="flex items-center gap-2">
-                  <Star className="size-4 text-teal" /> Free for influencers
-                </span>
-                <span className="flex items-center gap-2">
-                  <Globe className="size-4 text-coral" /> Built for Australia
-                </span>
+                {/* Floating stat badge for extra product vibe */}
+                <div className="absolute -bottom-4 -left-4 hidden rounded-2xl border border-border/50 bg-white/95 p-4 shadow-xl shadow-navy/10 backdrop-blur lg:block animate-fade-in-up delay-500">
+                  <div className="flex items-center gap-3">
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-coral-light">
+                      <TrendingUp className="size-5 text-coral" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-muted-foreground">
+                        Creators paid this month
+                      </p>
+                      <p className="text-lg font-bold tracking-tight">
+                        $284k AUD
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
