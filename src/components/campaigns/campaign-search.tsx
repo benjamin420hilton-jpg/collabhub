@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Search, X } from "lucide-react";
-import type { DirectoryFilters } from "@/server/queries/directory";
+import type { CampaignFilters } from "@/server/queries/campaigns";
 
 const NICHES = [
   { value: "fashion", label: "Fashion" },
@@ -36,15 +36,11 @@ const NICHES = [
   { value: "other", label: "Other" },
 ];
 
-const STATES = [
-  { value: "NSW", label: "NSW" },
-  { value: "VIC", label: "VIC" },
-  { value: "QLD", label: "QLD" },
-  { value: "WA", label: "WA" },
-  { value: "SA", label: "SA" },
-  { value: "TAS", label: "TAS" },
-  { value: "ACT", label: "ACT" },
-  { value: "NT", label: "NT" },
+const TYPES = [
+  { value: "paid", label: "Paid" },
+  { value: "gifting", label: "Gifting" },
+  { value: "product_exchange", label: "Product Exchange" },
+  { value: "hybrid", label: "Hybrid" },
 ];
 
 const PLATFORMS = [
@@ -59,33 +55,33 @@ const PLATFORMS = [
   { value: "threads", label: "Threads" },
 ];
 
-const MIN_FOLLOWERS = [
-  { value: "1000", label: "1k+" },
-  { value: "10000", label: "10k+" },
-  { value: "50000", label: "50k+" },
-  { value: "100000", label: "100k+" },
-  { value: "500000", label: "500k+" },
+// Budget thresholds stored as cents ($500, $1k, $5k, $10k)
+const BUDGET_OPTIONS = [
+  { value: "50000", label: "$500+" },
+  { value: "100000", label: "$1k+" },
+  { value: "500000", label: "$5k+" },
+  { value: "1000000", label: "$10k+" },
 ];
 
-interface DirectorySearchProps {
-  filters: DirectoryFilters;
+interface CampaignSearchProps {
+  filters: CampaignFilters;
 }
 
-export function DirectorySearch({ filters }: DirectorySearchProps) {
+export function CampaignSearch({ filters }: CampaignSearchProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [isPending, startTransition] = useTransition();
   const [search, setSearch] = useState(filters.search ?? "");
 
-  function applyFilters(newFilters: Partial<DirectoryFilters>) {
+  function applyFilters(newFilters: Partial<CampaignFilters>) {
     const merged = { ...filters, ...newFilters };
     const params = new URLSearchParams();
 
     if (merged.search) params.set("search", merged.search);
     if (merged.niche) params.set("niche", merged.niche);
-    if (merged.state) params.set("state", merged.state);
-    if (merged.minFollowers) params.set("minFollowers", String(merged.minFollowers));
+    if (merged.type) params.set("type", merged.type);
     if (merged.platform) params.set("platform", merged.platform);
+    if (merged.minBudget) params.set("minBudget", String(merged.minBudget));
 
     startTransition(() => {
       router.push(`${pathname}?${params.toString()}`);
@@ -104,7 +100,12 @@ export function DirectorySearch({ filters }: DirectorySearchProps) {
     applyFilters({ search: search || undefined });
   }
 
-  const hasFilters = filters.search || filters.niche || filters.state || filters.minFollowers || filters.platform;
+  const hasFilters =
+    filters.search ||
+    filters.niche ||
+    filters.type ||
+    filters.platform ||
+    filters.minBudget;
 
   return (
     <div className="space-y-4 rounded-xl border border-border/50 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
@@ -115,7 +116,7 @@ export function DirectorySearch({ filters }: DirectorySearchProps) {
           <Input
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by name, bio, or location..."
+            placeholder="Search campaigns by title or description..."
             className="pl-9"
           />
         </div>
@@ -147,16 +148,16 @@ export function DirectorySearch({ filters }: DirectorySearchProps) {
         </Select>
 
         <Select
-          value={filters.state ?? ""}
-          onValueChange={(v) => applyFilters({ state: v || undefined })}
+          value={filters.type ?? ""}
+          onValueChange={(v) => applyFilters({ type: v || undefined })}
         >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue placeholder="State" />
+          <SelectTrigger className="w-[170px]">
+            <SelectValue placeholder="Campaign type" />
           </SelectTrigger>
           <SelectContent>
-            {STATES.map((s) => (
-              <SelectItem key={s.value} value={s.value}>
-                {s.label}
+            {TYPES.map((t) => (
+              <SelectItem key={t.value} value={t.value}>
+                {t.label}
               </SelectItem>
             ))}
           </SelectContent>
@@ -179,18 +180,18 @@ export function DirectorySearch({ filters }: DirectorySearchProps) {
         </Select>
 
         <Select
-          value={filters.minFollowers ? String(filters.minFollowers) : ""}
+          value={filters.minBudget ? String(filters.minBudget) : ""}
           onValueChange={(v) =>
-            applyFilters({ minFollowers: v ? Number(v) : undefined })
+            applyFilters({ minBudget: v ? Number(v) : undefined })
           }
         >
           <SelectTrigger className="w-[140px]">
-            <SelectValue placeholder="Min followers" />
+            <SelectValue placeholder="Min budget" />
           </SelectTrigger>
           <SelectContent>
-            {MIN_FOLLOWERS.map((m) => (
-              <SelectItem key={m.value} value={m.value}>
-                {m.label}
+            {BUDGET_OPTIONS.map((b) => (
+              <SelectItem key={b.value} value={b.value}>
+                {b.label}
               </SelectItem>
             ))}
           </SelectContent>

@@ -1,9 +1,14 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Plus, Megaphone, Sparkles } from "lucide-react";
+import { Plus, Megaphone, Search as SearchIcon, Sparkles } from "lucide-react";
 import { getUserWithProfile } from "@/server/queries/profiles";
-import { getPublicCampaigns, getBrandCampaigns } from "@/server/queries/campaigns";
+import {
+  getPublicCampaigns,
+  getBrandCampaigns,
+  type CampaignFilters,
+} from "@/server/queries/campaigns";
 import { CampaignCard } from "@/components/campaigns/campaign-card";
+import { CampaignSearch } from "@/components/campaigns/campaign-search";
 import type { BrandProfile, InfluencerProfile } from "@/types";
 
 const statusFilters: Record<string, string[]> = {
@@ -25,9 +30,17 @@ const filterLabels: Record<string, string> = {
 export default async function CampaignsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string }>;
+  searchParams: Promise<{
+    status?: string;
+    search?: string;
+    niche?: string;
+    type?: string;
+    platform?: string;
+    minBudget?: string;
+  }>;
 }) {
-  const { status } = await searchParams;
+  const params = await searchParams;
+  const { status } = params;
   const data = await getUserWithProfile();
   const isBrand = data?.role === "brand";
 
@@ -44,7 +57,16 @@ export default async function CampaignsPage({
     data?.role === "influencer"
       ? ((data.profile as InfluencerProfile).subscriptionTier ?? "free")
       : "free";
-  const publicCampaigns = !isBrand ? await getPublicCampaigns(viewerTier) : null;
+  const campaignFilters: CampaignFilters = {
+    search: params.search || undefined,
+    niche: params.niche || undefined,
+    type: params.type || undefined,
+    platform: params.platform || undefined,
+    minBudget: params.minBudget ? Number(params.minBudget) : undefined,
+  };
+  const publicCampaigns = !isBrand
+    ? await getPublicCampaigns(viewerTier, campaignFilters)
+    : null;
 
   return (
     <div className="space-y-6">
@@ -127,22 +149,45 @@ export default async function CampaignsPage({
               </Link>
             </div>
           )}
+
+          <CampaignSearch filters={campaignFilters} />
+
           {publicCampaigns.length === 0 ? (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-              <Megaphone className="size-10 text-muted-foreground" />
-              <h3 className="mt-4 text-lg font-semibold">No campaigns yet</h3>
-              <p className="mt-1 text-sm text-muted-foreground">
-                Check back soon — new campaigns are posted regularly.
-              </p>
+              {Object.values(campaignFilters).some(Boolean) ? (
+                <>
+                  <SearchIcon className="size-10 text-muted-foreground" />
+                  <h3 className="mt-4 text-lg font-semibold">
+                    No campaigns match your filters
+                  </h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Try adjusting your search terms or clearing a filter.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <Megaphone className="size-10 text-muted-foreground" />
+                  <h3 className="mt-4 text-lg font-semibold">No campaigns yet</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Check back soon — new campaigns are posted regularly.
+                  </p>
+                </>
+              )}
             </div>
           ) : (
-            publicCampaigns.map(({ campaign, brandName }) => (
-              <CampaignCard
-                key={campaign.id}
-                campaign={campaign}
-                brandName={brandName}
-              />
-            ))
+            <>
+              <p className="text-sm text-muted-foreground">
+                {publicCampaigns.length} campaign
+                {publicCampaigns.length !== 1 ? "s" : ""} available
+              </p>
+              {publicCampaigns.map(({ campaign, brandName }) => (
+                <CampaignCard
+                  key={campaign.id}
+                  campaign={campaign}
+                  brandName={brandName}
+                />
+              ))}
+            </>
           )}
         </div>
       )}
