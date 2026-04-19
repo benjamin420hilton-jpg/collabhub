@@ -11,8 +11,8 @@ import {
 
 const HERO_IMAGES = [
   {
-    src: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80&auto=format&fit=crop",
-    alt: "Fashion rack of curated clothing",
+    src: "https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=600&q=80&auto=format&fit=crop",
+    alt: "Creator holding a camera in warm light",
     aspect: "aspect-[4/5]",
     width: 600,
     height: 750,
@@ -50,10 +50,10 @@ export default async function HomePage() {
   return (
     <div className="flex min-h-screen flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 border-b border-gray-200/60 bg-white/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-          <span className="text-2xl font-extrabold tracking-tight text-gradient-primary">CollabHub</span>
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-50 border-b border-gray-200/60 bg-white/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+          <span className="text-3xl font-extrabold tracking-tight text-gradient-primary">CollabHub</span>
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link href="/sign-in">
               <Button variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                 Sign In
@@ -71,7 +71,7 @@ export default async function HomePage() {
       <main className="flex flex-1 flex-col">
         {/* Hero — text + imagery collage */}
         <section className="relative overflow-hidden bg-gradient-hero">
-          <div className="relative mx-auto max-w-7xl px-6 py-6 sm:py-8 lg:py-12">
+          <div className="relative mx-auto max-w-7xl px-6 pt-2 pb-6 sm:pt-3 sm:pb-8 lg:pt-4 lg:pb-12">
             <div className="grid items-center gap-8 lg:grid-cols-[1.15fr_1fr] lg:gap-12">
               {/* Left — text */}
               <div className="max-w-2xl">
