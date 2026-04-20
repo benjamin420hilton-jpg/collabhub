@@ -1,10 +1,18 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getUserWithProfile } from "@/server/queries/profiles";
 import { db } from "@/db";
 import { socialAccounts } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { SocialAccountsManager } from "@/components/profiles/social-accounts-manager";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Pencil } from "lucide-react";
 import type { InfluencerProfile } from "@/types";
 
 export default async function SettingsPage() {
@@ -35,10 +43,10 @@ export default async function SettingsPage() {
         </p>
       </div>
 
-      {/* Profile info */}
+      {/* Account info */}
       <Card className="animate-fade-in-up delay-100">
         <CardHeader>
-          <CardTitle>Profile</CardTitle>
+          <CardTitle>Account</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           <div className="flex justify-between">
@@ -56,6 +64,26 @@ export default async function SettingsPage() {
             <span className="font-medium capitalize">{data.role}</span>
           </div>
         </CardContent>
+      </Card>
+
+      {/* Profile edit entry */}
+      <Card className="animate-fade-in-up delay-150">
+        <CardHeader className="flex flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle>Profile</CardTitle>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {isInfluencer
+                ? "Your bio, niches, location, rate, and how brands can reach you."
+                : "Your company details, industry, and how creators see your brand."}
+            </p>
+          </div>
+          <Link href="/settings/profile">
+            <Button variant="outline" className="gap-2">
+              <Pencil className="size-4" />
+              Edit profile
+            </Button>
+          </Link>
+        </CardHeader>
       </Card>
 
       {/* Social accounts for influencers */}
