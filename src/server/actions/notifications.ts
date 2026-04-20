@@ -5,6 +5,7 @@ import { db } from "@/db";
 import { users, notifications } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { sendEmail } from "@/lib/email";
 
 export async function markNotificationAsRead(notificationId: string) {
   const { userId: clerkId } = await auth();
@@ -56,6 +57,42 @@ export async function markAllNotificationsAsRead() {
   revalidatePath("/");
 }
 
+/**
+ * Email-worthy notification types — these send a transactional email in
+ * addition to creating the in-app notification. Chatty types (e.g. chat
+ * messages) are deliberately excluded to avoid inbox fatigue.
+ */
+const EMAIL_TYPES = new Set<string>([
+  "proposal_received",
+  "proposal_accepted",
+  "direct_offer_received",
+  "escrow_funded",
+  "milestone_submitted",
+  "milestone_paid",
+  "payment_failed",
+  "contract_disputed",
+  "campaign_approved",
+  "campaign_rejected",
+  "product_shipped",
+  "product_delivered",
+]);
+
+const CTA_LABEL_BY_TYPE: Record<string, string> = {
+  proposal_received: "Review proposal",
+  proposal_accepted: "View contract",
+  direct_offer_received: "See the offer",
+  escrow_funded: "View contract",
+  milestone_submitted: "Review submission",
+  milestone_paid: "View payout",
+  payment_failed: "Retry payment",
+  contract_disputed: "Open contract",
+  campaign_approved: "View campaign",
+  campaign_rejected: "Edit campaign",
+  product_shipped: "Track shipment",
+  product_delivered: "View contract",
+  new_message: "Open messages",
+};
+
 export async function createNotification(
   userId: string,
   type: string,
@@ -69,5 +106,24 @@ export async function createNotification(
     title,
     message,
     link: link ?? null,
+  });
+
+  if (!EMAIL_TYPES.has(type)) return;
+
+  const [recipient] = await db
+    .select({ email: users.email })
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1);
+
+  if (!recipient?.email) return;
+
+  await sendEmail({
+    to: recipient.email,
+    subject: title,
+    title,
+    body: message,
+    ctaLabel: CTA_LABEL_BY_TYPE[type] ?? "Open CollabHub",
+    ctaPath: link,
   });
 }

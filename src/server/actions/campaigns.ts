@@ -7,7 +7,6 @@ import {
   brandProfiles,
   campaigns,
   campaignDeliverables,
-  notifications,
 } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
@@ -18,6 +17,7 @@ import {
 } from "@/lib/validators/campaign";
 import { dollarsToCents } from "@/lib/constants";
 import { requireAdmin } from "@/lib/auth/admin";
+import { createNotification } from "@/server/actions/notifications";
 
 async function getBrandProfileForCurrentUser() {
   const { userId } = await auth();
@@ -168,13 +168,13 @@ export async function approveCampaign(campaignId: string) {
     .limit(1);
 
   if (brand) {
-    await db.insert(notifications).values({
-      userId: brand.userId,
-      type: "campaign_approved",
-      title: "Campaign approved",
-      message: `"${campaign.title}" is now live on the campaign board.`,
-      link: `/campaigns/${campaign.id}`,
-    });
+    await createNotification(
+      brand.userId,
+      "campaign_approved",
+      "Campaign approved",
+      `"${campaign.title}" is now live on the campaign board.`,
+      `/campaigns/${campaign.id}`,
+    );
   }
 
   revalidatePath("/admin/campaigns");
@@ -221,13 +221,13 @@ export async function rejectCampaign(campaignId: string, reason: string) {
     .limit(1);
 
   if (brand) {
-    await db.insert(notifications).values({
-      userId: brand.userId,
-      type: "campaign_rejected",
-      title: "Campaign needs changes",
-      message: `"${campaign.title}" was not approved. Reason: ${trimmed.slice(0, 140)}`,
-      link: `/campaigns/${campaign.id}`,
-    });
+    await createNotification(
+      brand.userId,
+      "campaign_rejected",
+      "Campaign needs changes",
+      `"${campaign.title}" was not approved. Reason: ${trimmed.slice(0, 140)}`,
+      `/campaigns/${campaign.id}`,
+    );
   }
 
   revalidatePath("/admin/campaigns");

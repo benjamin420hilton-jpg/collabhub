@@ -41,6 +41,7 @@ export default async function ProfileSettingsPage() {
               (data.profile as InfluencerProfile).minimumRate,
             acceptsDirectOffers: (data.profile as InfluencerProfile)
               .acceptsDirectOffers,
+            avatarUrl: (data.profile as InfluencerProfile).avatarUrl,
           }}
         />
       ) : (
@@ -54,6 +55,7 @@ export default async function ProfileSettingsPage() {
             description: (data.profile as BrandProfile).description,
             city: (data.profile as BrandProfile).city,
             state: (data.profile as BrandProfile).state,
+            logoUrl: (data.profile as BrandProfile).logoUrl,
           }}
         />
       )}

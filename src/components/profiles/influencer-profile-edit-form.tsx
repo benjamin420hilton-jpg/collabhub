@@ -1,12 +1,16 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { updateInfluencerProfile } from "@/server/actions/profiles";
+import {
+  updateInfluencerProfile,
+  updateInfluencerAvatar,
+} from "@/server/actions/profiles";
 import type { UpdateInfluencerProfileInput } from "@/lib/validators/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import {
   Card,
   CardContent,
@@ -68,6 +72,7 @@ interface Props {
     state: string | null;
     minimumRateCents: number | null;
     acceptsDirectOffers: boolean;
+    avatarUrl: string | null;
   };
 }
 
@@ -83,6 +88,13 @@ export function InfluencerProfileEditForm({ initial }: Props) {
     () => new Set((initial.secondaryNiches ?? []) as Niche[]),
   );
   const [state, setState] = useState<string>(initial.state ?? "");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(initial.avatarUrl);
+
+  async function handleAvatarChange(url: string | null) {
+    setAvatarUrl(url);
+    const result = await updateInfluencerAvatar(url);
+    if (result?.error) setError(result.error);
+  }
 
   function toggleSecondary(niche: Niche) {
     setSecondary((prev) => {
@@ -143,6 +155,15 @@ export function InfluencerProfileEditForm({ initial }: Props) {
               Profile updated.
             </div>
           )}
+
+          <ImageUploader
+            kind="avatar"
+            label="Profile photo"
+            helperText="JPG, PNG, WebP or GIF — max 5 MB. Square images look best."
+            value={avatarUrl}
+            onChange={handleAvatarChange}
+            fallback={initial.displayName.slice(0, 2).toUpperCase()}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="displayName">Display name</Label>

@@ -8,8 +8,8 @@ import {
   milestones,
   payments,
   influencerProfiles,
-  notifications,
 } from "@/db/schema";
+import { createNotification } from "@/server/actions/notifications";
 import { eq } from "drizzle-orm";
 import type Stripe from "stripe";
 import { centsToDollars } from "@/lib/constants";
@@ -120,14 +120,13 @@ export async function POST(req: Request) {
                 .limit(1);
 
               if (influencer) {
-                await db.insert(notifications).values({
-                  userId: influencer.userId,
-                  type: "escrow_funded",
-                  title: "Contract funded",
-                  message:
-                    "The brand has funded the escrow. You can start working on your deliverables.",
-                  link: `/contracts/${contract.id}`,
-                });
+                await createNotification(
+                  influencer.userId,
+                  "escrow_funded",
+                  "Contract funded",
+                  "The brand has funded the escrow. You can start working on your deliverables.",
+                  `/contracts/${contract.id}`,
+                );
               }
             }
           }
@@ -424,14 +423,13 @@ async function handleEscrowSucceeded(pi: Stripe.PaymentIntent) {
     .limit(1);
 
   if (influencer) {
-    await db.insert(notifications).values({
-      userId: influencer.userId,
-      type: "escrow_funded",
-      title: "Contract funded",
-      message:
-        "The brand has funded the escrow for your contract. You can start working on your deliverables.",
-      link: `/contracts/${contractId}`,
-    });
+    await createNotification(
+      influencer.userId,
+      "escrow_funded",
+      "Contract funded",
+      "The brand has funded the escrow for your contract. You can start working on your deliverables.",
+      `/contracts/${contractId}`,
+    );
   }
 }
 
@@ -467,14 +465,13 @@ async function handleEscrowFailed(pi: Stripe.PaymentIntent) {
     .limit(1);
 
   if (brand) {
-    await db.insert(notifications).values({
-      userId: brand.userId,
-      type: "payment_failed",
-      title: "Escrow payment failed",
-      message:
-        "Your escrow payment failed. Please update your payment method and try again.",
-      link: `/contracts/${contractId}`,
-    });
+    await createNotification(
+      brand.userId,
+      "payment_failed",
+      "Escrow payment failed",
+      "Your escrow payment failed. Please update your payment method and try again.",
+      `/contracts/${contractId}`,
+    );
   }
 }
 
@@ -520,13 +517,13 @@ async function handleTransferCreated(transfer: Stripe.Transfer) {
     .limit(1);
 
   if (influencer) {
-    await db.insert(notifications).values({
-      userId: influencer.userId,
-      type: "milestone_paid",
-      title: "Payment received",
-      message: `You've been paid $${centsToDollars(milestone.amount)} for "${milestone.title}".`,
-      link: `/contracts/${contract.id}`,
-    });
+    await createNotification(
+      influencer.userId,
+      "milestone_paid",
+      "Payment received",
+      `You've been paid $${centsToDollars(milestone.amount)} for "${milestone.title}".`,
+      `/contracts/${contract.id}`,
+    );
   }
 }
 

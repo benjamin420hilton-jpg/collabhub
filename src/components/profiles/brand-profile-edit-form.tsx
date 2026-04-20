@@ -1,9 +1,13 @@
 "use client";
 
 import { useTransition, useState } from "react";
-import { updateBrandProfile } from "@/server/actions/profiles";
+import {
+  updateBrandProfile,
+  updateBrandLogo,
+} from "@/server/actions/profiles";
 import type { UpdateBrandProfileInput } from "@/lib/validators/profile";
 import { Button } from "@/components/ui/button";
+import { ImageUploader } from "@/components/ui/image-uploader";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -69,6 +73,7 @@ interface Props {
     description: string | null;
     city: string | null;
     state: string | null;
+    logoUrl: string | null;
   };
 }
 
@@ -82,6 +87,13 @@ export function BrandProfileEditForm({ initial }: Props) {
     initial.companySize ?? "",
   );
   const [state, setState] = useState<string>(initial.state ?? "");
+  const [logoUrl, setLogoUrl] = useState<string | null>(initial.logoUrl);
+
+  async function handleLogoChange(url: string | null) {
+    setLogoUrl(url);
+    const result = await updateBrandLogo(url);
+    if (result?.error) setError(result.error);
+  }
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -124,6 +136,15 @@ export function BrandProfileEditForm({ initial }: Props) {
               Profile updated.
             </div>
           )}
+
+          <ImageUploader
+            kind="logo"
+            label="Company logo"
+            helperText="Square SVG/PNG on a transparent background works best. Max 5 MB."
+            value={logoUrl}
+            onChange={handleLogoChange}
+            fallback={initial.companyName.slice(0, 2).toUpperCase()}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="companyName">Company name</Label>

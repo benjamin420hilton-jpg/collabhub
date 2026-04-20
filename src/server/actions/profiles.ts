@@ -182,6 +182,53 @@ export async function createInfluencerProfile(input: InfluencerProfileInput) {
   redirect("/dashboard");
 }
 
+export async function updateInfluencerAvatar(url: string | null) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.clerkUserId, userId))
+    .limit(1);
+
+  if (!user) throw new Error("User not found");
+  if (user.role !== "influencer") return { error: "Not a creator account" };
+
+  await db
+    .update(influencerProfiles)
+    .set({ avatarUrl: url })
+    .where(eq(influencerProfiles.userId, user.id));
+
+  revalidatePath("/settings/profile");
+  revalidatePath("/dashboard");
+  revalidatePath("/directory");
+  return { success: true };
+}
+
+export async function updateBrandLogo(url: string | null) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthorized");
+
+  const [user] = await db
+    .select()
+    .from(users)
+    .where(eq(users.clerkUserId, userId))
+    .limit(1);
+
+  if (!user) throw new Error("User not found");
+  if (user.role !== "brand") return { error: "Not a brand account" };
+
+  await db
+    .update(brandProfiles)
+    .set({ logoUrl: url })
+    .where(eq(brandProfiles.userId, user.id));
+
+  revalidatePath("/settings/profile");
+  revalidatePath("/dashboard");
+  return { success: true };
+}
+
 export async function updateInfluencerProfile(
   input: UpdateInfluencerProfileInput,
 ) {

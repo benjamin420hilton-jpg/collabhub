@@ -11,9 +11,9 @@ import {
   contracts,
   milestones,
   payments,
-  notifications,
 } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { createNotification } from "@/server/actions/notifications";
+import { eq, and, isNotNull } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -427,13 +427,13 @@ export async function updateShippingTracking(
     .limit(1);
 
   if (influencer) {
-    await db.insert(notifications).values({
-      userId: influencer.userId,
-      type: "product_shipped",
-      title: "Your product has shipped",
-      message: `Tracking number: ${trackingNumber}`,
-      link: `/contracts/${contractId}`,
-    });
+    await createNotification(
+      influencer.userId,
+      "product_shipped",
+      "Your product has shipped",
+      `Tracking number: ${trackingNumber}`,
+      `/contracts/${contractId}`,
+    );
   }
 
   revalidatePath(`/contracts/${contractId}`);
@@ -477,14 +477,13 @@ export async function confirmDelivery(contractId: string) {
     .limit(1);
 
   if (brand) {
-    await db.insert(notifications).values({
-      userId: brand.userId,
-      type: "product_delivered",
-      title: "Product received",
-      message:
-        "The influencer has confirmed receipt of your product. Content creation period begins now.",
-      link: `/contracts/${contractId}`,
-    });
+    await createNotification(
+      brand.userId,
+      "product_delivered",
+      "Product received",
+      "The influencer has confirmed receipt of your product. Content creation period begins now.",
+      `/contracts/${contractId}`,
+    );
   }
 
   revalidatePath(`/contracts/${contractId}`);
@@ -548,6 +547,74 @@ export async function disputeContract(contractId: string, reason: string) {
     })
     .where(eq(contracts.id, contractId));
 
+  // If the BRAND raised the dispute and any milestones have already been paid
+  // out, reverse those Stripe transfers so the funds come back to the platform
+  // account. Creators disputing typically means they want something extra
+  // resolved (e.g. unpaid final milestone), not to refund their earnings — so
+  // we don't auto-reverse in that direction.
+  const reversalResults = {
+    reversed: 0 as number,
+    failed: 0 as number,
+  };
+
+  if (isBrand) {
+    const paidMilestones = await db
+      .select()
+      .from(milestones)
+      .where(
+        and(
+          eq(milestones.contractId, contractId),
+          isNotNull(milestones.stripeTransferId),
+        ),
+      );
+
+    if (paidMilestones.length > 0) {
+      const stripe = getStripe();
+
+      for (const m of paidMilestones) {
+        if (!m.stripeTransferId) continue;
+        try {
+          const reversal = await stripe.transfers.createReversal(
+            m.stripeTransferId,
+            {
+              metadata: {
+                milestoneId: m.id,
+                contractId,
+                disputeReason: reason.slice(0, 200),
+              },
+            },
+            { idempotencyKey: `milestone_reversal_${m.id}` },
+          );
+
+          await db
+            .update(milestones)
+            .set({ status: "disputed" })
+            .where(eq(milestones.id, m.id));
+
+          await db.insert(payments).values({
+            contractId,
+            milestoneId: m.id,
+            type: "refund",
+            status: "succeeded",
+            amount: m.amount,
+            currency: "aud",
+            stripeTransferId: reversal.id,
+            description: `Reversal for disputed milestone: ${m.title}`,
+            processedAt: new Date(),
+          });
+
+          reversalResults.reversed += 1;
+        } catch (err) {
+          console.error(
+            `[dispute] failed to reverse milestone ${m.id}:`,
+            err,
+          );
+          reversalResults.failed += 1;
+        }
+      }
+    }
+  }
+
   // Notify the other party
   const otherProfileId = isBrand
     ? contract.influencerProfileId
@@ -561,15 +628,23 @@ export async function disputeContract(contractId: string, reason: string) {
     .limit(1);
 
   if (otherProfile) {
-    await db.insert(notifications).values({
-      userId: otherProfile.userId,
-      type: "contract_disputed",
-      title: "Contract disputed",
-      message: `A dispute has been raised. Reason: "${reason.slice(0, 100)}"`,
-      link: `/contracts/${contractId}`,
-    });
+    const reversalSuffix =
+      reversalResults.reversed > 0
+        ? ` ${reversalResults.reversed} milestone payment${reversalResults.reversed === 1 ? "" : "s"} ${reversalResults.reversed === 1 ? "has" : "have"} been reversed.`
+        : "";
+    await createNotification(
+      otherProfile.userId,
+      "contract_disputed",
+      "Contract disputed",
+      `A dispute has been raised. Reason: "${reason.slice(0, 100)}"${reversalSuffix}`,
+      `/contracts/${contractId}`,
+    );
   }
 
   revalidatePath(`/contracts/${contractId}`);
-  return { success: true };
+  return {
+    success: true,
+    reversed: reversalResults.reversed,
+    failed: reversalResults.failed,
+  };
 }

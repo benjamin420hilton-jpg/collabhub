@@ -2,9 +2,10 @@
 
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { users, messages, conversations, notifications } from "@/db/schema";
+import { users, messages, conversations } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { createNotification } from "@/server/actions/notifications";
 
 export async function sendMessage(conversationId: string, content: string) {
   const { userId: clerkId } = await auth();
@@ -48,13 +49,13 @@ export async function sendMessage(conversationId: string, content: string) {
       ? conv.participantTwoId
       : conv.participantOneId;
 
-  await db.insert(notifications).values({
-    userId: recipientId,
-    type: "new_message",
-    title: "New Message",
-    message: `${user.firstName ?? "Someone"} sent you a message`,
-    link: `/messages/${conversationId}`,
-  });
+  await createNotification(
+    recipientId,
+    "new_message",
+    "New Message",
+    `${user.firstName ?? "Someone"} sent you a message`,
+    `/messages/${conversationId}`,
+  );
 
   revalidatePath(`/messages/${conversationId}`);
   revalidatePath("/messages");
