@@ -116,25 +116,10 @@ export async function publishCampaign(campaignId: string) {
   if (campaign.brandProfileId !== profile.id) return { error: "Unauthorized" };
   if (campaign.status !== "draft") return { error: "Campaign is not a draft" };
 
-  // Unverified brands go through review
-  if (!profile.verified) {
-    await db
-      .update(campaigns)
-      .set({
-        status: "pending_review",
-        isPublic: false,
-      })
-      .where(eq(campaigns.id, campaignId));
-
-    revalidatePath("/campaigns");
-    revalidatePath(`/campaigns/${campaignId}`);
-    return {
-      success: true,
-      message:
-        "Your campaign has been submitted for review. It will go live once approved.",
-    };
-  }
-
+  // Campaigns auto-publish — content moderation runs at create time via the
+  // validator's profanity check. Abuse is handled reactively through the
+  // flag-and-review flow on /admin/campaigns (still wired up for flagged
+  // campaigns) rather than as a pre-publish gate.
   await db
     .update(campaigns)
     .set({

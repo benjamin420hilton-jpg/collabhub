@@ -105,6 +105,8 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
 
     const formData = new FormData(e.currentTarget);
 
+    const deadlineRaw = formData.get("applicationDeadline") as string;
+
     const data: CreateCampaignInput = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
@@ -118,6 +120,7 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
       maxApplications: Number(formData.get("maxApplications")) || undefined,
       giftDescription: (formData.get("giftDescription") as string) || undefined,
       giftValue: Number(formData.get("giftValue")) || undefined,
+      applicationDeadline: deadlineRaw ? new Date(deadlineRaw) : (undefined as unknown as Date),
       deliverables,
     };
 
@@ -148,8 +151,11 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
                 id="title"
                 name="title"
                 placeholder="e.g. Summer Fashion Collection Launch"
+                minLength={10}
+                maxLength={100}
                 required
               />
+              <p className="text-xs text-muted-foreground">10–100 characters.</p>
             </div>
 
             <div className="space-y-2">
@@ -157,10 +163,16 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
               <Textarea
                 id="description"
                 name="description"
-                placeholder="Describe your campaign, what you're looking for, and any specific requirements..."
-                rows={5}
+                placeholder="What's the campaign about? Who's your ideal creator? What does success look like? Any tone/brand guidelines? The more specific, the better the applications."
+                rows={6}
+                minLength={100}
+                maxLength={2000}
                 required
               />
+              <p className="text-xs text-muted-foreground">
+                Minimum 100 characters — briefs with detail get better
+                applicants.
+              </p>
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
@@ -210,26 +222,32 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
             <CardContent className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="budgetMin">Minimum ($)</Label>
+                  <Label htmlFor="budgetMin">Minimum ($) *</Label>
                   <Input
                     id="budgetMin"
                     name="budgetMin"
                     type="number"
                     min="0"
                     placeholder="500"
+                    required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="budgetMax">Maximum ($)</Label>
+                  <Label htmlFor="budgetMax">Maximum ($) *</Label>
                   <Input
                     id="budgetMax"
                     name="budgetMax"
                     type="number"
                     min="0"
                     placeholder="2000"
+                    required
                   />
                 </div>
               </div>
+              <p className="text-xs text-muted-foreground">
+                Creators self-select on budget — leaving it blank means you'll
+                get applications well outside your range.
+              </p>
             </CardContent>
           </Card>
         ) : (
@@ -239,12 +257,16 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="giftDescription">What are you gifting?</Label>
+                <Label htmlFor="giftDescription">
+                  What are you gifting? *
+                </Label>
                 <Textarea
                   id="giftDescription"
                   name="giftDescription"
-                  placeholder="Describe the product or experience..."
+                  placeholder="Describe the product or experience in detail..."
                   rows={3}
+                  minLength={10}
+                  required
                 />
               </div>
               <div className="space-y-2">
@@ -260,6 +282,30 @@ export function CreateCampaignForm({ isPro }: CreateCampaignFormProps) {
             </CardContent>
           </Card>
         )}
+
+        {/* Deadline */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Timeline</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="applicationDeadline">
+                Application deadline *
+              </Label>
+              <Input
+                id="applicationDeadline"
+                name="applicationDeadline"
+                type="date"
+                required
+              />
+              <p className="text-xs text-muted-foreground">
+                After this date, creators can no longer apply. Must be in the
+                future.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Targeting */}
         <Card>
