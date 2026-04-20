@@ -276,7 +276,7 @@ export default async function HomePage() {
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Brands */}
-              <div className="rounded-3xl border border-border bg-gradient-to-br from-white to-coral-light/50 p-8 shadow-sm animate-fade-in-up">
+              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-coral-light/50 p-8 shadow-sm animate-fade-in-up">
                 <div className="inline-flex rounded-xl bg-coral-light p-3">
                   <Megaphone className="size-6 text-coral" />
                 </div>
@@ -299,7 +299,7 @@ export default async function HomePage() {
                     </li>
                   ))}
                 </ul>
-                <Link href="/sign-up" className="mt-8 inline-block">
+                <Link href="/sign-up" className="mt-auto inline-block pt-8">
                   <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
                     Start as a Brand <ArrowRight className="ml-2 size-4" />
                   </Button>
@@ -307,7 +307,7 @@ export default async function HomePage() {
               </div>
 
               {/* Creators */}
-              <div className="rounded-3xl border border-border bg-gradient-to-br from-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
+              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
                 <div className="inline-flex rounded-xl bg-teal-light p-3">
                   <Camera className="size-6 text-teal" />
                 </div>
@@ -345,7 +345,7 @@ export default async function HomePage() {
                     brands trust.
                   </p>
                 </div>
-                <Link href="/sign-up" className="mt-6 inline-block">
+                <Link href="/sign-up" className="mt-auto inline-block pt-8">
                   <Button className="bg-gradient-ocean text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
                     Start as a Creator <ArrowRight className="ml-2 size-4" />
                   </Button>
