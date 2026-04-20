@@ -12,6 +12,7 @@ import {
   Search,
   Settings,
   CreditCard,
+  Shield,
 } from "lucide-react";
 import { NotificationBell } from "./notification-bell";
 
@@ -50,6 +51,7 @@ interface TopNavbarProps {
   subscriptionTier?: "free" | "pro";
   notifications: NotificationItem[];
   unreadCount: number;
+  isAdmin?: boolean;
 }
 
 export function TopNavbar({
@@ -57,6 +59,7 @@ export function TopNavbar({
   subscriptionTier,
   notifications,
   unreadCount,
+  isAdmin = false,
 }: TopNavbarProps) {
   const pathname = usePathname();
   const navItems = role === "brand" ? brandNav : influencerNav;
@@ -94,6 +97,19 @@ export function TopNavbar({
 
         {/* Right: Actions */}
         <div className="flex items-center gap-2">
+          {isAdmin && (
+            <Link
+              href="/admin/campaigns"
+              className={`hidden items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors md:inline-flex ${
+                pathname.startsWith("/admin")
+                  ? "bg-coral/20 text-coral"
+                  : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <Shield className="size-3.5" />
+              Admin
+            </Link>
+          )}
           {subscriptionTier === "pro" && (
             <Badge className="bg-gradient-primary border-0 text-white shadow-sm text-[10px] px-2 py-0.5">
               PRO

@@ -31,6 +31,7 @@ export const campaignStatusEnum = pgEnum("campaign_status", [
   "paused",
   "archived",
   "pending_review",
+  "rejected",
 ]);
 
 export const socialPlatformEnum = pgEnum("social_platform", [

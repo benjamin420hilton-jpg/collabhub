@@ -59,6 +59,8 @@ export const campaigns = pgTable(
     expiresAt: timestamp("expires_at", { withTimezone: true }),
     isFlagged: boolean("is_flagged").notNull().default(false),
     flaggedReason: text("flagged_reason"),
+    rejectionReason: text("rejection_reason"),
+    reviewedAt: timestamp("reviewed_at", { withTimezone: true }),
   },
   (table) => [
     index("campaigns_brand_profile_id_idx").on(table.brandProfileId),

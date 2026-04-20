@@ -1,18 +1,41 @@
-import { redirect } from "next/navigation";
-import { getUserWithProfile } from "@/server/queries/profiles";
+import { notFound } from "next/navigation";
 import { db } from "@/db";
 import { campaigns, brandProfiles } from "@/db/schema";
 import { eq, desc } from "drizzle-orm";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Megaphone, Shield, Clock, Flag } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Megaphone,
+  Shield,
+  Clock,
+  Flag,
+  ExternalLink,
+  DollarSign,
+  Target,
+} from "lucide-react";
 import Link from "next/link";
+import { getCurrentAdminClerkId } from "@/lib/auth/admin";
+import { CampaignReviewActions } from "@/components/admin/campaign-review-actions";
+import { centsToDollars } from "@/lib/constants";
+
+function formatBudget(min: number | null, max: number | null): string | null {
+  if (min == null && max == null) return null;
+  if (min != null && max != null)
+    return `$${centsToDollars(min).toLocaleString()} – $${centsToDollars(max).toLocaleString()}`;
+  if (min != null) return `From $${centsToDollars(min).toLocaleString()}`;
+  if (max != null) return `Up to $${centsToDollars(max!).toLocaleString()}`;
+  return null;
+}
 
 export default async function AdminCampaignsPage() {
-  const data = await getUserWithProfile();
-  if (!data) redirect("/sign-in");
+  const adminClerkId = await getCurrentAdminClerkId();
+  if (!adminClerkId) notFound();
 
-  // Fetch pending-review campaigns with brand info
   const pendingCampaigns = await db
     .select({
       campaign: campaigns,
@@ -24,7 +47,6 @@ export default async function AdminCampaignsPage() {
     .where(eq(campaigns.status, "pending_review"))
     .orderBy(desc(campaigns.createdAt));
 
-  // Fetch flagged campaigns with brand info
   const flaggedCampaigns = await db
     .select({
       campaign: campaigns,
@@ -46,7 +68,8 @@ export default async function AdminCampaignsPage() {
           <div>
             <h1 className="text-3xl font-bold">Campaign Review</h1>
             <p className="mt-1 text-muted-foreground">
-              Review pending campaigns and investigate flagged content.
+              Approve pending campaigns or reject with a reason the brand can
+              act on.
             </p>
           </div>
         </div>
@@ -73,23 +96,25 @@ export default async function AdminCampaignsPage() {
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-4">
             {pendingCampaigns.map(
-              ({ campaign, brandName, brandVerified }, i) => (
-                <Link
-                  key={campaign.id}
-                  href={`/campaigns/${campaign.id}`}
-                >
+              ({ campaign, brandName, brandVerified }, i) => {
+                const budget = formatBudget(
+                  campaign.budgetMin,
+                  campaign.budgetMax,
+                );
+                return (
                   <Card
-                    className="card-hover animate-fade-in-up"
+                    key={campaign.id}
+                    className="animate-fade-in-up"
                     style={{ animationDelay: `${(i + 2) * 80}ms` }}
                   >
-                    <CardHeader className="flex flex-row items-center justify-between pb-2">
-                      <div>
+                    <CardHeader className="flex flex-row items-start justify-between gap-4 pb-3">
+                      <div className="space-y-1">
                         <CardTitle className="text-lg">
                           {campaign.title}
                         </CardTitle>
-                        <p className="mt-0.5 flex items-center gap-1.5 text-sm text-muted-foreground">
+                        <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
                           {brandName}
                           {brandVerified && (
                             <Badge
@@ -99,28 +124,75 @@ export default async function AdminCampaignsPage() {
                               Verified
                             </Badge>
                           )}
+                          <span className="text-muted-foreground/60">·</span>
+                          <span>
+                            Submitted{" "}
+                            {new Date(campaign.createdAt).toLocaleDateString(
+                              "en-AU",
+                              {
+                                day: "numeric",
+                                month: "short",
+                                year: "numeric",
+                              },
+                            )}
+                          </span>
                         </p>
                       </div>
-                      <Badge className="border-amber-300/50 bg-amber-50 text-amber-700">
+                      <Badge className="border-amber-300/50 bg-amber-50 text-amber-700 shrink-0">
                         pending review
                       </Badge>
                     </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">
-                        Submitted{" "}
-                        {new Date(campaign.createdAt).toLocaleDateString(
-                          "en-AU",
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          },
-                        )}
+                    <CardContent className="space-y-4">
+                      <p className="text-sm whitespace-pre-wrap text-foreground/90">
+                        {campaign.description.length > 400
+                          ? `${campaign.description.slice(0, 400)}…`
+                          : campaign.description}
                       </p>
+
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        <Badge variant="outline" className="gap-1">
+                          <Target className="size-3" />
+                          {campaign.type.replace("_", " ")}
+                        </Badge>
+                        {campaign.targetPlatform && (
+                          <Badge variant="outline">
+                            {campaign.targetPlatform}
+                          </Badge>
+                        )}
+                        {campaign.targetNiche && (
+                          <Badge variant="outline">
+                            {campaign.targetNiche.replace("_", " ")}
+                          </Badge>
+                        )}
+                        {budget && (
+                          <Badge variant="outline" className="gap-1">
+                            <DollarSign className="size-3" />
+                            {budget}
+                          </Badge>
+                        )}
+                        {campaign.minFollowerCount && (
+                          <Badge variant="outline">
+                            {campaign.minFollowerCount.toLocaleString()}+
+                            followers
+                          </Badge>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between gap-4 border-t border-border/60 pt-4">
+                        <Link
+                          href={`/campaigns/${campaign.id}`}
+                          target="_blank"
+                          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                        >
+                          <ExternalLink className="size-3.5" />
+                          View full campaign
+                        </Link>
+                        <CampaignReviewActions campaignId={campaign.id} />
+                      </div>
                     </CardContent>
                   </Card>
-                </Link>
-              ),
+                );
+              },
             )}
           </div>
         )}
@@ -150,10 +222,7 @@ export default async function AdminCampaignsPage() {
           <div className="space-y-3">
             {flaggedCampaigns.map(
               ({ campaign, brandName, brandVerified }, i) => (
-                <Link
-                  key={campaign.id}
-                  href={`/campaigns/${campaign.id}`}
-                >
+                <Link key={campaign.id} href={`/campaigns/${campaign.id}`}>
                   <Card
                     className="card-hover animate-fade-in-up border-red-200/50"
                     style={{ animationDelay: `${(i + 2) * 80}ms` }}

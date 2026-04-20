@@ -17,6 +17,7 @@ import {
   type CreateCampaignInput,
 } from "@/lib/validators/campaign";
 import { dollarsToCents } from "@/lib/constants";
+import { requireAdmin } from "@/lib/auth/admin";
 
 async function getBrandProfileForCurrentUser() {
   const { userId } = await auth();
@@ -143,6 +144,108 @@ export async function publishCampaign(campaignId: string) {
     })
     .where(eq(campaigns.id, campaignId));
 
+  revalidatePath("/campaigns");
+  revalidatePath(`/campaigns/${campaignId}`);
+  return { success: true };
+}
+
+/**
+ * Admin: approve a pending-review campaign. Publishes it and notifies the brand.
+ */
+export async function approveCampaign(campaignId: string) {
+  await requireAdmin();
+
+  const [campaign] = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, campaignId))
+    .limit(1);
+
+  if (!campaign) return { error: "Campaign not found" };
+  if (campaign.status !== "pending_review")
+    return { error: "Campaign is not awaiting review" };
+
+  await db
+    .update(campaigns)
+    .set({
+      status: "published",
+      isPublic: true,
+      publishedAt: new Date(),
+      reviewedAt: new Date(),
+      rejectionReason: null,
+    })
+    .where(eq(campaigns.id, campaignId));
+
+  const [brand] = await db
+    .select({ userId: brandProfiles.userId })
+    .from(brandProfiles)
+    .where(eq(brandProfiles.id, campaign.brandProfileId))
+    .limit(1);
+
+  if (brand) {
+    await db.insert(notifications).values({
+      userId: brand.userId,
+      type: "campaign_approved",
+      title: "Campaign approved",
+      message: `"${campaign.title}" is now live on the campaign board.`,
+      link: `/campaigns/${campaign.id}`,
+    });
+  }
+
+  revalidatePath("/admin/campaigns");
+  revalidatePath("/campaigns");
+  revalidatePath(`/campaigns/${campaignId}`);
+  return { success: true };
+}
+
+/**
+ * Admin: reject a pending-review campaign with a reason. Notifies the brand.
+ */
+export async function rejectCampaign(campaignId: string, reason: string) {
+  await requireAdmin();
+
+  const trimmed = reason.trim();
+  if (trimmed.length < 10) {
+    return { error: "Please provide a rejection reason (at least 10 chars)" };
+  }
+
+  const [campaign] = await db
+    .select()
+    .from(campaigns)
+    .where(eq(campaigns.id, campaignId))
+    .limit(1);
+
+  if (!campaign) return { error: "Campaign not found" };
+  if (campaign.status !== "pending_review")
+    return { error: "Campaign is not awaiting review" };
+
+  await db
+    .update(campaigns)
+    .set({
+      status: "rejected",
+      isPublic: false,
+      rejectionReason: trimmed,
+      reviewedAt: new Date(),
+    })
+    .where(eq(campaigns.id, campaignId));
+
+  const [brand] = await db
+    .select({ userId: brandProfiles.userId })
+    .from(brandProfiles)
+    .where(eq(brandProfiles.id, campaign.brandProfileId))
+    .limit(1);
+
+  if (brand) {
+    await db.insert(notifications).values({
+      userId: brand.userId,
+      type: "campaign_rejected",
+      title: "Campaign needs changes",
+      message: `"${campaign.title}" was not approved. Reason: ${trimmed.slice(0, 140)}`,
+      link: `/campaigns/${campaign.id}`,
+    });
+  }
+
+  revalidatePath("/admin/campaigns");
   revalidatePath("/campaigns");
   revalidatePath(`/campaigns/${campaignId}`);
   return { success: true };

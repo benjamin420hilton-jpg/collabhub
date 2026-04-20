@@ -7,6 +7,7 @@ import {
   getUnreadNotificationCount,
 } from "@/server/queries/notifications";
 import { SyncUser } from "@/components/profiles/sync-user";
+import { isAdminClerkId } from "@/lib/auth/admin";
 
 export default async function PlatformLayout({
   children,
@@ -46,6 +47,7 @@ export default async function PlatformLayout({
 
   const notifications = await getNotificationsForUser(user.id);
   const unreadCount = await getUnreadNotificationCount(user.id);
+  const isAdmin = isAdminClerkId(userId);
 
   return (
     <div className="relative min-h-screen bg-sand">
@@ -54,6 +56,7 @@ export default async function PlatformLayout({
         subscriptionTier={subscriptionTier}
         notifications={notifications}
         unreadCount={unreadCount}
+        isAdmin={isAdmin}
       />
       <main className="mx-auto max-w-6xl px-6 py-8">{children}</main>
     </div>
