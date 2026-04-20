@@ -284,17 +284,26 @@ export async function reviewMilestone(input: ReviewMilestoneInput) {
         };
       }
 
-      // Create transfer to influencer's connected account
-      const transfer = await stripe.transfers.create({
-        amount: milestoneInfluencerAmount,
-        currency: "aud",
-        destination: influencer.stripeConnectAccountId,
-        transfer_group: contract.stripeTransferGroup,
-        metadata: {
-          milestoneId: milestone.id,
-          contractId: contract.id,
+      if (!influencer.stripePayoutsEnabled) {
+        return {
+          error:
+            "Influencer's Stripe account cannot receive payouts yet. Ask them to complete their Stripe onboarding.",
+        };
+      }
+
+      const transfer = await stripe.transfers.create(
+        {
+          amount: milestoneInfluencerAmount,
+          currency: "aud",
+          destination: influencer.stripeConnectAccountId,
+          transfer_group: contract.stripeTransferGroup,
+          metadata: {
+            milestoneId: milestone.id,
+            contractId: contract.id,
+          },
         },
-      });
+        { idempotencyKey: `milestone_transfer_${milestone.id}` },
+      );
 
       // Update milestone with transfer ID
       await db

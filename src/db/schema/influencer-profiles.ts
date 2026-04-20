@@ -41,6 +41,21 @@ export const influencerProfiles = pgTable(
     stripeConnectOnboarded: boolean("stripe_connect_onboarded")
       .notNull()
       .default(false),
+    stripeChargesEnabled: boolean("stripe_charges_enabled")
+      .notNull()
+      .default(false),
+    stripePayoutsEnabled: boolean("stripe_payouts_enabled")
+      .notNull()
+      .default(false),
+    stripeRequirementsDisabledReason: text(
+      "stripe_requirements_disabled_reason",
+    ),
+    stripeRequirementsCurrentlyDue: jsonb("stripe_requirements_currently_due")
+      .$type<string[]>()
+      .default([]),
+    stripeConnectStatusUpdatedAt: timestamp("stripe_connect_status_updated_at", {
+      withTimezone: true,
+    }),
     stripeCustomerId: text("stripe_customer_id"),
     stripeSubscriptionId: text("stripe_subscription_id"),
     stripeCurrentPeriodEnd: timestamp("stripe_current_period_end", {

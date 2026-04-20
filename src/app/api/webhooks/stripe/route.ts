@@ -548,14 +548,21 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
 async function handleConnectAccountUpdated(account: Stripe.Account) {
   if (!account.id) return;
 
-  const chargesEnabled = account.charges_enabled;
-  const payoutsEnabled = account.payouts_enabled;
+  const chargesEnabled = Boolean(account.charges_enabled);
+  const payoutsEnabled = Boolean(account.payouts_enabled);
   const isOnboarded = chargesEnabled && payoutsEnabled;
 
-  if (isOnboarded) {
-    await db
-      .update(influencerProfiles)
-      .set({ stripeConnectOnboarded: true })
-      .where(eq(influencerProfiles.stripeConnectAccountId, account.id));
-  }
+  await db
+    .update(influencerProfiles)
+    .set({
+      stripeConnectOnboarded: isOnboarded,
+      stripeChargesEnabled: chargesEnabled,
+      stripePayoutsEnabled: payoutsEnabled,
+      stripeRequirementsDisabledReason:
+        account.requirements?.disabled_reason ?? null,
+      stripeRequirementsCurrentlyDue:
+        account.requirements?.currently_due ?? [],
+      stripeConnectStatusUpdatedAt: new Date(),
+    })
+    .where(eq(influencerProfiles.stripeConnectAccountId, account.id));
 }

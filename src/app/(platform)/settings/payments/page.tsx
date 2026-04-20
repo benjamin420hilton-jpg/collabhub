@@ -22,6 +22,8 @@ export default async function PaymentSettingsPage({
 
   const hasAccount = !!profile.stripeConnectAccountId;
   const isOnboarded = !!profile.stripeConnectOnboarded;
+  const requirementsCurrentlyDue = profile.stripeRequirementsCurrentlyDue ?? [];
+  const disabledReason = profile.stripeRequirementsDisabledReason ?? null;
 
   return (
     <div className="mx-auto max-w-3xl space-y-6 animate-fade-in">
@@ -54,7 +56,12 @@ export default async function PaymentSettingsPage({
         </Card>
       )}
 
-      <ConnectSetup isOnboarded={isOnboarded} hasAccount={hasAccount} />
+      <ConnectSetup
+        isOnboarded={isOnboarded}
+        hasAccount={hasAccount}
+        requirementsCurrentlyDue={requirementsCurrentlyDue}
+        disabledReason={disabledReason}
+      />
     </div>
   );
 }
