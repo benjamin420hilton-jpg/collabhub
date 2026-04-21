@@ -44,7 +44,7 @@ export function NotificationBell({
       <DropdownMenuTrigger className="relative inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:bg-white/5 hover:text-white transition-colors">
         <Bell className="size-4" />
         {unreadCount > 0 && (
-          <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-coral text-[10px] font-bold text-white">
+          <span className="absolute -right-0.5 -top-0.5 flex size-4 items-center justify-center rounded-full bg-brand text-[10px] font-bold text-white">
             {unreadCount > 9 ? "9+" : unreadCount}
           </span>
         )}
@@ -54,7 +54,7 @@ export function NotificationBell({
           <p className="text-sm font-semibold">Notifications</p>
           {unreadCount > 0 && (
             <button
-              className="text-xs text-coral hover:underline disabled:opacity-50"
+              className="text-xs text-brand hover:underline disabled:opacity-50"
               onClick={handleMarkAllRead}
               disabled={isPending}
             >
@@ -78,7 +78,7 @@ export function NotificationBell({
             >
               <div className="flex items-start gap-2 w-full">
                 {!n.read && (
-                  <span className="mt-1.5 size-2 shrink-0 rounded-full bg-coral" />
+                  <span className="mt-1.5 size-2 shrink-0 rounded-full bg-brand" />
                 )}
                 <div className={!n.read ? "" : "ml-4"}>
                   <p className="text-sm font-medium">{n.title}</p>

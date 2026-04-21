@@ -37,11 +37,11 @@ export function CampaignCard({ campaign, brandName }: CampaignCardProps) {
               <p className="mt-1 text-sm text-muted-foreground">{brandName}</p>
             </div>
             <div className="flex gap-2">
-              <Badge className="border-coral/20 bg-coral-light text-coral-dark">
+              <Badge className="border-brand/20 bg-brand-light text-brand-dark">
                 {campaign.targetPlatform}
               </Badge>
               {campaign.type === "gifting" && (
-                <Badge variant="outline" className="border-teal/30 text-teal-dark">
+                <Badge variant="outline" className="border-highlight/30 text-highlight-dark">
                   Gifting
                 </Badge>
               )}
@@ -56,17 +56,17 @@ export function CampaignCard({ campaign, brandName }: CampaignCardProps) {
             <span className="font-semibold text-foreground">{budgetDisplay}</span>
             {campaign.targetLocation && (
               <span className="flex items-center gap-1">
-                <MapPin className="size-3 text-coral" /> {campaign.targetLocation}
+                <MapPin className="size-3 text-brand" /> {campaign.targetLocation}
               </span>
             )}
             {campaign.minFollowerCount && (
               <span className="flex items-center gap-1">
-                <Users className="size-3 text-teal" /> {campaign.minFollowerCount.toLocaleString()}+ followers
+                <Users className="size-3 text-highlight" /> {campaign.minFollowerCount.toLocaleString()}+ followers
               </span>
             )}
             {campaign.applicationDeadline && (
               <span className="flex items-center gap-1">
-                <Calendar className="size-3 text-coral" />{" "}
+                <Calendar className="size-3 text-brand" />{" "}
                 {new Date(campaign.applicationDeadline).toLocaleDateString("en-AU")}
               </span>
             )}

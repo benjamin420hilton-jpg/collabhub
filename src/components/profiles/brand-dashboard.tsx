@@ -87,7 +87,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
       <div className="relative mx-auto max-w-6xl space-y-12 animate-fade-in">
         {/* Welcome header — glossy, with floating blobs + stat chips */}
-        <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-coral-light via-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up sm:p-10">
+        <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-brand-light via-white to-highlight-light/50 p-8 shadow-sm animate-fade-in-up sm:p-10">
           {/* Decorative floating blobs inside the card */}
           <div
             aria-hidden
@@ -101,11 +101,11 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
           <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-5">
-              <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-primary text-2xl font-bold text-white shadow-lg shadow-coral/25">
+              <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-primary text-2xl font-bold text-white shadow-lg shadow-brand/25">
                 {monogram}
               </div>
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-white/70 px-3 py-1 text-xs font-medium text-coral-dark backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-white/70 px-3 py-1 text-xs font-medium text-brand-dark backdrop-blur-sm">
                   <Sparkles className="size-3" />
                   Brand workspace
                 </span>
@@ -147,7 +147,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
                 </div>
               </div>
               <Link href="/campaigns/new">
-                <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
+                <Button className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5">
                   <Plus className="mr-2 size-4" /> New Campaign
                 </Button>
               </Link>
@@ -157,10 +157,10 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
         {/* Upgrade banner */}
         {profile.subscriptionTier === "free" && (
-          <Card className="overflow-hidden border-coral/20 bg-gradient-to-r from-coral-light to-white shadow-sm animate-fade-in-up delay-100">
+          <Card className="overflow-hidden border-brand/20 bg-gradient-to-r from-brand-light to-white shadow-sm animate-fade-in-up delay-100">
             <CardHeader>
               <div className="flex items-center gap-2">
-                <Sparkles className="size-5 text-coral" />
+                <Sparkles className="size-5 text-brand" />
                 <CardTitle className="text-lg">Upgrade to Pro</CardTitle>
               </div>
               <CardDescription>
@@ -169,7 +169,7 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             </CardHeader>
             <CardContent>
               <Link href="/settings/billing">
-                <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
+                <Button className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5">
                   Upgrade Now <ArrowRight className="ml-2 size-4" />
                 </Button>
               </Link>
@@ -183,8 +183,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             label="Active Campaigns"
             value={stats.activeCampaigns}
             icon={Megaphone}
-            iconColor="text-coral"
-            iconBg="bg-coral-light"
+            iconColor="text-brand"
+            iconBg="bg-brand-light"
             metadata={`${stats.totalCampaigns} total`}
             href="/campaigns?status=active"
             className="animate-fade-in-up delay-100"
@@ -193,8 +193,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             label="Pending Proposals"
             value={stats.pendingProposals}
             icon={Users}
-            iconColor="text-teal"
-            iconBg="bg-teal-light"
+            iconColor="text-highlight"
+            iconBg="bg-highlight-light"
             badge={{
               text: `${stats.pendingProposals} new`,
               className:
@@ -209,8 +209,8 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             label="Active Contracts"
             value={stats.activeContracts}
             icon={FileText}
-            iconColor="text-coral"
-            iconBg="bg-coral-light"
+            iconColor="text-brand"
+            iconBg="bg-brand-light"
             href="/contracts?status=active"
             className="animate-fade-in-up delay-300"
           />
@@ -218,11 +218,11 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
             label="Completed"
             value={stats.completedContracts}
             icon={CheckCircle}
-            iconColor="text-teal"
-            iconBg="bg-teal-light"
+            iconColor="text-highlight"
+            iconBg="bg-highlight-light"
             badge={{
               text: `${profile.subscriptionTier === "pro" ? "0%" : "10%"} fee`,
-              className: "border-coral/20 bg-coral-light text-coral-dark",
+              className: "border-brand/20 bg-brand-light text-brand-dark",
             }}
             href="/contracts?status=completed"
             className="animate-fade-in-up delay-400"
@@ -235,21 +235,21 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
           <Card className="border-border/50 bg-white/80 shadow-sm backdrop-blur-sm animate-fade-in-up delay-300">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <Clock className="size-5 text-coral" />
+                <Clock className="size-5 text-brand" />
                 Recent Proposals
               </CardTitle>
             </CardHeader>
             <CardContent>
               {stats.recentProposals.length === 0 ? (
                 <div className="py-10 text-center">
-                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-coral-light">
-                    <Users className="size-6 text-coral" />
+                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-brand-light">
+                    <Users className="size-6 text-brand" />
                   </div>
                   <p className="text-sm text-muted-foreground">
                     No proposals yet. Publish a campaign to start receiving them.
                   </p>
                   <Link href="/campaigns/new" className="mt-4 inline-block">
-                    <Button variant="outline" size="sm" className="border-coral/30 hover:bg-coral-light/50">
+                    <Button variant="outline" size="sm" className="border-brand/30 hover:bg-brand-light/50">
                       Create a Campaign
                     </Button>
                   </Link>
@@ -266,9 +266,9 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
                           {rows.map((p) => (
                             <div
                               key={p.proposalId}
-                              className="flex items-center gap-4 rounded-xl border border-border/40 bg-gradient-to-r from-white to-muted/30 p-4 transition-all hover:border-coral/30 hover:shadow-sm"
+                              className="flex items-center gap-4 rounded-xl border border-border/40 bg-gradient-to-r from-white to-muted/30 p-4 transition-all hover:border-brand/30 hover:shadow-sm"
                             >
-                              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light text-sm font-bold text-coral-dark">
+                              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light text-sm font-bold text-brand-dark">
                                 {p.campaignTitle.charAt(0).toUpperCase()}
                               </div>
                               <div className="min-w-0 flex-1">
@@ -310,15 +310,15 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
           <Card className="border-border/50 bg-white/80 shadow-sm backdrop-blur-sm animate-fade-in-up delay-400">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="size-5 text-teal" />
+                <TrendingUp className="size-5 text-highlight" />
                 Quick Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link href="/campaigns/new" className="group block">
-                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-coral/30 hover:bg-coral-light/20 hover:shadow-sm">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
-                    <Megaphone className="size-5 text-coral" />
+                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:bg-brand-light/20 hover:shadow-sm">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light">
+                    <Megaphone className="size-5 text-brand" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold">Create a Campaign</p>
@@ -331,9 +331,9 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
               </Link>
 
               <Link href="/contracts" className="group block">
-                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-teal/30 hover:bg-teal-light/20 hover:shadow-sm">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-teal-light">
-                    <FileText className="size-5 text-teal" />
+                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-highlight/30 hover:bg-highlight-light/20 hover:shadow-sm">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-highlight-light">
+                    <FileText className="size-5 text-highlight" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold">View Contracts</p>
@@ -347,9 +347,9 @@ export function BrandDashboard({ user, profile, stats }: BrandDashboardProps) {
 
               {profile.subscriptionTier === "pro" && (
                 <Link href="/directory" className="group block">
-                  <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-coral/30 hover:bg-coral-light/20 hover:shadow-sm">
-                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
-                      <Search className="size-5 text-coral" />
+                  <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:bg-brand-light/20 hover:shadow-sm">
+                    <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light">
+                      <Search className="size-5 text-brand" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-sm font-semibold">Browse Directory</p>

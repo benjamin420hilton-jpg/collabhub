@@ -119,7 +119,7 @@ export default async function TransactionsPage() {
         <Card className="animate-fade-in-up delay-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="size-5 text-coral" />
+              <TrendingUp className="size-5 text-brand" />
               Spending Over Time
             </CardTitle>
           </CardHeader>
@@ -127,7 +127,7 @@ export default async function TransactionsPage() {
             <MoneyOverTimeChart
               data={spendingByMonth}
               label="Spend"
-              accent="coral"
+              accent="brand"
             />
           </CardContent>
         </Card>
@@ -135,8 +135,8 @@ export default async function TransactionsPage() {
 
       {paymentResults.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-300">
-          <div className="rounded-2xl bg-coral-light p-4">
-            <Clock className="size-8 text-coral" />
+          <div className="rounded-2xl bg-brand-light p-4">
+            <Clock className="size-8 text-brand" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No transactions yet</h3>
           <p className="mt-1 text-sm text-muted-foreground">

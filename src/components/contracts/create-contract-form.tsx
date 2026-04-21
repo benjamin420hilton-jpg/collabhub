@@ -137,7 +137,7 @@ export function CreateContractForm({
               variant="outline"
               size="sm"
               onClick={addMilestone}
-              className="border-coral/20 hover:bg-coral-light"
+              className="border-brand/20 hover:bg-brand-light"
             >
               <Plus className="mr-1 size-4" /> Add
             </Button>
@@ -151,7 +151,7 @@ export function CreateContractForm({
                 <div className="flex items-center justify-between">
                   <Badge
                     variant="outline"
-                    className="border-coral/20 bg-coral-light text-coral-dark"
+                    className="border-brand/20 bg-brand-light text-brand-dark"
                   >
                     Milestone {i + 1}
                   </Badge>
@@ -215,7 +215,7 @@ export function CreateContractForm({
           <CardFooter>
             <Button
               type="submit"
-              className="w-full bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+              className="w-full bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
               disabled={isPending}
             >
               {isPending ? "Creating Contract..." : "Create Contract"}

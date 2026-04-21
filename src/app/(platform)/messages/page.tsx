@@ -23,8 +23,8 @@ export default async function MessagesPage() {
 
       {convos.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border/60 py-16 animate-fade-in-up delay-100">
-          <div className="rounded-2xl bg-coral-light p-4">
-            <MessageSquare className="size-8 text-coral" />
+          <div className="rounded-2xl bg-brand-light p-4">
+            <MessageSquare className="size-8 text-brand" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No messages yet</h3>
           <p className="mt-1 text-sm text-muted-foreground">

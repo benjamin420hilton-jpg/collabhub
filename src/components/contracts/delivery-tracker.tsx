@@ -125,8 +125,8 @@ export function DeliveryTracker({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex size-10 items-center justify-center rounded-xl bg-coral-light">
-              <Package className="size-5 text-coral" />
+            <div className="flex size-10 items-center justify-center rounded-xl bg-brand-light">
+              <Package className="size-5 text-brand" />
             </div>
             <CardTitle>Product Delivery</CardTitle>
           </div>
@@ -148,7 +148,7 @@ export function DeliveryTracker({
         {trackingNumber && (
           <div className="rounded-lg border border-border/60 bg-muted/30 p-3">
             <div className="flex items-center gap-2">
-              <MapPin className="size-3.5 text-coral" />
+              <MapPin className="size-3.5 text-brand" />
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Tracking Number
               </p>
@@ -174,7 +174,7 @@ export function DeliveryTracker({
                         state === "completed"
                           ? "border-green-400 bg-green-50"
                           : state === "active"
-                            ? "border-coral bg-coral-light"
+                            ? "border-brand bg-brand-light"
                             : "border-border bg-muted/30"
                       }`}
                     >
@@ -183,7 +183,7 @@ export function DeliveryTracker({
                           state === "completed"
                             ? "text-green-600"
                             : state === "active"
-                              ? "text-coral"
+                              ? "text-brand"
                               : "text-muted-foreground"
                         }`}
                       />
@@ -193,7 +193,7 @@ export function DeliveryTracker({
                         state === "completed"
                           ? "text-green-700"
                           : state === "active"
-                            ? "text-coral"
+                            ? "text-brand"
                             : "text-muted-foreground"
                       }`}
                     >
@@ -232,7 +232,7 @@ export function DeliveryTracker({
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+              className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
             >
               <Truck className="mr-2 size-4" />
               {isPending ? "Updating..." : "Mark as Shipped"}
@@ -246,7 +246,7 @@ export function DeliveryTracker({
             <Button
               onClick={handleConfirmDelivery}
               disabled={isPending}
-              className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+              className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
             >
               <CheckCircle className="mr-2 size-4" />
               {isPending ? "Confirming..." : "Confirm Receipt"}

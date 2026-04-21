@@ -200,7 +200,7 @@ export function ConnectSetup({
           <Button
             onClick={handleContinueSetup}
             disabled={isPending || isRejected}
-            className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+            className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
           >
             <ExternalLink className="mr-2 size-4" />
             {isPending ? "Loading..." : "Continue Setup"}
@@ -212,10 +212,10 @@ export function ConnectSetup({
 
   // No account yet
   return (
-    <Card className="border-coral/20 bg-gradient-to-br from-coral-light via-white to-teal-light animate-fade-in-up delay-100">
+    <Card className="border-brand/20 bg-gradient-to-br from-brand-light via-white to-highlight-light animate-fade-in-up delay-100">
       <CardHeader>
         <div className="flex items-center gap-3">
-          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-primary shadow-md shadow-coral/20">
+          <div className="flex size-10 items-center justify-center rounded-xl bg-gradient-primary shadow-md shadow-brand/20">
             <CreditCard className="size-5 text-white" />
           </div>
           <CardTitle>Set Up Payments</CardTitle>
@@ -231,7 +231,7 @@ export function ConnectSetup({
         <Button
           onClick={handleCreateAccount}
           disabled={isPending}
-          className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+          className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
         >
           <CreditCard className="mr-2 size-4" />
           {isPending ? "Loading..." : "Connect with Stripe"}

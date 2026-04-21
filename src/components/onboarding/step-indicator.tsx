@@ -18,9 +18,9 @@ export function StepIndicator({ current, total = 2 }: Props) {
             <div
               className={`flex size-8 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
                 done
-                  ? "bg-coral text-white"
+                  ? "bg-brand text-white"
                   : active
-                    ? "bg-gradient-primary text-white shadow-md shadow-coral/20"
+                    ? "bg-gradient-primary text-white shadow-md shadow-brand/20"
                     : "bg-gray-100 text-gray-400"
               }`}
             >
@@ -29,7 +29,7 @@ export function StepIndicator({ current, total = 2 }: Props) {
             {i < steps.length - 1 && (
               <div
                 className={`h-0.5 w-10 rounded-full ${
-                  done ? "bg-coral" : "bg-gray-200"
+                  done ? "bg-brand" : "bg-gray-200"
                 }`}
               />
             )}

@@ -21,15 +21,15 @@ function formatMonth(month: string) {
 interface MoneyOverTimeChartProps {
   data: { month: string; total: number }[];
   label: string;
-  accent?: "coral" | "teal";
+  accent?: "brand" | "highlight";
 }
 
 export function MoneyOverTimeChart({
   data,
   label,
-  accent = "teal",
+  accent = "highlight",
 }: MoneyOverTimeChartProps) {
-  const color = accent === "coral" ? "#ef6b5b" : "#14b8a6";
+  const color = accent === "brand" ? "#8B5CF6" : "#EC4899";
   const config: ChartConfig = {
     total: { label, color },
   };

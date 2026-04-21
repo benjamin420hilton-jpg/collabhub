@@ -62,8 +62,8 @@ export default async function AdminCampaignsPage() {
     <div className="space-y-8 animate-fade-in">
       <div className="animate-fade-in-up">
         <div className="flex items-center gap-3">
-          <div className="rounded-2xl bg-coral-light p-3">
-            <Shield className="size-6 text-coral" />
+          <div className="rounded-2xl bg-brand-light p-3">
+            <Shield className="size-6 text-brand" />
           </div>
           <div>
             <h1 className="text-3xl font-bold">Moderation</h1>
@@ -115,7 +115,7 @@ export default async function AdminCampaignsPage() {
                           {brandVerified && (
                             <Badge
                               variant="outline"
-                              className="border-teal/30 text-teal-dark text-xs"
+                              className="border-highlight/30 text-highlight-dark text-xs"
                             >
                               Verified
                             </Badge>
@@ -197,7 +197,7 @@ export default async function AdminCampaignsPage() {
                           {brandVerified && (
                             <Badge
                               variant="outline"
-                              className="border-teal/30 text-teal-dark text-xs"
+                              className="border-highlight/30 text-highlight-dark text-xs"
                             >
                               Verified
                             </Badge>

@@ -59,7 +59,7 @@ export function InfluencerCard({
             <Link href={`/directory/${profile.id}`}>
               <Button
                 size="sm"
-                className="bg-gradient-primary text-white shadow-sm shadow-coral/20 transition-all hover:shadow-md hover:shadow-coral/30 hover:-translate-y-0.5"
+                className="bg-gradient-primary text-white shadow-sm shadow-brand/20 transition-all hover:shadow-md hover:shadow-brand/30 hover:-translate-y-0.5"
               >
                 <Send className="mr-1 size-3.5" /> Offer
               </Button>
@@ -76,7 +76,7 @@ export function InfluencerCard({
 
         <div className="flex flex-wrap items-center gap-2">
           {profile.primaryNiche && (
-            <Badge className="border-teal/20 bg-teal-light text-teal-dark">
+            <Badge className="border-highlight/20 bg-highlight-light text-highlight-dark">
               {profile.primaryNiche.replace("_", " ")}
             </Badge>
           )}

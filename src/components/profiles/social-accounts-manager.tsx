@@ -100,7 +100,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
             variant="outline"
             size="sm"
             onClick={() => setShowForm(true)}
-            className="border-coral/20 hover:bg-coral-light"
+            className="border-brand/20 hover:bg-brand-light"
           >
             <Plus className="mr-1 size-4" /> Add
           </Button>
@@ -116,7 +116,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
               className="flex items-center justify-between rounded-lg border border-border/60 p-3"
             >
               <div className="flex items-center gap-3">
-                <Badge className="border-coral/20 bg-coral-light text-coral-dark">
+                <Badge className="border-brand/20 bg-brand-light text-brand-dark">
                   {platformInfo?.label ?? account.platform}
                 </Badge>
                 <span className="font-medium">{account.handle}</span>
@@ -132,7 +132,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
                     href={account.profileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-coral hover:text-coral-dark"
+                    className="text-brand hover:text-brand-dark"
                   >
                     <ExternalLink className="size-4" />
                   </a>
@@ -158,7 +158,7 @@ export function SocialAccountsManager({ accounts }: SocialAccountsManagerProps) 
 
         {/* Add form */}
         {showForm && (
-          <form onSubmit={handleAdd} className="space-y-3 rounded-lg border border-coral/20 bg-coral-light/30 p-4">
+          <form onSubmit={handleAdd} className="space-y-3 rounded-lg border border-brand/20 bg-brand-light/30 p-4">
             {error && <p className="text-sm text-destructive">{error}</p>}
             <div className="grid gap-3 sm:grid-cols-3">
               <div className="space-y-2">

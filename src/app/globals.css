@@ -47,16 +47,16 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* Violet + Rose palette */
+  /* Brand palette — violet (brand) + pink (highlight) */
   --color-navy: #0F0A2A;
   --color-navy-light: #1A1145;
   --color-navy-muted: #3B3570;
-  --color-coral: #8B5CF6;
-  --color-coral-light: #F5F3FF;
-  --color-coral-dark: #7C3AED;
-  --color-teal: #EC4899;
-  --color-teal-light: #FDF2F8;
-  --color-teal-dark: #DB2777;
+  --color-brand: #8B5CF6;
+  --color-brand-light: #F5F3FF;
+  --color-brand-dark: #7C3AED;
+  --color-highlight: #EC4899;
+  --color-highlight-light: #FDF2F8;
+  --color-highlight-dark: #DB2777;
   --color-sand: #FAF8FF;
   --color-sand-dark: #F0ECFF;
   --color-slate-warm: #64748b;

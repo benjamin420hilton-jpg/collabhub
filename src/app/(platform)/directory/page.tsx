@@ -28,8 +28,8 @@ export default async function DirectoryPage({
     return (
       <div className="flex flex-col items-center justify-center py-20 animate-fade-in">
         <div className="mx-auto max-w-md text-center">
-          <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-2xl bg-coral-light">
-            <Lock className="size-10 text-coral" />
+          <div className="mx-auto mb-6 flex size-20 items-center justify-center rounded-2xl bg-brand-light">
+            <Lock className="size-10 text-brand" />
           </div>
           <h1 className="text-3xl font-bold">Influencer Directory</h1>
           <p className="mt-3 text-muted-foreground">
@@ -38,7 +38,7 @@ export default async function DirectoryPage({
           </p>
           <div className="mt-6 space-y-3">
             <Link href="/settings/billing">
-              <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
+              <Button className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5">
                 <Crown className="mr-2 size-4" /> Upgrade to Pro
               </Button>
             </Link>
@@ -78,8 +78,8 @@ export default async function DirectoryPage({
       {results.length === 0 ? (
         <Card className="animate-fade-in-up delay-200">
           <CardContent className="flex flex-col items-center justify-center py-16">
-            <div className="rounded-2xl bg-coral-light p-4">
-              <Search className="size-8 text-coral" />
+            <div className="rounded-2xl bg-brand-light p-4">
+              <Search className="size-8 text-brand" />
             </div>
             <h3 className="mt-4 text-lg font-semibold">No influencers found</h3>
             <p className="mt-1 text-sm text-muted-foreground">

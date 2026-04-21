@@ -106,7 +106,7 @@ export function InfluencerDashboard({
 
       <div className="relative mx-auto max-w-6xl space-y-12 animate-fade-in">
         {/* Welcome header — glossy, with floating blobs + stat chips */}
-        <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-teal-light/60 via-white to-coral-light/50 p-8 shadow-sm animate-fade-in-up sm:p-10">
+        <div className="relative overflow-hidden rounded-3xl border border-border/40 bg-gradient-to-br from-highlight-light/60 via-white to-brand-light/50 p-8 shadow-sm animate-fade-in-up sm:p-10">
           <div
             aria-hidden
             className="pointer-events-none absolute -right-10 -top-10 size-48 rounded-full bg-gradient-ocean opacity-20 blur-3xl animate-float"
@@ -119,11 +119,11 @@ export function InfluencerDashboard({
 
           <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-center gap-5">
-              <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-ocean text-2xl font-bold text-white shadow-lg shadow-coral/25">
+              <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl bg-gradient-ocean text-2xl font-bold text-white shadow-lg shadow-brand/25">
                 {profile.displayName.charAt(0).toUpperCase()}
               </div>
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-teal/20 bg-white/70 px-3 py-1 text-xs font-medium text-teal-dark backdrop-blur-sm">
+                <span className="inline-flex items-center gap-2 rounded-full border border-highlight/20 bg-white/70 px-3 py-1 text-xs font-medium text-highlight-dark backdrop-blur-sm">
                   {profile.primaryNiche ? (
                     <span className="capitalize">
                       {profile.primaryNiche.replace("_", " ")} Creator
@@ -171,7 +171,7 @@ export function InfluencerDashboard({
                 </div>
               </div>
               <Link href="/campaigns">
-                <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5">
+                <Button className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5">
                   <Megaphone className="mr-2 size-4" /> Find Campaigns
                 </Button>
               </Link>
@@ -183,8 +183,8 @@ export function InfluencerDashboard({
         {!isPro && (
           <Card className="overflow-hidden border-border/50 bg-white/80 shadow-sm backdrop-blur-sm animate-fade-in-up delay-100">
             <CardContent className="flex items-center gap-4 pt-6 pb-6">
-              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
-                <Send className="size-5 text-coral" />
+              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light">
+                <Send className="size-5 text-brand" />
               </div>
               <div className="flex-1">
                 <div className="flex items-center justify-between">
@@ -195,7 +195,7 @@ export function InfluencerDashboard({
                     Resets on the 1st
                   </span>
                 </div>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-coral-light">
+                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-brand-light">
                   <div
                     className="h-full rounded-full bg-gradient-primary transition-all duration-500"
                     style={{
@@ -204,7 +204,7 @@ export function InfluencerDashboard({
                   />
                 </div>
                 {applicationsLeft === 0 && (
-                  <p className="mt-2 text-xs text-coral">
+                  <p className="mt-2 text-xs text-brand">
                     You&apos;re out of free applications — upgrade to Pro for unlimited.
                   </p>
                 )}
@@ -246,8 +246,8 @@ export function InfluencerDashboard({
             label="Active Contracts"
             value={stats.activeContracts}
             icon={FileText}
-            iconColor="text-teal"
-            iconBg="bg-teal-light"
+            iconColor="text-highlight"
+            iconBg="bg-highlight-light"
             href="/contracts?status=active"
             className="animate-fade-in-up delay-100"
           />
@@ -255,8 +255,8 @@ export function InfluencerDashboard({
             label="Pending Proposals"
             value={stats.pendingProposals}
             icon={Send}
-            iconColor="text-coral"
-            iconBg="bg-coral-light"
+            iconColor="text-brand"
+            iconBg="bg-brand-light"
             metadata={`${stats.totalProposals} total`}
             href="/proposals"
             className="animate-fade-in-up delay-200"
@@ -265,8 +265,8 @@ export function InfluencerDashboard({
             label="Accept Rate"
             value={`${acceptRate}%`}
             icon={TrendingUp}
-            iconColor="text-teal"
-            iconBg="bg-teal-light"
+            iconColor="text-highlight"
+            iconBg="bg-highlight-light"
             href="/proposals#accept-rate"
             className="animate-fade-in-up delay-300"
           />
@@ -274,8 +274,8 @@ export function InfluencerDashboard({
             label="Total Earnings"
             value={`$${centsToDollars(stats.totalEarnings).toLocaleString()}`}
             icon={DollarSign}
-            iconColor="text-coral"
-            iconBg="bg-coral-light"
+            iconColor="text-brand"
+            iconBg="bg-brand-light"
             badge={{
               text: `${stats.completedContracts} done`,
               className: "border-green-200 bg-green-50 text-green-700",
@@ -322,21 +322,21 @@ export function InfluencerDashboard({
           <Card className="border-border/50 bg-white/80 shadow-sm backdrop-blur-sm animate-fade-in-up delay-400">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <Clock className="size-5 text-coral" />
+                <Clock className="size-5 text-brand" />
                 Recent Activity
               </CardTitle>
             </CardHeader>
             <CardContent>
               {stats.recentProposals.length === 0 ? (
                 <div className="py-10 text-center">
-                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-coral-light">
-                    <Send className="size-6 text-coral" />
+                  <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-brand-light">
+                    <Send className="size-6 text-brand" />
                   </div>
                   <p className="text-sm text-muted-foreground">
                     No activity yet. Browse campaigns and submit your first proposal.
                   </p>
                   <Link href="/campaigns" className="mt-4 inline-block">
-                    <Button variant="outline" size="sm" className="border-coral/30 hover:bg-coral-light/50">
+                    <Button variant="outline" size="sm" className="border-brand/30 hover:bg-brand-light/50">
                       Browse Campaigns
                     </Button>
                   </Link>
@@ -353,9 +353,9 @@ export function InfluencerDashboard({
                           {rows.map((p) => (
                             <div
                               key={p.proposalId}
-                              className="flex items-center gap-4 rounded-xl border border-border/40 bg-gradient-to-r from-white to-muted/30 p-4 transition-all hover:border-coral/30 hover:shadow-sm"
+                              className="flex items-center gap-4 rounded-xl border border-border/40 bg-gradient-to-r from-white to-muted/30 p-4 transition-all hover:border-brand/30 hover:shadow-sm"
                             >
-                              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-teal-light text-sm font-bold text-teal-dark">
+                              <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-highlight-light text-sm font-bold text-highlight-dark">
                                 {p.campaignTitle.charAt(0).toUpperCase()}
                               </div>
                               <div className="min-w-0 flex-1">
@@ -390,15 +390,15 @@ export function InfluencerDashboard({
           <Card className="border-border/50 bg-white/80 shadow-sm backdrop-blur-sm animate-fade-in-up delay-500">
             <CardHeader className="pb-4">
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="size-5 text-teal" />
+                <TrendingUp className="size-5 text-highlight" />
                 Quick Actions
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <Link href="/campaigns" className="group block">
-                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-coral/30 hover:bg-coral-light/20 hover:shadow-sm">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
-                    <Megaphone className="size-5 text-coral" />
+                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:bg-brand-light/20 hover:shadow-sm">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light">
+                    <Megaphone className="size-5 text-brand" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold">Find Campaigns</p>
@@ -411,9 +411,9 @@ export function InfluencerDashboard({
               </Link>
 
               <Link href="/contracts" className="group block">
-                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-teal/30 hover:bg-teal-light/20 hover:shadow-sm">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-teal-light">
-                    <FileText className="size-5 text-teal" />
+                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-highlight/30 hover:bg-highlight-light/20 hover:shadow-sm">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-highlight-light">
+                    <FileText className="size-5 text-highlight" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold">Your Contracts</p>
@@ -426,9 +426,9 @@ export function InfluencerDashboard({
               </Link>
 
               <Link href="/settings" className="group block">
-                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-coral/30 hover:bg-coral-light/20 hover:shadow-sm">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-coral-light">
-                    <CheckCircle className="size-5 text-coral" />
+                <div className="flex items-center gap-4 rounded-xl border border-border/40 p-4 transition-all hover:-translate-y-0.5 hover:border-brand/30 hover:bg-brand-light/20 hover:shadow-sm">
+                  <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand-light">
+                    <CheckCircle className="size-5 text-brand" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-semibold">Edit Profile & Socials</p>

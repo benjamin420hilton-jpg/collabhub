@@ -126,7 +126,7 @@ export default async function ProposalsPage() {
       <Card className="animate-fade-in-up delay-300">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="size-5 text-teal" />
+            <TrendingUp className="size-5 text-highlight" />
             Last 12 Months
           </CardTitle>
         </CardHeader>
@@ -150,8 +150,8 @@ export default async function ProposalsPage() {
         <CardContent>
           {rows.length === 0 ? (
             <div className="flex flex-col items-center py-12 text-center">
-              <div className="rounded-2xl bg-coral-light p-4">
-                <Inbox className="size-8 text-coral" />
+              <div className="rounded-2xl bg-brand-light p-4">
+                <Inbox className="size-8 text-brand" />
               </div>
               <p className="mt-4 text-sm text-muted-foreground">
                 {data.role === "brand"

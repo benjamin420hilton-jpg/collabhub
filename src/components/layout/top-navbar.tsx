@@ -83,7 +83,7 @@ export function TopNavbar({
                   href={item.href}
                   className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-all ${
                     isActive
-                      ? "bg-white/10 text-coral"
+                      ? "bg-white/10 text-brand"
                       : "text-slate-400 hover:bg-white/5 hover:text-white"
                   }`}
                 >
@@ -102,7 +102,7 @@ export function TopNavbar({
               href="/admin/campaigns"
               className={`hidden items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-colors md:inline-flex ${
                 pathname.startsWith("/admin")
-                  ? "bg-coral/20 text-coral"
+                  ? "bg-brand/20 text-brand"
                   : "bg-white/5 text-slate-300 hover:bg-white/10 hover:text-white"
               }`}
             >

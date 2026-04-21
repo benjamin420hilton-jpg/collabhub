@@ -87,7 +87,7 @@ export default async function CampaignsPage({
           {isBrand && status && filterLabels[status] && (
             <Link
               href="/campaigns"
-              className="mt-2 inline-block text-sm text-coral hover:underline"
+              className="mt-2 inline-block text-sm text-brand hover:underline"
             >
               Show all campaigns
             </Link>
@@ -134,8 +134,8 @@ export default async function CampaignsPage({
       {!isBrand && publicCampaigns && (
         <div className="space-y-4">
           {viewerTier === "free" && (
-            <div className="flex items-start gap-3 rounded-xl border border-coral/20 bg-coral-light/40 p-4 text-sm">
-              <Sparkles className="size-4 shrink-0 text-coral mt-0.5" />
+            <div className="flex items-start gap-3 rounded-xl border border-brand/20 bg-brand-light/40 p-4 text-sm">
+              <Sparkles className="size-4 shrink-0 text-brand mt-0.5" />
               <div className="flex-1">
                 <p className="font-medium">Pro creators see new campaigns 24h early</p>
                 <p className="text-muted-foreground">

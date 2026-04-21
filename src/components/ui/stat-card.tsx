@@ -33,7 +33,7 @@ export function StatCard({
       className={cn(
         "group relative h-full overflow-hidden border-border/50 bg-gradient-to-br from-white via-white to-muted/40 shadow-sm",
         href &&
-          "cursor-pointer transition-all hover:-translate-y-0.5 hover:border-coral/40 hover:shadow-xl hover:shadow-coral/10",
+          "cursor-pointer transition-all hover:-translate-y-0.5 hover:border-brand/40 hover:shadow-xl hover:shadow-brand/10",
         className,
       )}
     >

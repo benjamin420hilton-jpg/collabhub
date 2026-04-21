@@ -319,7 +319,7 @@ export function InfluencerProfileEditForm({ initial }: Props) {
           <Button
             type="submit"
             disabled={isPending}
-            className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+            className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
           >
             {isPending ? "Saving..." : "Save changes"}
           </Button>

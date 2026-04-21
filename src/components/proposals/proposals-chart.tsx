@@ -12,12 +12,12 @@ import {
 import type { ProposalHistogramRow } from "@/server/queries/proposals";
 
 const config: ChartConfig = {
-  accepted: { label: "Accepted", color: "var(--color-teal, #14b8a6)" },
-  pending: { label: "Pending", color: "var(--color-amber, #f59e0b)" },
-  shortlisted: { label: "Shortlisted", color: "var(--color-blue, #3b82f6)" },
-  rejected: { label: "Rejected", color: "var(--color-coral, #ef4444)" },
-  withdrawn: { label: "Withdrawn", color: "var(--color-gray, #9ca3af)" },
-  expired: { label: "Expired", color: "var(--color-gray-light, #d1d5db)" },
+  accepted: { label: "Accepted", color: "#22c55e" },
+  pending: { label: "Pending", color: "#f59e0b" },
+  shortlisted: { label: "Shortlisted", color: "#8B5CF6" },
+  rejected: { label: "Rejected", color: "#ef4444" },
+  withdrawn: { label: "Withdrawn", color: "#9ca3af" },
+  expired: { label: "Expired", color: "#d1d5db" },
 };
 
 function formatMonth(month: string) {

@@ -50,7 +50,7 @@ export function SocialAccountsCard({ accounts }: SocialAccountsCardProps) {
     <Card className="card-hover">
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
-          <Users className="size-5 text-teal" />
+          <Users className="size-5 text-highlight" />
           Connected Socials
         </CardTitle>
         <CardDescription>
@@ -96,7 +96,7 @@ export function SocialAccountsCard({ accounts }: SocialAccountsCardProps) {
                     className={
                       synced.stale
                         ? "border-amber-200 bg-amber-50 text-amber-700"
-                        : "border-teal/20 bg-teal-light text-teal-dark"
+                        : "border-highlight/20 bg-highlight-light text-highlight-dark"
                     }
                   >
                     {synced.text}

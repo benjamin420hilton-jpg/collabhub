@@ -82,10 +82,10 @@ export function InfluencerBillingPage({
       </div>
 
       {showSuccess && (
-        <Card className="overflow-hidden border-coral/30 bg-gradient-to-br from-coral-light via-white to-coral-light animate-scale-in">
+        <Card className="overflow-hidden border-brand/30 bg-gradient-to-br from-brand-light via-white to-brand-light animate-scale-in">
           <CardContent className="pt-8 pb-8">
             <div className="text-center space-y-4">
-              <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-primary shadow-lg shadow-coral/30">
+              <div className="mx-auto flex size-16 items-center justify-center rounded-2xl bg-gradient-primary shadow-lg shadow-brand/30">
                 <Crown className="size-8 text-white" />
               </div>
               <div>
@@ -95,16 +95,16 @@ export function InfluencerBillingPage({
                 </p>
               </div>
               <div className="mx-auto max-w-sm grid gap-2 text-left">
-                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-coral shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-brand/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-brand shrink-0" />
                   <span className="text-sm font-medium">PRO badge is live on your profile</span>
                 </div>
-                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-coral shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-brand/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-brand shrink-0" />
                   <span className="text-sm font-medium">Unlimited applications unlocked</span>
                 </div>
-                <div className="flex items-center gap-3 rounded-lg border border-coral/10 bg-white/80 p-3">
-                  <CheckCircle className="size-5 text-coral shrink-0" />
+                <div className="flex items-center gap-3 rounded-lg border border-brand/10 bg-white/80 p-3">
+                  <CheckCircle className="size-5 text-brand shrink-0" />
                   <span className="text-sm font-medium">24h early access to new campaigns</span>
                 </div>
               </div>
@@ -141,11 +141,11 @@ export function InfluencerBillingPage({
       )}
 
       {isPro && (
-        <Card className="border-coral/20 bg-gradient-to-r from-coral-light to-white animate-fade-in-up delay-100">
+        <Card className="border-brand/20 bg-gradient-to-r from-brand-light to-white animate-fade-in-up delay-100">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Crown className="size-5 text-coral" />
+                <Crown className="size-5 text-brand" />
                 <CardTitle>Pro Creator</CardTitle>
               </div>
               <Badge className="bg-gradient-primary border-0 text-white">
@@ -175,7 +175,7 @@ export function InfluencerBillingPage({
               variant="outline"
               onClick={handleManage}
               disabled={isPending}
-              className="border-coral/20 hover:bg-coral-light"
+              className="border-brand/20 hover:bg-brand-light"
             >
               <ExternalLink className="mr-2 size-4" />
               {isPending ? "Loading..." : "Manage Subscription"}
@@ -188,7 +188,7 @@ export function InfluencerBillingPage({
         <Card
           className={
             !isPro
-              ? "border-coral/20 ring-2 ring-coral/10"
+              ? "border-brand/20 ring-2 ring-brand/10"
               : "border-border/60"
           }
         >
@@ -196,7 +196,7 @@ export function InfluencerBillingPage({
             <CardTitle className="flex items-center justify-between">
               Free
               {!isPro && (
-                <Badge className="border-coral/20 bg-coral-light text-coral-dark">
+                <Badge className="border-brand/20 bg-brand-light text-brand-dark">
                   Current
                 </Badge>
               )}
@@ -220,13 +220,13 @@ export function InfluencerBillingPage({
 
         <Card
           className={
-            isPro ? "border-coral/20 ring-2 ring-coral/10" : "border-border/60"
+            isPro ? "border-brand/20 ring-2 ring-brand/10" : "border-border/60"
           }
         >
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span className="flex items-center gap-2">
-                <Crown className="size-5 text-coral" /> Pro Creator
+                <Crown className="size-5 text-brand" /> Pro Creator
               </span>
               {isPro && (
                 <Badge className="bg-gradient-primary border-0 text-white">
@@ -238,7 +238,7 @@ export function InfluencerBillingPage({
               <span className="text-2xl font-bold text-foreground">$14.99</span>
               <span className="text-muted-foreground"> AUD / month</span>
               {!isPro && (
-                <span className="ml-2 text-xs text-coral">7-day free trial</span>
+                <span className="ml-2 text-xs text-brand">7-day free trial</span>
               )}
             </CardDescription>
           </CardHeader>
@@ -246,7 +246,7 @@ export function InfluencerBillingPage({
             <ul className="space-y-3">
               {PRO_FEATURES.map((feature) => (
                 <li key={feature} className="flex items-start gap-2 text-sm">
-                  <Check className="mt-0.5 size-4 shrink-0 text-coral" />
+                  <Check className="mt-0.5 size-4 shrink-0 text-brand" />
                   {feature}
                 </li>
               ))}
@@ -255,7 +255,7 @@ export function InfluencerBillingPage({
           {!isPro && (
             <CardFooter>
               <Button
-                className="w-full bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+                className="w-full bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
                 onClick={handleUpgrade}
                 disabled={isPending}
               >

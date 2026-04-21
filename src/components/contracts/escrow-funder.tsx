@@ -58,10 +58,10 @@ export function EscrowFunder({
   }
 
   return (
-    <Card className="border-coral/20 bg-gradient-to-br from-coral-light via-white to-teal-light animate-fade-in-up delay-100">
+    <Card className="border-brand/20 bg-gradient-to-br from-brand-light via-white to-highlight-light animate-fade-in-up delay-100">
       <CardContent className="pt-6 space-y-4">
         <div className="flex items-start gap-3">
-          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-primary shadow-md shadow-coral/20">
+          <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-gradient-primary shadow-md shadow-brand/20">
             <Shield className="size-5 text-white" />
           </div>
           <div>
@@ -74,7 +74,7 @@ export function EscrowFunder({
           </div>
         </div>
 
-        <div className="rounded-lg border border-coral/10 bg-white/80 p-4">
+        <div className="rounded-lg border border-brand/10 bg-white/80 p-4">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground">Total Amount</span>
             <span className="text-2xl font-bold">
@@ -91,7 +91,7 @@ export function EscrowFunder({
         <Button
           onClick={handleFundEscrow}
           disabled={isPending}
-          className="w-full bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+          className="w-full bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
         >
           <CreditCard className="mr-2 size-4" />
           {isPending

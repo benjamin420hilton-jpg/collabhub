@@ -66,7 +66,7 @@ export default async function HomePage() {
               </Button>
             </Link>
             <Link href="/sign-up">
-              <Button className="bg-gradient-primary text-white shadow-lg shadow-coral/20 transition-all hover:shadow-xl hover:shadow-coral/25 hover:-translate-y-0.5">
+              <Button className="bg-gradient-primary text-white shadow-lg shadow-brand/20 transition-all hover:shadow-xl hover:shadow-brand/25 hover:-translate-y-0.5">
                 Get Started Free
               </Button>
             </Link>
@@ -82,7 +82,7 @@ export default async function HomePage() {
               {/* Left — text, natural flow */}
               <div className="max-w-2xl">
                 <div className="animate-fade-in-down">
-                  <span className="inline-flex items-center gap-2 rounded-full border border-coral/20 bg-coral/5 px-4 py-1.5 text-sm font-medium text-coral-dark shadow-sm backdrop-blur-sm">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-brand/20 bg-brand/5 px-4 py-1.5 text-sm font-medium text-brand-dark shadow-sm backdrop-blur-sm">
                     <Zap className="size-3.5" />
                     Australia&apos;s Influencer Marketing Platform
                   </span>
@@ -103,7 +103,7 @@ export default async function HomePage() {
                   <Link href="/sign-up">
                     <Button
                       size="lg"
-                      className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
+                      className="bg-gradient-primary px-8 text-white shadow-lg shadow-brand/25 transition-all hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5 text-base h-12"
                     >
                       Start Free <ArrowRight className="ml-2 size-4" />
                     </Button>
@@ -112,7 +112,7 @@ export default async function HomePage() {
                     <Button
                       size="lg"
                       variant="outline"
-                      className="border-gray-300 text-gray-700 px-8 transition-all hover:border-coral/40 hover:bg-coral/5 text-base h-12"
+                      className="border-gray-300 text-gray-700 px-8 transition-all hover:border-brand/40 hover:bg-brand/5 text-base h-12"
                     >
                       I Have an Account
                     </Button>
@@ -121,13 +121,13 @@ export default async function HomePage() {
 
                 <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-muted-foreground animate-fade-in-up delay-300">
                   <span className="flex items-center gap-2">
-                    <Shield className="size-4 text-coral" /> Secure escrow payments
+                    <Shield className="size-4 text-brand" /> Secure escrow payments
                   </span>
                   <span className="flex items-center gap-2">
-                    <Star className="size-4 text-teal" /> Free for influencers
+                    <Star className="size-4 text-highlight" /> Free for influencers
                   </span>
                   <span className="flex items-center gap-2">
-                    <Globe className="size-4 text-coral" /> Built for Australia
+                    <Globe className="size-4 text-brand" /> Built for Australia
                   </span>
                 </div>
               </div>
@@ -184,8 +184,8 @@ export default async function HomePage() {
                 {/* Floating stat badge — overlaps bottom-left corner, stays inside hero */}
                 <div className="absolute bottom-3 left-3 hidden rounded-2xl border border-border/50 bg-white/95 p-3 shadow-xl shadow-navy/10 backdrop-blur sm:left-4 sm:bottom-4 sm:p-4 lg:block animate-fade-in-up delay-500">
                   <div className="flex items-center gap-3">
-                    <div className="flex size-10 items-center justify-center rounded-xl bg-coral-light">
-                      <TrendingUp className="size-5 text-coral" />
+                    <div className="flex size-10 items-center justify-center rounded-xl bg-brand-light">
+                      <TrendingUp className="size-5 text-brand" />
                     </div>
                     <div>
                       <p className="text-xs font-medium text-muted-foreground">
@@ -206,7 +206,7 @@ export default async function HomePage() {
         <section className="border-t border-border bg-gradient-sand py-24">
           <div className="mx-auto max-w-6xl px-6">
             <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-coral">
+              <p className="text-sm font-semibold uppercase tracking-widest text-brand">
                 How It Works
               </p>
               <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
@@ -221,28 +221,28 @@ export default async function HomePage() {
                   icon: Megaphone,
                   title: "Post a Campaign",
                   desc: "Brands create a brief with budget, deliverables, and target audience.",
-                  color: "bg-coral-light text-coral",
+                  color: "bg-brand-light text-brand",
                 },
                 {
                   step: "02",
                   icon: Search,
                   title: "Match with Creators",
                   desc: "Influencers apply from the job board, or brands send direct offers via the directory.",
-                  color: "bg-teal-light text-teal",
+                  color: "bg-highlight-light text-highlight",
                 },
                 {
                   step: "03",
                   icon: FileText,
                   title: "Manage Milestones",
                   desc: "Track deliverables with milestone-based contracts. Review, approve, or request revisions.",
-                  color: "bg-coral-light text-coral",
+                  color: "bg-brand-light text-brand",
                 },
                 {
                   step: "04",
                   icon: DollarSign,
                   title: "Secure Payment",
                   desc: "Funds held in escrow and released automatically when milestones are approved.",
-                  color: "bg-teal-light text-teal",
+                  color: "bg-highlight-light text-highlight",
                 },
               ].map((item, i) => (
                 <div
@@ -276,9 +276,9 @@ export default async function HomePage() {
           <div className="mx-auto max-w-6xl px-6">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Brands */}
-              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-coral-light/50 p-8 shadow-sm animate-fade-in-up">
-                <div className="inline-flex rounded-xl bg-coral-light p-3">
-                  <Megaphone className="size-6 text-coral" />
+              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-brand-light/50 p-8 shadow-sm animate-fade-in-up">
+                <div className="inline-flex rounded-xl bg-brand-light p-3">
+                  <Megaphone className="size-6 text-brand" />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold">For Brands</h3>
                 <p className="mt-2 text-muted-foreground">
@@ -294,22 +294,22 @@ export default async function HomePage() {
                     "Product gifting & exchange campaigns",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm">
-                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-coral" />
+                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-brand" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
                 <Link href="/sign-up" className="mt-auto inline-block pt-8">
-                  <Button className="bg-gradient-primary text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
+                  <Button className="bg-gradient-primary text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/25 hover:-translate-y-0.5">
                     Start as a Brand <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
               </div>
 
               {/* Creators */}
-              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-teal-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
-                <div className="inline-flex rounded-xl bg-teal-light p-3">
-                  <Camera className="size-6 text-teal" />
+              <div className="flex flex-col rounded-3xl border border-border bg-gradient-to-br from-white to-highlight-light/50 p-8 shadow-sm animate-fade-in-up delay-200">
+                <div className="inline-flex rounded-xl bg-highlight-light p-3">
+                  <Camera className="size-6 text-highlight" />
                 </div>
                 <h3 className="mt-5 text-2xl font-bold">
                   For Creators
@@ -327,13 +327,13 @@ export default async function HomePage() {
                     "Works even if you're just starting out",
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3 text-sm">
-                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-teal" />
+                      <CheckCircle className="mt-0.5 size-4 shrink-0 text-highlight" />
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 rounded-xl border border-coral/20 bg-white/70 p-4">
-                  <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-coral-dark">
+                <div className="mt-6 rounded-xl border border-brand/20 bg-white/70 p-4">
+                  <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-dark">
                     <Zap className="size-3" /> Fast-track with Pro
                   </p>
                   <p className="mt-2 text-sm text-muted-foreground">
@@ -346,7 +346,7 @@ export default async function HomePage() {
                   </p>
                 </div>
                 <Link href="/sign-up" className="mt-auto inline-block pt-8">
-                  <Button className="bg-gradient-ocean text-white shadow-md shadow-coral/20 transition-all hover:shadow-lg hover:shadow-coral/25 hover:-translate-y-0.5">
+                  <Button className="bg-gradient-ocean text-white shadow-md shadow-brand/20 transition-all hover:shadow-lg hover:shadow-brand/25 hover:-translate-y-0.5">
                     Start as a Creator <ArrowRight className="ml-2 size-4" />
                   </Button>
                 </Link>
@@ -369,7 +369,7 @@ export default async function HomePage() {
 
             <div className="relative mx-auto max-w-6xl px-6">
               <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-widest text-coral">
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand">
                   Meet the creators
                 </p>
                 <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
@@ -389,9 +389,9 @@ export default async function HomePage() {
                     className="group block animate-fade-in-up"
                     style={{ animationDelay: `${(i + 1) * 70}ms` }}
                   >
-                    <div className="relative h-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-white via-white to-muted/40 p-6 shadow-sm transition-all group-hover:-translate-y-1 group-hover:border-coral/40 group-hover:shadow-xl group-hover:shadow-coral/10">
+                    <div className="relative h-full overflow-hidden rounded-2xl border border-border/50 bg-gradient-to-br from-white via-white to-muted/40 p-6 shadow-sm transition-all group-hover:-translate-y-1 group-hover:border-brand/40 group-hover:shadow-xl group-hover:shadow-brand/10">
                       <div className="flex items-start gap-3">
-                        <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-ocean text-lg font-bold text-white shadow-md shadow-coral/20">
+                        <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-ocean text-lg font-bold text-white shadow-md shadow-brand/20">
                           {profile.displayName.charAt(0).toUpperCase()}
                         </div>
                         <div className="min-w-0 flex-1">
@@ -421,7 +421,7 @@ export default async function HomePage() {
 
                       <div className="mt-4 flex flex-wrap items-center gap-2">
                         {profile.primaryNiche && (
-                          <Badge className="border-teal/20 bg-teal-light text-teal-dark">
+                          <Badge className="border-highlight/20 bg-highlight-light text-highlight-dark">
                             {profile.primaryNiche.replace("_", " ")}
                           </Badge>
                         )}
@@ -456,7 +456,7 @@ export default async function HomePage() {
                 <Link href="/sign-up">
                   <Button
                     size="lg"
-                    className="bg-gradient-primary px-8 text-white shadow-md shadow-coral/25 transition-all hover:shadow-lg hover:shadow-coral/30 hover:-translate-y-0.5"
+                    className="bg-gradient-primary px-8 text-white shadow-md shadow-brand/25 transition-all hover:shadow-lg hover:shadow-brand/30 hover:-translate-y-0.5"
                   >
                     Sign up to browse all creators
                     <ArrowRight className="ml-2 size-4" />
@@ -479,7 +479,7 @@ export default async function HomePage() {
 
           <div className="relative mx-auto max-w-6xl px-6">
             <div className="mx-auto max-w-2xl text-center">
-              <span className="inline-flex items-center gap-2 rounded-full border border-coral/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-coral-dark shadow-sm backdrop-blur-sm">
+              <span className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-brand-dark shadow-sm backdrop-blur-sm">
                 <Crown className="size-3.5" />
                 Pro Creator
               </span>
@@ -501,34 +501,34 @@ export default async function HomePage() {
                   icon: Clock,
                   title: "24h early access",
                   desc: "See new campaigns 24 hours before free creators. Apply before the inbox is full.",
-                  color: "text-coral",
-                  bg: "bg-coral-light",
+                  color: "text-brand",
+                  bg: "bg-brand-light",
                 },
                 {
                   icon: InfinityIcon,
                   title: "Unlimited applications",
                   desc: "Free tier caps at 5/month. Pro removes the cap — go hard, land deals faster.",
-                  color: "text-teal",
-                  bg: "bg-teal-light",
+                  color: "text-highlight",
+                  bg: "bg-highlight-light",
                 },
                 {
                   icon: Crown,
                   title: "PRO badge",
                   desc: "Brands trust verified Pro creators first. Badge appears on your profile and every proposal.",
-                  color: "text-coral",
-                  bg: "bg-coral-light",
+                  color: "text-brand",
+                  bg: "bg-brand-light",
                 },
                 {
                   icon: Rocket,
                   title: "Priority placement",
                   desc: "Top of the directory when brands search. More eyes, more offers, more bookings.",
-                  color: "text-teal",
-                  bg: "bg-teal-light",
+                  color: "text-highlight",
+                  bg: "bg-highlight-light",
                 },
               ].map((feature, i) => (
                 <div
                   key={feature.title}
-                  className="relative overflow-hidden rounded-2xl border border-border/50 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-coral/30 hover:shadow-lg hover:shadow-coral/10 animate-fade-in-up"
+                  className="relative overflow-hidden rounded-2xl border border-border/50 bg-white p-6 shadow-sm transition-all hover:-translate-y-1 hover:border-brand/30 hover:shadow-lg hover:shadow-brand/10 animate-fade-in-up"
                   style={{ animationDelay: `${(i + 1) * 100}ms` }}
                 >
                   <div
@@ -547,7 +547,7 @@ export default async function HomePage() {
             </div>
 
             {/* Pricing + CTA */}
-            <div className="mt-14 flex flex-col items-center gap-4 rounded-3xl border border-coral/30 bg-gradient-to-br from-coral-light via-white to-teal-light/50 p-8 text-center shadow-lg shadow-coral/10 sm:p-10">
+            <div className="mt-14 flex flex-col items-center gap-4 rounded-3xl border border-brand/30 bg-gradient-to-br from-brand-light via-white to-highlight-light/50 p-8 text-center shadow-lg shadow-brand/10 sm:p-10">
               <div className="flex items-baseline justify-center gap-2">
                 <span className="text-5xl font-extrabold tracking-tight">
                   $14.99
@@ -560,7 +560,7 @@ export default async function HomePage() {
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="bg-gradient-primary px-8 text-white shadow-lg shadow-coral/25 transition-all hover:shadow-xl hover:shadow-coral/30 hover:-translate-y-0.5 text-base h-12"
+                  className="bg-gradient-primary px-8 text-white shadow-lg shadow-brand/25 transition-all hover:shadow-xl hover:shadow-brand/30 hover:-translate-y-0.5 text-base h-12"
                 >
                   Start your 7-day free trial
                   <ArrowRight className="ml-2 size-4" />
@@ -601,7 +601,7 @@ export default async function HomePage() {
         <section className="border-t border-border bg-gradient-sand py-24">
           <div className="mx-auto max-w-6xl px-6">
             <div className="text-center">
-              <p className="text-sm font-semibold uppercase tracking-widest text-teal">
+              <p className="text-sm font-semibold uppercase tracking-widest text-highlight">
                 Why CollabHub
               </p>
               <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
@@ -615,37 +615,37 @@ export default async function HomePage() {
                   icon: Shield,
                   title: "Escrow Protection",
                   desc: "Funds are held securely and only released when both sides are happy with the deliverables.",
-                  accent: "bg-teal-light text-teal",
+                  accent: "bg-highlight-light text-highlight",
                 },
                 {
                   icon: Award,
                   title: "Verified Profiles",
                   desc: "Brands verify their business. Influencers link their socials. Everyone knows who they're working with.",
-                  accent: "bg-coral-light text-coral",
+                  accent: "bg-brand-light text-brand",
                 },
                 {
                   icon: TrendingUp,
                   title: "Real Metrics",
                   desc: "No fake follower counts. Connected social accounts show real, verified audience data.",
-                  accent: "bg-teal-light text-teal",
+                  accent: "bg-highlight-light text-highlight",
                 },
                 {
                   icon: FileText,
                   title: "Smart Contracts",
                   desc: "Milestone-based agreements with clear deliverables, deadlines, and automatic payment triggers.",
-                  accent: "bg-coral-light text-coral",
+                  accent: "bg-brand-light text-brand",
                 },
                 {
                   icon: Heart,
                   title: "Community First",
                   desc: "Ratings, reviews, and reputation scores help the best creators and brands rise to the top.",
-                  accent: "bg-teal-light text-teal",
+                  accent: "bg-highlight-light text-highlight",
                 },
                 {
                   icon: Globe,
                   title: "Made for Australia",
                   desc: "AUD payments, Australian business support, and a community built for the local market.",
-                  accent: "bg-coral-light text-coral",
+                  accent: "bg-brand-light text-brand",
                 },
               ].map((item, i) => (
                 <div
@@ -679,7 +679,7 @@ export default async function HomePage() {
               <Link href="/sign-up">
                 <Button
                   size="lg"
-                  className="bg-white px-10 text-coral-dark font-semibold shadow-lg shadow-black/10 transition-all hover:shadow-xl hover:-translate-y-0.5 text-base h-12"
+                  className="bg-white px-10 text-brand-dark font-semibold shadow-lg shadow-black/10 transition-all hover:shadow-xl hover:-translate-y-0.5 text-base h-12"
                 >
                   Get Started Free <ArrowRight className="ml-2 size-4" />
                 </Button>
